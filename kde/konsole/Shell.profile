@@ -14,7 +14,7 @@ Parent=FALLBACK/
 AutoCopySelectedText=true
 
 [Keyboard]
-KeyBindings=linux
+KeyBindings=solaris
 
 [Scrolling]
 HistoryMode=2
