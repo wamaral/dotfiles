@@ -25,4 +25,4 @@ Vim commands:
 - ; = :
 - :W = :w
 - :w!! = sudo :w
-- :Y = checkout current line from git HEAD
+- \Y = checkout current line from git HEAD
