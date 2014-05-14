@@ -46,6 +46,8 @@ Plugin 'mattn/webapi-vim' " vim interface to Web API
 Plugin 'jaredly/vim-debug' " A plugin for VIM that creates an Integrated Debugging Environment (PHP / Python)
 Plugin 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
 Plugin 'kien/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder
+Plugin 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
+Plugin 'vim-scripts/Gundo' " Visualize your undo tree.
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -120,30 +122,82 @@ let g:nerdtree_tabs_no_startup_for_diff = 1
 let g:nerdtree_tabs_smart_startup_focus = 1
 let g:nerdtree_tabs_open_on_new_tab = 1 " if NERDTree was globally opened by :NERDTreeTabsToggle
 
-" tabs
-nnoremap <f8> :tabnew<cr>
-nnoremap <f9> :tabp<cr>
-nnoremap <f10> :tabn<cr>
+" map ; to : (get faster)
+nnoremap ; :
 
-"explorer mappings
+" navigate splits with C-arrows
+nnoremap <C-Left> <C-w>h
+nnoremap <C-Down> <C-w>j
+nnoremap <C-Up> <C-w>k
+nnoremap <C-Right> <C-w>l
+
+" move a line of text using Alt+[up|down], indent with Alt+[left|right]
+nnoremap <A-Down> :m+<CR>==
+nnoremap <A-Up> :m-2<CR>==
+nnoremap <A-Left> <<
+nnoremap <A-Right> >>
+inoremap <A-Down> <Esc>:m+<CR>==gi
+inoremap <A-Up> <Esc>:m-2<CR>==gi
+inoremap <A-Left> <Esc><<`]a
+inoremap <A-Right> <Esc>>>`]a
+vnoremap <A-Down> :m'>+<CR>gv=gv
+vnoremap <A-Up> :m-2<CR>gv=gv
+vnoremap <A-Left> <gv
+vnoremap <A-Right> >gv
+
+" tabs
+if has('gui_running')
+  nnoremap <f10> :tabnew<cr>
+  nnoremap <f11> :tabp<cr>
+  nnoremap <f12> :tabn<cr>
+else
+  nnoremap <f6> :tabnew<cr>
+  nnoremap <f7> :tabp<cr>
+  nnoremap <f8> :tabn<cr>
+endif
+
+" explorer mappings
 nnoremap <f1> :NERDTreeTabsToggle<cr>
 nnoremap <f2> :BufExplorer<cr>
 nnoremap <f3> :TagbarToggle<cr>
+nnoremap <f4> :CtrlP<cr>
 
+" Yank from HEAD (aka per-line checkout from HEAD)
+nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+1 HEAD '.expand('%').'<Bar>tail -n1 <Bar>cut -c2-<Bar>tr -d "\n"')<CR>0
 
-"make <c-l> clear the highlight as well as redraw
+" make <c-l> clear the highlight as well as redraw
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
 
-"map Q to something useful
+" map Q to something useful
 noremap Q gq
 
-"make Y consistent with C and D
+" map W to w since it's a common typo
+command! W :w
+
+" make Y consistent with C and D
 nnoremap Y y$
 
+" U = redo (I never use the undo-line stuff anyway)
+nnoremap U <C-r>
 
-"jump to last cursor position when opening a file
-"dont do it when writing a commit log entry
+" C-u = Gundo tree
+nnoremap <C-u> :GundoToggle<CR>
+
+" Will allow you to use :w!! to write to a file using sudo if you forgot to sudo
+" vim file (it will prompt for sudo password when writing)
+" http://stackoverflow.com/questions/95072/what-are-your-favorite-vim-tricks/96492#96492
+cmap w!! %!sudo tee > /dev/null %
+
+" Starting from vim 7.3 undo can be persisted across sessions
+" http://www.reddit.com/r/vim/comments/kz84u/what_are_some_simple_yet_mindblowing_tweaks_to/c2onmqe
+if has("persistent_undo")
+    set undodir=~/.vim/undodir
+    set undofile
+endif
+
+" jump to last cursor position when opening a file
+" dont do it when writing a commit log entry
 autocmd BufReadPost * call SetCursorPosition()
 function! SetCursorPosition()
     if &filetype !~ 'svn\|commit\c'
@@ -154,14 +208,14 @@ function! SetCursorPosition()
     end
 endfunction
 
-"spell check when writing commit logs
+" spell check when writing commit logs
 autocmd filetype svn,*commit* setlocal spell
 
-"http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
-"hacks from above (the url, not jesus) to delete fugitive buffers when we
-"leave them - otherwise the buffer list gets poluted
+" http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
+" hacks from above (the url, not jesus) to delete fugitive buffers when we
+" leave them - otherwise the buffer list gets poluted
 "
-"add a mapping on .. to view parent tree
+" add a mapping on .. to view parent tree
 autocmd BufReadPost fugitive://* set bufhidden=delete
 autocmd BufReadPost fugitive://*
   \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
