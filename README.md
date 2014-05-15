@@ -2,7 +2,14 @@ dotfiles
 ========
 
 Requires https://github.com/gmarik/Vundle.vim
+- mkdir -p ~/.vim/bundle
+- git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+- :PluginInstall
 
+Requires https://github.com/Valloric/YouCompleteMe
+- apt-get install build-essential cmake python-dev
+- cd ~/.vim/bundle/YouCompleteMe
+- ./install.sh --clang-completer
 
 Vim keys:
 - F1 = NERDTree
