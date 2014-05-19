@@ -49,6 +49,7 @@ Plugin 'kien/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder
 Plugin 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
 Plugin 'vim-scripts/Gundo' " Visualize your undo tree.
 Plugin 'kchmck/vim-coffee-script' " CoffeeScript support for vim
+Plugin 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
