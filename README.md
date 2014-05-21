@@ -27,6 +27,9 @@ Vim keys:
 - A-Up/Down = drag line (gui)
 - U = redo
 - C-u = Gundo
+- Space = toggle fold
+- Enter = follow link (help only)
+- Backspace = go back from link (help only)
 
 Vim commands:
 - ; = :

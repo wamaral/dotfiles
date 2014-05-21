@@ -34,6 +34,7 @@ Plugin 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
 Plugin 'mattn/gist-vim' " vimscript for gist
 Plugin 'gregsexton/gitv' " gitk for Vim
 Plugin 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
+Plugin 'ervandew/supertab' " Perform all your vim insert mode completions with Tab
 Plugin 'Valloric/YouCompleteMe' " A code-completion engine for Vim
 Plugin 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
 Plugin 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
@@ -41,6 +42,7 @@ Plugin 'jlanzarotta/bufexplorer' " BufExplorer Plugin for Vim                   
 Plugin 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F3>
 Plugin 'scrooloose/syntastic' " Syntax checking hacks for vim
 Plugin 'SirVer/ultisnips' " The ultimate snippet solution for Vim
+Plugin 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
 Plugin 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
 Plugin 'mattn/webapi-vim' " vim interface to Web API
 Plugin 'jaredly/vim-debug' " A plugin for VIM that creates an Integrated Debugging Environment (PHP / Python)
@@ -72,7 +74,7 @@ syntax enable
 
 " colors
 set background=dark
-colorscheme torte
+colorscheme distinguished
 
 " mine
 set so=3 " number of screen lines to show around the cursor
@@ -99,6 +101,10 @@ set wig=*.o,*.obj,*~ " list of patterns to ignore files for file name completion
 set formatoptions-=o " don't continue comments when o/O
 set showtabline=2 " always show tab bar
 set guioptions-=L " fix gvim resizing bug when opening tabs
+set fdm=syntax " The kind of folding used for the current window.
+set fdc=1 " Folding column width (0 = off)
+set fdls=99 " Fold level start (0 = fold all, 99 = fold none)
+set fdn=6 " Fold nesting max level
 
 " gvim font
 if has('gui_running')
@@ -123,6 +129,16 @@ let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_no_startup_for_diff = 1
 let g:nerdtree_tabs_smart_startup_focus = 1
 let g:nerdtree_tabs_open_on_new_tab = 1 " if NERDTree was globally opened by :NERDTreeTabsToggle
+
+" supertab settings
+let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
 
 " map ; to : (get faster)
 nnoremap ; :
@@ -170,6 +186,11 @@ nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+
 " make <c-l> clear the highlight as well as redraw
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
+
+" Space toggle folding when cursor is in a fold
+" http://vim.wikia.com/wiki/Folding
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 
 " map Q to something useful
 noremap Q gq
@@ -223,4 +244,11 @@ autocmd BufReadPost fugitive://*
   \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
   \   nnoremap <buffer> .. :edit %:h<CR> |
   \ endif
+
+" watch .vimrc for changes and reload
+" http://superuser.com/a/417997
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
 
