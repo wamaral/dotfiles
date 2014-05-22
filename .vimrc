@@ -105,6 +105,8 @@ set fdm=syntax " The kind of folding used for the current window.
 set fdc=1 " Folding column width (0 = off)
 set fdls=99 " Fold level start (0 = fold all, 99 = fold none)
 set fdn=6 " Fold nesting max level
+set hls " Highlight searches
+set is " Incremental search (move while searching)
 
 " gvim font
 if has('gui_running')
