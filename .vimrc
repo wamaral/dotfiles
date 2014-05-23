@@ -52,6 +52,8 @@ Plugin 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destina
 Plugin 'vim-scripts/Gundo' " Visualize your undo tree.
 Plugin 'kchmck/vim-coffee-script' " CoffeeScript support for vim
 Plugin 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
+Plugin 'godlygeek/tabular' " Vim script for text filtering and alignment
+Plugin 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
