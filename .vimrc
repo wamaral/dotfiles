@@ -141,6 +141,12 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
+" coffeescript settings
+let coffee_compile_vert = 1
+let coffee_watch_vert = 1
+let coffee_run_vert = 1
+autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+
 
 " map ; to : (get faster)
 nnoremap ; :
