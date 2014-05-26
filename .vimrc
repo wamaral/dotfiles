@@ -54,6 +54,8 @@ Plugin 'kchmck/vim-coffee-script' " CoffeeScript support for vim
 Plugin 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
 Plugin 'godlygeek/tabular' " Vim script for text filtering and alignment
 Plugin 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
+Plugin 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
+Plugin 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
