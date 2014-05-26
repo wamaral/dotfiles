@@ -112,11 +112,6 @@ set fdn=6 " Fold nesting max level
 set hls " Highlight searches
 set is " Incremental search (move while searching)
 
-" gvim font
-if has('gui_running')
-  set guifont=Inconsolata\ Medium\ 10
-endif
-
 
 " airline settings
 set laststatus=2 " always show status line
@@ -155,11 +150,15 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " map ; to : (get faster)
 nnoremap ; :
 
-" navigate splits with C-arrows
+" navigate splits with C-move
 nnoremap <C-Left> <C-w>h
 nnoremap <C-Down> <C-w>j
 nnoremap <C-Up> <C-w>k
 nnoremap <C-Right> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " move a line of text using Alt+[up|down], indent with Alt+[left|right]
 nnoremap <A-Down> :m+<CR>==
@@ -174,17 +173,23 @@ vnoremap <A-Down> :m'>+<CR>gv=gv
 vnoremap <A-Up> :m-2<CR>gv=gv
 vnoremap <A-Left> <gv
 vnoremap <A-Right> >gv
+nnoremap <A-j> :m+<CR>==
+nnoremap <A-k> :m-2<CR>==
+nnoremap <A-h> <<
+nnoremap <A-l> >>
+inoremap <A-j> <Esc>:m+<CR>==gi
+inoremap <A-k> <Esc>:m-2<CR>==gi
+inoremap <A-h> <Esc><<`]a
+inoremap <A-l> <Esc>>>`]a
+vnoremap <A-j> :m'>+<CR>gv=gv
+vnoremap <A-k> :m-2<CR>gv=gv
+vnoremap <A-h> <gv
+vnoremap <A-l> >gv
 
 " tabs
-if has('gui_running')
-  nnoremap <f10> :tabnew<cr>
-  nnoremap <f11> :tabp<cr>
-  nnoremap <f12> :tabn<cr>
-else
-  nnoremap <f6> :tabnew<cr>
-  nnoremap <f7> :tabp<cr>
-  nnoremap <f8> :tabn<cr>
-endif
+nnoremap <f6> :tabnew<cr>
+nnoremap <f7> :tabp<cr>
+nnoremap <f8> :tabn<cr>
 
 " explorer mappings
 nnoremap <f1> :NERDTreeTabsToggle<cr>
@@ -202,7 +207,7 @@ inoremap <C-L> <C-O>:nohls<CR>
 " Space toggle folding when cursor is in a fold
 " http://vim.wikia.com/wiki/Folding
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
+vnoremap <C-Space> zf
 
 " map Q to something useful
 noremap Q gq
