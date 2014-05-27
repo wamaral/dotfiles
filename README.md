@@ -11,6 +11,8 @@ Requires https://github.com/Valloric/YouCompleteMe
 - cd ~/.vim/bundle/YouCompleteMe
 - ./install.sh --clang-completer
 
+Optional powerline fonts https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
+
 Vim keys:
 - F1 = NERDTree
 - F2 = BufExplorer
