@@ -106,17 +106,19 @@ set formatoptions-=o " don't continue comments when o/O
 set showtabline=2 " always show tab bar
 set guioptions-=L " fix gvim resizing bug when opening tabs
 set fdm=syntax " The kind of folding used for the current window.
-set fdc=1 " Folding column width (0 = off)
+set fdc=2 " Folding column width (0 = off)
 set fdls=99 " Fold level start (0 = fold all, 99 = fold none)
 set fdn=6 " Fold nesting max level
 set hls " Highlight searches
 set is " Incremental search (move while searching)
+set dir=$HOME/.vim/swapfiles// " Directory to put temp file in
 
 
 " airline settings
 set laststatus=2 " always show status line
 let g:airline#extensions#tabline#enabled = 1 " Automatically displays tab line.
 let g:airline#extensions#tabline#show_buffers = 0 " Don't show buffers (we use tabs)
+let g:airline_powerline_fonts = 1 " Integrating with powerline fonts
 
 " syntastic settings
 let g:syntastic_check_on_open = 1
