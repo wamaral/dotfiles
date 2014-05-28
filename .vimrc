@@ -194,9 +194,9 @@ vnoremap <A-h> <gv
 vnoremap <A-l> >gv
 
 " tabs
-nnoremap <f6> :tabnew<cr>
-nnoremap <f7> :tabp<cr>
-nnoremap <f8> :tabn<cr>
+nnoremap <f10> :tabnew<cr>
+nnoremap <f11> :tabp<cr>
+nnoremap <f12> :tabn<cr>
 
 " explorer mappings
 nnoremap <f1> :NERDTreeTabsToggle<cr>
