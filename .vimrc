@@ -80,45 +80,50 @@ syntax enable
 set background=dark
 colorscheme distinguished
 
-" mine
-set so=3 " number of screen lines to show around the cursor
-set siso=7 " minimal number of columns to keep left and right of the cursor
-set ss=1 " minimal number of columns to scroll horizontally
-set nu " show the line number for each line
-set sb " a new window is put below the current one
-set spr " a new window is put right of the current one
+" general settings
+set scrolloff=3 " number of screen lines to show around the cursor
+set sidescrolloff=7 " minimal number of columns to keep left and right of the cursor
+set sidescroll=1 " minimal number of columns to scroll horizontally
+set number " show the line number for each line
+set splitbelow " a new window is put below the current one
+set splitright " a new window is put right of the current one
 set mouse=a " list of flags for using the mouse
-set ttym=xterm2 " "xterm", "xterm2", "dec" or "netterm"; type of mouse
-set ts=2 " number of spaces a <Tab> in the text stands for
-set sw=2 " number of spaces used for each step of (auto)indent
-set sta " a <Tab> in an indent inserts 'shiftwidth' spaces
-set et " expand <Tab> to spaces in Insert mode
-set ai " automatically set the indent of a new line
-set si " do clever autoindenting
-set cin " enable specific indenting for C code
-set hi=1000 " how many command lines are remembered
+set ttymouse=xterm2 " "xterm", "xterm2", "dec" or "netterm"; type of mouse
+set tabstop=2 " number of spaces a <Tab> in the text stands for
+set shiftwidth=2 " number of spaces used for each step of (auto)indent
+set smarttab " a <Tab> in an indent inserts 'shiftwidth' spaces
+set expandtab " expand <Tab> to spaces in Insert mode
+set autoindent " automatically set the indent of a new line
+set smartindent " do clever autoindenting
+set cindent " enable specific indenting for C code
+set history=1000 " how many command lines are remembered
 set list " show <Tab> as ^I and end-of-line as $
 set listchars=tab:▷⋅,trail:⋅,nbsp:⋅ " list of strings used for list mode
-set wim=list:longest " specifies how command line completion works (bash-like)
-set wmnu " command-line completion shows a list of matches
-set wig=*.o,*.obj,*~ " list of patterns to ignore files for file name completion
+set wildmode=list:longest " specifies how command line completion works (bash-like)
+set wildmenu " command-line completion shows a list of matches
+set wildignore=*.o,*.obj,*~ " list of patterns to ignore files for file name completion
 set formatoptions-=o " don't continue comments when o/O
 set showtabline=2 " always show tab bar
-set guioptions-=L " fix gvim resizing bug when opening tabs
-set fdm=syntax " The kind of folding used for the current window.
-set fdc=2 " Folding column width (0 = off)
-set fdls=99 " Fold level start (0 = fold all, 99 = fold none)
-set fdn=6 " Fold nesting max level
-set hls " Highlight searches
-set is " Incremental search (move while searching)
-set dir=$HOME/.vim/swapfiles// " Directory to put temp file in
+set foldmethod=syntax " The kind of folding used for the current window.
+set foldcolumn=2 " Folding column width (0 = off)
+set foldlevelstart=99 " Fold level start (0 = fold all, 99 = fold none)
+set foldnestmax=6 " Fold nesting max level
+set hlsearch " Highlight searches
+set incsearch " Incremental search (move while searching)
+set directory=$HOME/.vim/swapfiles// " Directory to put temp file in
 
+" menu in console
+source $VIMRUNTIME/menu.vim
+set cpoptions-=<
+set wildcharm=<C-Z>
+map <F5> :emenu <C-Z>
 
 " airline settings
 set laststatus=2 " always show status line
 let g:airline#extensions#tabline#enabled = 1 " Automatically displays tab line.
 let g:airline#extensions#tabline#show_buffers = 0 " Don't show buffers (we use tabs)
 let g:airline_powerline_fonts = 1 " Integrating with powerline fonts
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved' " smartly uniquify buffers names with similar filename,
 
 " syntastic settings
 let g:syntastic_check_on_open = 1
