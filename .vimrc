@@ -47,7 +47,13 @@ Plugin 'altercation/vim-colors-solarized' " precision colorscheme for the vim te
 Plugin 'mattn/webapi-vim' " vim interface to Web API
 Plugin 'jaredly/vim-debug' " A plugin for VIM that creates an Integrated Debugging Environment (PHP / Python)
 Plugin 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
-Plugin 'kien/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder
+Plugin 'Shougo/unite.vim' " Unite and create user interfaces
+Plugin 'Shougo/unite-outline' " outline source for unite.vim
+Plugin 'Shougo/unite-help' " help source for unite.vim
+Plugin 'Shougo/unite-session' " unite.vim session source
+Plugin 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
+Plugin 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
+"Plugin 'Shougo/vimproc.vim' " Interactive command execution in Vim.
 Plugin 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
 Plugin 'vim-scripts/Gundo' " Visualize your undo tree.
 Plugin 'kchmck/vim-coffee-script' " CoffeeScript support for vim
@@ -153,6 +159,9 @@ let coffee_watch_vert = 1
 let coffee_run_vert = 1
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
+" unite settings
+autocmd BufReadPost * call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
 
 " map ; to : (get faster)
 nnoremap ; :
@@ -200,7 +209,7 @@ nnoremap <f12> :tabn<cr>
 
 " explorer mappings
 nnoremap <f1> :NERDTreeTabsToggle<cr>
-nnoremap <f2> :BufExplorer<cr>
+nnoremap <f2> :<C-u>Unite file_rec<cr>
 nnoremap <f3> :TagbarToggle<cr>
 nnoremap <f4> :CtrlP<cr>
 
