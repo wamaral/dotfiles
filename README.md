@@ -1,15 +1,16 @@
 dotfiles
 ========
 
-Requires https://github.com/gmarik/Vundle.vim
-- mkdir -p ~/.vim/bundle
-- git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-- :PluginInstall
+Requires https://github.com/Shougo/neobundle.vim
+- curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
+- :NeoBundleInstall
+- :Unite neobundle/install (if unite is installed)
 
 Requires https://github.com/Valloric/YouCompleteMe
-- apt-get install build-essential cmake python-dev
+- apt-get install build-essential cmake python-dev libclang-3.3-dev
 - cd ~/.vim/bundle/YouCompleteMe
-- ./install.sh --clang-completer
+- git submodule update --init --recursive
+- ./install.sh --clang-completer --system-libclang
 
 Optional powerline fonts https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
 
@@ -17,13 +18,10 @@ Vim keys:
 - F1 = NERDTree
 - F2 = BufExplorer
 - F3 = Tagbar
-- F4 = CtrlP
-- F6 = new tab (console)
-- F7 = previous tab (console)
-- F8 = next tab (console)
-- F10 = new tab (gui)
-- F11 = previous tab (gui)
-- F12 = next tab (gui)
+- F4 = Unite
+- F10 = new tab
+- F11 = previous tab
+- F12 = next tab
 - C-arrows = navigate splits (gui)
 - A-Left/Right = indent (gui)
 - A-Up/Down = drag line (gui)

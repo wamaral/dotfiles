@@ -15,44 +15,69 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " My Bundles here:
 NeoBundle 'Shougo/vimproc.vim', {'build': {'unix': 'make'}} " Interactive command execution in Vim.
-NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
-NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
-NeoBundle 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
-NeoBundle 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
-NeoBundle 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
-NeoBundle 'mattn/gist-vim' " vimscript for gist
-NeoBundle 'gregsexton/gitv' " gitk for Vim
-NeoBundle 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
-NeoBundle 'ervandew/supertab' " Perform all your vim insert mode completions with Tab
-NeoBundle 'Valloric/YouCompleteMe' " A code-completion engine for Vim
-NeoBundle 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
-NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
-NeoBundle 'jlanzarotta/bufexplorer' " BufExplorer Plugin for Vim                                 <F2>
-NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F3>
-NeoBundle 'scrooloose/syntastic' " Syntax checking hacks for vim
-NeoBundle 'SirVer/ultisnips' " The ultimate snippet solution for Vim
-NeoBundle 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
-NeoBundle 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
-NeoBundle 'mattn/webapi-vim' " vim interface to Web API
-NeoBundle 'jaredly/vim-debug' " A plugin for VIM that creates an Integrated Debugging Environment (PHP / Python)
-NeoBundle 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+
+" Fuzzy search
 NeoBundle 'Shougo/unite.vim' " Unite and create user interfaces
 NeoBundle 'Shougo/unite-outline' " outline source for unite.vim
 NeoBundle 'Shougo/unite-help' " help source for unite.vim
 NeoBundle 'Shougo/unite-session' " unite.vim session source
 NeoBundle 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
 NeoBundle 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
-NeoBundle 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
-NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
+NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
+
+" Code completion
+NeoBundle 'Valloric/YouCompleteMe'
+"NeoBundle 'Valloric/YouCompleteMe', {
+"      \ 'build': {'unix': 'sh install.sh --clang-completer --system-libclang'},
+"      \ } " A code-completion engine for Vim
+"NeoBundle 'ervandew/supertab' " Perform all your vim insert mode completions with Tab
+
+" Snippets
+NeoBundle 'SirVer/ultisnips' " The ultimate snippet solution for Vim
+NeoBundle 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
+
+" Comments
+NeoBundle 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
+
+" File browsing
+NeoBundle 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
+NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
+NeoBundle 'jlanzarotta/bufexplorer' " BufExplorer Plugin for Vim                                 <F2>
+
+" Syntax checker
+NeoBundle 'scrooloose/syntastic' " Syntax checking hacks for vim
+
+" File types
 NeoBundle 'kchmck/vim-coffee-script' " CoffeeScript support for vim
-NeoBundle 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
-NeoBundle 'godlygeek/tabular' " Vim script for text filtering and alignment
 NeoBundle 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
 NeoBundle 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
 NeoBundle 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
 
-" You can specify revision/branch/tag.
-NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+" Versioning
+NeoBundle 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
+NeoBundle 'mattn/gist-vim' " vimscript for gist
+NeoBundle 'gregsexton/gitv' " gitk for Vim
+NeoBundle 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+
+" Text manipulation
+NeoBundle 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
+NeoBundle 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
+NeoBundle 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
+NeoBundle 'godlygeek/tabular' " Vim script for text filtering and alignment
+
+" Tags
+NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F3>
+
+" Status line
+NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
+
+" Color themes
+NeoBundle 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
+NeoBundle 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
+
+" Undo
+NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
+
 
 " Required:
 call neobundle#end()
@@ -196,9 +221,9 @@ nnoremap <f12> :tabn<cr>
 
 " explorer mappings
 nnoremap <f1> :NERDTreeTabsToggle<cr>
-nnoremap <f2> :<C-u>Unite file_rec<cr>
+nnoremap <f2> :BufExplorer<cr>
 nnoremap <f3> :TagbarToggle<cr>
-nnoremap <f4> :CtrlP<cr>
+nnoremap <f4> :<C-u>Unite file_rec<cr>
 
 " Yank from HEAD (aka per-line checkout from HEAD)
 nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+1 HEAD '.expand('%').'<Bar>tail -n1 <Bar>cut -c2-<Bar>tr -d "\n"')<CR>0
