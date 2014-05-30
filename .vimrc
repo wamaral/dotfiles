@@ -292,8 +292,8 @@ autocmd BufReadPost fugitive://*
 
 " watch .vimrc for changes and reload
 " http://superuser.com/a/417997
-augroup myvimrc
-    au!
-    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
-augroup END
+"augroup myvimrc
+"    au!
+"    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+"augroup END
 
