@@ -1,82 +1,69 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible               " Be iMproved
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+"NeoBundle Scripts-----------------------------
+if has('vim_starting')
+  " Required:
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+" Required:
+call neobundle#begin(expand('~/.vim/bundle'))
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-"Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-"Plugin 'L9'
-" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-"Plugin 'user/L9', {'name': 'newL9'}
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-Plugin 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
-Plugin 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
-Plugin 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
-Plugin 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
-Plugin 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
-Plugin 'mattn/gist-vim' " vimscript for gist
-Plugin 'gregsexton/gitv' " gitk for Vim
-Plugin 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
-Plugin 'ervandew/supertab' " Perform all your vim insert mode completions with Tab
-Plugin 'Valloric/YouCompleteMe' " A code-completion engine for Vim
-Plugin 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
-Plugin 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
-Plugin 'jlanzarotta/bufexplorer' " BufExplorer Plugin for Vim                                 <F2>
-Plugin 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F3>
-Plugin 'scrooloose/syntastic' " Syntax checking hacks for vim
-Plugin 'SirVer/ultisnips' " The ultimate snippet solution for Vim
-Plugin 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
-Plugin 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
-Plugin 'mattn/webapi-vim' " vim interface to Web API
-Plugin 'jaredly/vim-debug' " A plugin for VIM that creates an Integrated Debugging Environment (PHP / Python)
-Plugin 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
-Plugin 'Shougo/unite.vim' " Unite and create user interfaces
-Plugin 'Shougo/unite-outline' " outline source for unite.vim
-Plugin 'Shougo/unite-help' " help source for unite.vim
-Plugin 'Shougo/unite-session' " unite.vim session source
-Plugin 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
-Plugin 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
-"Plugin 'Shougo/vimproc.vim' " Interactive command execution in Vim.
-Plugin 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
-Plugin 'vim-scripts/Gundo' " Visualize your undo tree.
-Plugin 'kchmck/vim-coffee-script' " CoffeeScript support for vim
-Plugin 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
-Plugin 'godlygeek/tabular' " Vim script for text filtering and alignment
-Plugin 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
-Plugin 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
-Plugin 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
+" My Bundles here:
+NeoBundle 'Shougo/vimproc.vim', {'build': {'unix': 'make'}} " Interactive command execution in Vim.
+NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
+NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
+NeoBundle 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
+NeoBundle 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
+NeoBundle 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
+NeoBundle 'mattn/gist-vim' " vimscript for gist
+NeoBundle 'gregsexton/gitv' " gitk for Vim
+NeoBundle 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
+NeoBundle 'ervandew/supertab' " Perform all your vim insert mode completions with Tab
+NeoBundle 'Valloric/YouCompleteMe' " A code-completion engine for Vim
+NeoBundle 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
+NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
+NeoBundle 'jlanzarotta/bufexplorer' " BufExplorer Plugin for Vim                                 <F2>
+NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F3>
+NeoBundle 'scrooloose/syntastic' " Syntax checking hacks for vim
+NeoBundle 'SirVer/ultisnips' " The ultimate snippet solution for Vim
+NeoBundle 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
+NeoBundle 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
+NeoBundle 'mattn/webapi-vim' " vim interface to Web API
+NeoBundle 'jaredly/vim-debug' " A plugin for VIM that creates an Integrated Debugging Environment (PHP / Python)
+NeoBundle 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+NeoBundle 'Shougo/unite.vim' " Unite and create user interfaces
+NeoBundle 'Shougo/unite-outline' " outline source for unite.vim
+NeoBundle 'Shougo/unite-help' " help source for unite.vim
+NeoBundle 'Shougo/unite-session' " unite.vim session source
+NeoBundle 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
+NeoBundle 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
+NeoBundle 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
+NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
+NeoBundle 'kchmck/vim-coffee-script' " CoffeeScript support for vim
+NeoBundle 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
+NeoBundle 'godlygeek/tabular' " Vim script for text filtering and alignment
+NeoBundle 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
+NeoBundle 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
+NeoBundle 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList          - list configured plugins
-" :PluginInstall(!)    - install (update) plugins
-" :PluginSearch(!) foo - search (or refresh cache first) for foo
-" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" You can specify revision/branch/tag.
+NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+" Required:
+call neobundle#end()
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+"End NeoBundle Scripts-------------------------
 
 
 " syntax
