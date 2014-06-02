@@ -129,6 +129,7 @@ set foldnestmax=6 " Fold nesting max level
 set hlsearch " Highlight searches
 set incsearch " Incremental search (move while searching)
 set directory=$HOME/.vim/swapfiles// " Directory to put temp file in
+set cursorline " Highlight the screen line of the cursor
 
 " menu in console
 source $VIMRUNTIME/menu.vim
@@ -171,8 +172,69 @@ let coffee_watch_vert = 1
 let coffee_run_vert = 1
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
+" vim-pasta settings
+let g:pasta_disabled_filetypes = ['python', 'coffee', 'yaml', 'unite']
+
 " unite settings
-autocmd BufReadPost * call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+let g:unite_source_history_yank_enable = 1
+let g:unite_enable_start_insert = 1
+let g:unite_source_session_enable_auto_save = 1
+let g:unite_cursor_line_highlight = 'TabLineSel'
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+  imap <buffer> <ESC> <Plug>(unite_insert_leave)
+  nmap <buffer> p <Plug>(unite_toggle_auto_preview)
+  imap <buffer> <C-p> <Plug>(unite_toggle_auto_preview)
+  nmap <buffer> h <Plug>(unite_quick_help)
+  nmap <buffer> > <Plug>(unite_rotate_next_source)
+endfunction
+
+" Unite bindings
+" Set up some custom ignores
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/', 'git5/.*/review/', 'google/obj/', 'tmp/', '.sass-cache', 'node_modules/', 'bower_components/', 'dist/', '.git5_specs/', '.pyc',
+      \ ], '\|'))
+" Map , to the prefix for Unite
+nnoremap [unite] <Nop>
+nmap , [unite]
+" General fuzzy search
+nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+" Quick registers
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+" Quick buffer and mru
+nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
+" Quick yank history
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+" Quick outline
+nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+" Quick sessions (projects)
+nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
+" Quick sources
+nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
+" Quickly switch lcd
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
+" Quick file search
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
+" Quick grep from cwd
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+" Quick help
+nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
+" Quick line
+nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
+" Quick MRU search
+nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
+" Quick find
+nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
+" Quick commands
+nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
+" Quick bookmarks
+nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
+" Quick commands
+nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
+
 
 
 " map ; to : (get faster)
@@ -223,7 +285,7 @@ nnoremap <f12> :tabn<cr>
 nnoremap <f1> :NERDTreeTabsToggle<cr>
 nnoremap <f2> :BufExplorer<cr>
 nnoremap <f3> :TagbarToggle<cr>
-nnoremap <f4> :<C-u>Unite file_rec<cr>
+nnoremap <f4> :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 
 " Yank from HEAD (aka per-line checkout from HEAD)
 nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+1 HEAD '.expand('%').'<Bar>tail -n1 <Bar>cut -c2-<Bar>tr -d "\n"')<CR>0
