@@ -42,7 +42,6 @@ NeoBundle 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting 
 " File browsing
 NeoBundle 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
 NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
-NeoBundle 'jlanzarotta/bufexplorer' " BufExplorer Plugin for Vim                                 <F2>
 
 " Syntax checker
 NeoBundle 'scrooloose/syntastic' " Syntax checking hacks for vim
@@ -183,12 +182,16 @@ let g:unite_source_session_enable_auto_save = 1
 let g:unite_cursor_line_highlight = 'TabLineSel'
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
+  let b:SuperTabDisabled=1
+  let unite = unite#get_current_unite()
   nmap <buffer> <ESC> <Plug>(unite_exit)
   imap <buffer> <ESC> <Plug>(unite_insert_leave)
+  imap <buffer> <C-j> <Plug>(unite_loop_cursor_down)
+  imap <buffer> <C-k> <Plug>(unite_loop_cursor_up)
   nmap <buffer> p <Plug>(unite_toggle_auto_preview)
   imap <buffer> <C-p> <Plug>(unite_toggle_auto_preview)
-  nmap <buffer> h <Plug>(unite_quick_help)
   nmap <buffer> > <Plug>(unite_rotate_next_source)
+  imap <silent><buffer><expr> <C-s> unite#do_action('split')
 endfunction
 
 " Unite bindings
@@ -283,9 +286,9 @@ nnoremap <f12> :tabn<cr>
 
 " explorer mappings
 nnoremap <f1> :NERDTreeTabsToggle<cr>
-nnoremap <f2> :BufExplorer<cr>
+nnoremap <f2> :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
 nnoremap <f3> :TagbarToggle<cr>
-nnoremap <f4> :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+nnoremap <f4> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 
 " Yank from HEAD (aka per-line checkout from HEAD)
 nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+1 HEAD '.expand('%').'<Bar>tail -n1 <Bar>cut -c2-<Bar>tr -d "\n"')<CR>0
