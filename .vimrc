@@ -186,12 +186,22 @@ function! s:unite_settings()
   let unite = unite#get_current_unite()
   nmap <buffer> <ESC> <Plug>(unite_exit)
   imap <buffer> <ESC> <Plug>(unite_insert_leave)
-  imap <buffer> <C-j> <Plug>(unite_loop_cursor_down)
-  imap <buffer> <C-k> <Plug>(unite_loop_cursor_up)
+  imap <buffer> <C-j> <Plug>(unite_select_next_line)
+  imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+  imap <buffer> <Down> <Plug>(unite_select_next_line)
+  imap <buffer> <Up> <Plug>(unite_select_previous_line)
   nmap <buffer> p <Plug>(unite_toggle_auto_preview)
   imap <buffer> <C-p> <Plug>(unite_toggle_auto_preview)
   nmap <buffer> > <Plug>(unite_rotate_next_source)
-  imap <silent><buffer><expr> <C-s> unite#do_action('split')
+  nnoremap <silent><buffer><expr> <C-i> unite#do_action('split')
+  inoremap <silent><buffer><expr> <C-i> unite#do_action('split')
+  nnoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+  inoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+  " sorter
+  " from: https://github.com/LeafCage/dotfiles/blob/master/unite_setting.vim
+  nnoremap <buffer><expr>sr unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
+  nnoremap <buffer><expr>sw unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_word'] : [])
+  nnoremap <buffer><expr>sl unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_length'] : [])
 endfunction
 
 " Unite bindings
@@ -215,7 +225,7 @@ nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 " Quick outline
 nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
 " Quick sessions (projects)
-nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
+nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new<CR>
 " Quick sources
 nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
 " Quickly switch lcd
