@@ -195,6 +195,7 @@ function! s:unite_settings()
 endfunction
 
 " Unite bindings
+" from: https://github.com/terryma/dotfiles/blob/master/.vimrc
 " Set up some custom ignores
 call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
       \ 'ignore_pattern', join([
