@@ -19,15 +19,19 @@ Vim keys:
 - F2 = BufExplorer
 - F3 = Tagbar
 - F4 = Unite
+- F6 = Toggle GoldenView auto resize
 - F10 = new tab
 - F11 = previous tab
 - F12 = next tab
-- C-arrows = navigate splits (gui)
-- A-Left/Right = indent (gui)
-- A-Up/Down = drag line (gui)
+- ,? = Unite help
+- s = EasyMotion search
+- \hjkl = EasyMotion move
+- C-arrows = navigate splits
+- A-Left/Right = indent
+- A-Up/Down = drag line
 - U = redo
 - C-u = Gundo
-- Space = toggle fold
+- C-Space = toggle fold
 - Enter = follow link (help only)
 - Backspace = go back from link (help only)
 

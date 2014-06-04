@@ -1,5 +1,9 @@
 set nocompatible               " Be iMproved
 
+let s:is_windows = has('win32') || has('win64')
+let s:is_cygwin = has('win32unix')
+let s:is_macvim = has('gui_macvim')
+
 "NeoBundle Scripts-----------------------------
 if has('vim_starting')
   " Required:
@@ -23,7 +27,6 @@ NeoBundle 'Shougo/unite-help' " help source for unite.vim
 NeoBundle 'Shougo/unite-session' " unite.vim session source
 NeoBundle 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
 NeoBundle 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
-NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
 
 " Code completion
 NeoBundle 'Valloric/YouCompleteMe'
@@ -51,6 +54,8 @@ NeoBundle 'kchmck/vim-coffee-script' " CoffeeScript support for vim
 NeoBundle 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
 NeoBundle 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
 NeoBundle 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
+NeoBundle 'tpope/vim-rails' " rails.vim: Ruby on Rails power tools
+NeoBundle 'tpope/vim-bundler' " bundler.vim: Lightweight support for Ruby's Bundler
 
 " Versioning
 NeoBundle 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
@@ -64,18 +69,27 @@ NeoBundle 'Raimondi/delimitMate' " provides insert mode auto-completion for quot
 NeoBundle 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
 NeoBundle 'godlygeek/tabular' " Vim script for text filtering and alignment
 
+" Movement
+NeoBundle 'Lokaltog/vim-easymotion' " Vim motions on speed!
+NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
+NeoBundle 'zhaocai/GoldenView.Vim' " Always have a nice view for vim split windows
+
 " Tags
 NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F3>
 
 " Status line
 NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
 
-" Color themes
+" Colors
 NeoBundle 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
 NeoBundle 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
+NeoBundle 'nathanaelkane/vim-indent-guides' " A Vim plugin for visually displaying indent levels in code
 
 " Undo
 NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
+
+" Help
+NeoBundle 'chrisbra/vim_faq' " The Vim FAQ from http://vimdoc.sourceforge.net/
 
 
 " Required:
@@ -128,7 +142,12 @@ set foldnestmax=6 " Fold nesting max level
 set hlsearch " Highlight searches
 set incsearch " Incremental search (move while searching)
 set directory=$HOME/.vim/swapfiles// " Directory to put temp file in
+set viewoptions=folds,options,cursor,unix,slash " unix/windows compatibility
+
+" cursorline only for curent buffer
 set cursorline " Highlight the screen line of the cursor
+autocmd WinLeave * setlocal nocursorline
+autocmd WinEnter * setlocal cursorline
 
 " menu in console
 source $VIMRUNTIME/menu.vim
@@ -174,6 +193,34 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " vim-pasta settings
 let g:pasta_disabled_filetypes = ['python', 'coffee', 'yaml', 'unite']
 
+" easymotion settings
+let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+let g:EasyMotion_smartcase = 1
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+nmap s <Plug>(easymotion-s)
+
+" goldenview settings
+let g:goldenview__enable_default_mapping=0
+let g:goldenview__enable_at_startup=1
+nmap <f6> <Plug>ToggleGoldenViewAutoResize
+
+" indent guides settings
+let g:indent_guides_start_level=1
+let g:indent_guides_guide_size=1
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_color_change_percent=3
+if !has('gui_running')
+  let g:indent_guides_auto_colors=0
+  function! s:indent_set_console_colors()
+    hi IndentGuidesOdd ctermbg=235
+    hi IndentGuidesEven ctermbg=236
+  endfunction
+  autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
+endif
+
 " unite settings
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 let g:unite_source_history_yank_enable = 1
@@ -216,39 +263,40 @@ nnoremap [unite] <Nop>
 nmap , [unite]
 " General fuzzy search
 nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
-" Quick registers
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
-" Quick buffer and mru
-nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
-" Quick yank history
-nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
-" Quick outline
-nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
-" Quick sessions (projects)
-nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new<CR>
-" Quick sources
+" sources
 nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
-" Quickly switch lcd
-nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
-" Quick file search
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
-" Quick grep from cwd
-nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
-" Quick help
-nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
-" Quick line
-nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
-" Quick MRU search
-nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
-" Quick find
-nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
-" Quick commands
-nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
-" Quick bookmarks
+" bookmarks
 nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
-" Quick commands
+" commands
+nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
+" switch lcd
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
+" file search
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
+" grep from cwd
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+" help
+nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
+" line
+nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
+" MRU search
+nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
+" find
+nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
+" outline
+nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+" sessions (projects)
+nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new<CR>
+" registers
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+" buffer and mru
+nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
+" yank history
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+" commands
 nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
-
+" Command list
+nmap [unite]? :echo "[ ]General [A]sources [B]ookmark [C]ommand c[D] [F]ile [G]rep [H]elp [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister b[U]ffer [Y]ank [:]quick-command"<cr>
 
 
 " map ; to : (get faster)
@@ -372,4 +420,29 @@ autocmd BufReadPost fugitive://*
 "    au!
 "    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 "augroup END
+
+" below from https://github.com/bling/dotvim/blob/master/vimrc
+" ensure correct shell in gvim
+if s:is_windows && !s:is_cygwin
+  set shell=c:\windows\system32\cmd.exe
+endif
+
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+  set grepformat=%f:%l:%c:%m
+  let g:ackprg = "ag --nogroup --column --smart-case --follow"
+  let g:unite_source_grep_command='ag'
+  let g:unite_source_grep_default_opts='--nocolor --nogroup -S -C4'
+  let g:unite_source_grep_recursive_opt=''
+elseif executable('ack')
+  set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+  set grepformat=%f:%l:%c:%m
+  let g:unite_source_grep_command='ack'
+  let g:unite_source_grep_default_opts='--no-heading --no-color -C4'
+  let g:unite_source_grep_recursive_opt=''
+endif
+
+" reselect visual block after indent
+vnoremap < <gv
+vnoremap > >gv
 
