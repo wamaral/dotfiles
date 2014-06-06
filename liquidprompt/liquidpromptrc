@@ -129,6 +129,7 @@ LP_TIME_ANALOG=0
 # See LP_TITLE_OPEN and LP_TITLE_CLOSE to change escape characters to adapt this
 # feature to your specific terminal.
 LP_ENABLE_TITLE=1
+LP_PS1_PREFIX="\e]0;\u@\h: \w\a"
 
 # Enable Title for screen and byobu
 LP_ENABLE_SCREEN_TITLE=1
