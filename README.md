@@ -11,12 +11,16 @@ Requires https://github.com/Valloric/YouCompleteMe
 - cd ~/.vim/bundle/YouCompleteMe
 - git submodule update --init --recursive
 - ./install.sh --clang-completer --system-libclang
+- (not sure if below lines are needed)
+- mkdir build && cd build
+- cmake -G "Unix Makefiles" . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
+- make ycm_support_libs
 
 Optional powerline fonts https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
 
 Vim keys:
 - F1 = NERDTree
-- F2 = BufExplorer
+- F2 = Unite buffers
 - F3 = Tagbar
 - F4 = Unite
 - F6 = Toggle GoldenView auto resize
@@ -31,7 +35,7 @@ Vim keys:
 - A-Up/Down = drag line
 - U = redo
 - C-u = Gundo
-- C-Space = toggle fold
+- ff = toggle fold
 - Enter = follow link (help only)
 - Backspace = go back from link (help only)
 

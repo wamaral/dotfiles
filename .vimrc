@@ -33,7 +33,6 @@ NeoBundle 'Valloric/YouCompleteMe'
 "NeoBundle 'Valloric/YouCompleteMe', {
 "      \ 'build': {'unix': 'sh install.sh --clang-completer --system-libclang'},
 "      \ } " A code-completion engine for Vim
-"NeoBundle 'ervandew/supertab' " Perform all your vim insert mode completions with Tab
 
 " Snippets
 NeoBundle 'SirVer/ultisnips' " The ultimate snippet solution for Vim
@@ -175,11 +174,11 @@ let g:nerdtree_tabs_no_startup_for_diff = 1
 let g:nerdtree_tabs_smart_startup_focus = 1
 let g:nerdtree_tabs_open_on_new_tab = 1 " if NERDTree was globally opened by :NERDTreeTabsToggle
 
-" supertab settings
-let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+" youcompleteme settings
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+
+" ultisnips settings
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
@@ -229,7 +228,6 @@ let g:unite_source_session_enable_auto_save = 1
 let g:unite_cursor_line_highlight = 'TabLineSel'
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
-  let b:SuperTabDisabled=1
   let unite = unite#get_current_unite()
   nmap <buffer> <ESC> <Plug>(unite_exit)
   imap <buffer> <ESC> <Plug>(unite_insert_leave)
@@ -352,12 +350,10 @@ nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
 
-" C-Space toggle folding when cursor is in a fold
+" ff toggles folding
 " http://vim.wikia.com/wiki/Folding
-nnoremap <silent> <C-Space> za
-nnoremap <silent> <Nul> za
-vnoremap <C-Space> zf
-vnoremap <Nul> zf
+nnoremap <silent> ff za
+vnoremap ff zf
 
 " map Q to something useful
 noremap Q gq
