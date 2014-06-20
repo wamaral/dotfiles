@@ -307,10 +307,6 @@ nnoremap <C-Left> <C-w>h
 nnoremap <C-Down> <C-w>j
 nnoremap <C-Up> <C-w>k
 nnoremap <C-Right> <C-w>l
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
 
 " move a line of text using Alt+[up|down], indent with Alt+[left|right]
 nnoremap <A-Down> :m+<CR>==
@@ -356,10 +352,12 @@ nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
 
-" Space toggle folding when cursor is in a fold
+" C-Space toggle folding when cursor is in a fold
 " http://vim.wikia.com/wiki/Folding
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+nnoremap <silent> <C-Space> za
+nnoremap <silent> <Nul> za
 vnoremap <C-Space> zf
+vnoremap <Nul> zf
 
 " map Q to something useful
 noremap Q gq
