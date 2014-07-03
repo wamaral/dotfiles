@@ -133,7 +133,6 @@ set wildmode=list:longest " specifies how command line completion works (bash-li
 set wildmenu " command-line completion shows a list of matches
 set wildignore=*.o,*.obj,*~ " list of patterns to ignore files for file name completion
 set formatoptions-=o " don't continue comments when o/O
-set showtabline=2 " always show tab bar
 set foldmethod=syntax " The kind of folding used for the current window.
 set foldcolumn=2 " Folding column width (0 = off)
 set foldlevelstart=99 " Fold level start (0 = fold all, 99 = fold none)
@@ -157,9 +156,11 @@ map <F5> :emenu <C-Z>
 " airline settings
 set laststatus=2 " always show status line
 let g:airline#extensions#tabline#enabled = 1 " Automatically displays tab line.
-let g:airline#extensions#tabline#show_buffers = 0 " Don't show buffers (we use tabs)
 let g:airline_powerline_fonts = 1 " Integrating with powerline fonts
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved' " smartly uniquify buffers names with similar filename,
+let g:airline_inactive_collapse=1 " collapse inactive windows to filename only
+let g:airline#extensions#tabline#fnamecollapse = 0
+let g:airline#extensions#tabline#tab_min_count = 1
 
 " syntastic settings
 let g:syntastic_check_on_open = 1
@@ -177,6 +178,7 @@ let g:nerdtree_tabs_open_on_new_tab = 1 " if NERDTree was globally opened by :NE
 " youcompleteme settings
 let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+let g:ycm_complete_in_comments = 1
 
 " ultisnips settings
 let g:UltiSnipsExpandTrigger = "<tab>"
