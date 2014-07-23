@@ -7,7 +7,8 @@ Requires https://github.com/Shougo/neobundle.vim
 - :Unite neobundle/install (if unite is installed)
 
 Requires https://github.com/Valloric/YouCompleteMe
-- apt-get install build-essential cmake python-dev libclang-3.3-dev
+(on Debian, use unstable repositories from http://llvm.org/apt/)
+- apt-get install build-essential cmake python-dev libclang-dev
 - cd ~/.vim/bundle/YouCompleteMe
 - git submodule update --init --recursive
 - ./install.sh --clang-completer --system-libclang
