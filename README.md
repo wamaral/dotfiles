@@ -24,7 +24,10 @@ Vim keys:
 - F2 = Unite buffers
 - F3 = Tagbar
 - F4 = Unite
-- F6 = Toggle GoldenView auto resize
+- F5 = Toggle buffer with main split (GoldenView)
+- S-F5 = GoldenView split
+- F6 = GoldenView resize current buffer
+- S-F6 = Toggle GoldenView auto resize
 - F10 = new tab
 - F11 = previous tab
 - F12 = next tab

@@ -151,12 +151,6 @@ set cursorline " Highlight the screen line of the cursor
 autocmd WinLeave * setlocal nocursorline
 autocmd WinEnter * setlocal cursorline
 
-" menu in console
-source $VIMRUNTIME/menu.vim
-set cpoptions-=<
-set wildcharm=<C-Z>
-map <F5> :emenu <C-Z>
-
 " airline settings
 set laststatus=2 " always show status line
 let g:airline#extensions#tabline#enabled = 1 " Automatically displays tab line.
@@ -209,8 +203,11 @@ nmap s <Plug>(easymotion-s)
 
 " goldenview settings
 let g:goldenview__enable_default_mapping=0
-let g:goldenview__enable_at_startup=1
-nmap <f6> <Plug>ToggleGoldenViewAutoResize
+let g:goldenview__enable_at_startup=0
+nmap <silent> <F5> <Plug>GoldenViewSwitchToggle
+nmap <silent> <S-F5>  <Plug>GoldenViewSplit
+nmap <silent> <F6> <Plug>GoldenViewResize
+nmap <silent> <s-F6> <Plug>ToggleGoldenViewAutoResize
 
 " indent guides settings
 let g:indent_guides_start_level=2
