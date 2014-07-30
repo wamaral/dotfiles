@@ -107,6 +107,10 @@ NeoBundleCheck
 "End NeoBundle Scripts-------------------------
 
 
+" Custom mappings help
+nnoremap <Leader>? :echo "[s] EasyMotion : [\\hjkl] EasyMotion move : [A-jk] drag line : [A-hl] indent : [U] redo : [C-u] Gundo : [ff] toggle fold : [:w!!] sudo w : [\\Y] checkout line"<cr>
+nnoremap <Leader>?? :echo "[F1] NERDTree : [F2] Unite Buffers : [F3] Tagbar : [F4] Unite : [F5] GView toggle : [S-F5] GView Split : [F6] GView resize : [S-F6] GView autoresize : [F10] New tab : [F11-F12] Tab change"<cr>
+
 " syntax
 syntax enable
 

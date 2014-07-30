@@ -19,6 +19,11 @@ Requires https://github.com/Valloric/YouCompleteMe
 
 Optional powerline fonts https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
 
+Help on runtime:
+- ,? = Unite
+- \? = Custom keys
+- \?? = F keys
+
 Vim keys:
 - F1 = NERDTree
 - F2 = Unite buffers
@@ -31,7 +36,6 @@ Vim keys:
 - F10 = new tab
 - F11 = previous tab
 - F12 = next tab
-- ,? = Unite help
 - s = EasyMotion search
 - \hjkl = EasyMotion move
 - C-arrows = navigate splits
