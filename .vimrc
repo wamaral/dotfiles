@@ -55,12 +55,16 @@ NeoBundle 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
 NeoBundle 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
 NeoBundle 'tpope/vim-rails' " rails.vim: Ruby on Rails power tools
 NeoBundle 'tpope/vim-bundler' " bundler.vim: Lightweight support for Ruby's Bundler
+NeoBundle 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 
 " Versioning
 NeoBundle 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
 NeoBundle 'mattn/gist-vim' " vimscript for gist
 NeoBundle 'gregsexton/gitv' " gitk for Vim
 NeoBundle 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+
+" Build
+NeoBundle 'tpope/vim-dispatch' " asynchronous build and test dispatcher
 
 " Text manipulation
 NeoBundle 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
