@@ -1,0 +1,7 @@
+[roxterm options]
+edit_shortcuts=1
+encoding=UTF-8
+warn_close=1
+prefer_dark_theme=1
+colour_scheme=Wagner
+shortcut_scheme=Wagner

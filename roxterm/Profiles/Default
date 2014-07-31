@@ -1,0 +1,19 @@
+[roxterm profile]
+colour_scheme=Wagner
+font=Inconsolata Medium 11
+audible_bell=0
+term=xterm-256color
+disable_menu_access=1
+disable_menu_shortcuts=1
+disable_tab_menu_shortcuts=1
+wrap_switch_tab=1
+show_tab_status=1
+login_shell=1
+maximise=1
+full_screen=0
+use_custom_command=0
+command=/bin/bash -l
+scrollback_lines=10000
+scroll_on_keystroke=1
+cursor_blink_mode=0
+cursor_shape=0
