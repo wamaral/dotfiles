@@ -49,6 +49,7 @@ NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painles
 NeoBundle 'scrooloose/syntastic' " Syntax checking hacks for vim
 
 " File types
+NeoBundle 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
 NeoBundle 'kchmck/vim-coffee-script' " CoffeeScript support for vim
 NeoBundle 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
 NeoBundle 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
@@ -186,6 +187,9 @@ let g:ycm_complete_in_comments = 1
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" javascript settings
+let javascript_enable_domhtmlcss = 1
 
 " coffeescript settings
 let coffee_compile_vert = 1
