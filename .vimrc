@@ -93,6 +93,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides' " A Vim plugin for visually displayi
 NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
 
 " Help
+NeoBundle 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
 NeoBundle 'chrisbra/vim_faq' " The Vim FAQ from http://vimdoc.sourceforge.net/
 
 
@@ -199,6 +200,9 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
 " vim-pasta settings
 let g:pasta_disabled_filetypes = ['python', 'coffee', 'yaml', 'unite']
+
+" investigate settings
+nnoremap <silent> <leader><f1> :call investigate#Investigate()<CR>
 
 " easymotion settings
 let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
