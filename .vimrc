@@ -88,6 +88,7 @@ NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light 
 NeoBundle 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
 NeoBundle 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
 NeoBundle 'nathanaelkane/vim-indent-guides' " A Vim plugin for visually displaying indent levels in code
+NeoBundle 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
 
 " Undo
 NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
@@ -121,6 +122,7 @@ set background=dark
 colorscheme distinguished
 
 " general settings
+set regexpengine=1 " use new regex (vim >7.4), improves syntax speed
 set scrolloff=3 " number of screen lines to show around the cursor
 set sidescrolloff=7 " minimal number of columns to keep left and right of the cursor
 set sidescroll=1 " minimal number of columns to scroll horizontally
