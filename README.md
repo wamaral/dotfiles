@@ -26,9 +26,9 @@ Help on runtime:
 
 Vim keys:
 - F1 = NERDTree
-- F2 = Unite buffers
-- F3 = Tagbar
-- F4 = Unite
+- F2 = Tagbar
+- F3 = Unite buffers
+- F4 = Unite files
 - F5 = Toggle buffer with main split (GoldenView)
 - S-F5 = GoldenView split
 - F6 = GoldenView resize current buffer

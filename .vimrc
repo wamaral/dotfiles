@@ -280,18 +280,20 @@ nmap , [unite]
 nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 " sources
 nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
-" bookmarks
-nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
+" buffers and mru
+nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
 " commands
 nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
 " switch lcd
-nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async directory/new<CR>
 " file search
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
 " grep from cwd
 nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
 " help
 nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
+" bookmarks
+nnoremap <silent> [unite]k :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 " line
 nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
 " MRU search
@@ -304,14 +306,14 @@ nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR
 nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new<CR>
 " registers
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
-" buffer and mru
+" mru and buffers
 nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
 " yank history
 nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 " commands
 nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
 " Command list
-nmap [unite]? :echo "[ ]General [A]sources [B]ookmark [C]ommand c[D] [F]ile [G]rep [H]elp [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister b[U]ffer [Y]ank [:]quick-command"<cr>
+nmap [unite]? :echo "[ ]General [A]sources [B]uffer/mru [C]ommand c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]ffer [Y]ank [:]quick-command"<cr>
 
 
 " map ; to : (get faster)
@@ -356,8 +358,8 @@ nnoremap <f12> :tabn<cr>
 
 " explorer mappings
 nnoremap <f1> :NERDTreeTabsToggle<cr>
-nnoremap <f2> :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
-nnoremap <f3> :TagbarToggle<cr>
+nnoremap <f2> :TagbarToggle<cr>
+nnoremap <f3> :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
 nnoremap <f4> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 
 " Yank from HEAD (aka per-line checkout from HEAD)
