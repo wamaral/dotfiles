@@ -276,6 +276,8 @@ call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
 " Map , to the prefix for Unite
 nnoremap [unite] <Nop>
 nmap , [unite]
+vnoremap [unite] <Nop>
+vmap , [unite]
 " General fuzzy search
 nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 " sources
@@ -310,6 +312,7 @@ nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
 " grep word under cursor
 nnoremap <silent> [unite]w :<C-u>Unite -buffer-name=grep grep:.::<C-R><C-w><CR>
+vnoremap <silent> [unite]w "uy:<C-u>Unite -buffer-name=grep grep:.::<C-R>u<CR>
 " yank history
 nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 " commands
