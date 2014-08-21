@@ -308,12 +308,14 @@ nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 " mru and buffers
 nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
+" grep word under cursor
+nnoremap <silent> [unite]w :<C-u>Unite -buffer-name=grep grep:.::<C-R><C-w><CR>
 " yank history
 nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 " commands
 nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
 " Command list
-nmap [unite]? :echo "[ ]General [A]sources [B]uffer/mru [C]ommand c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]ffer [Y]ank [:]quick-command"<cr>
+nmap [unite]? :echo "[ ]General [A]sources [B]uffer/mru [C]ommand c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]ffer [W]ordcursor [Y]ank [:]quick-command"<cr>
 
 
 " map ; to : (get faster)
