@@ -79,7 +79,7 @@ NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
 NeoBundle 'zhaocai/GoldenView.Vim' " Always have a nice view for vim split windows
 
 " Tags
-NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F3>
+NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F2>
 
 " Status line
 NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
@@ -96,6 +96,9 @@ NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
 " Help
 NeoBundle 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
 NeoBundle 'chrisbra/vim_faq' " The Vim FAQ from http://vimdoc.sourceforge.net/
+
+" Start screen
+NeoBundle 'mhinz/vim-startify' " A fancy start screen for Vim
 
 
 " Required:
@@ -181,6 +184,24 @@ let g:nerdtree_tabs_no_startup_for_diff = 1
 let g:nerdtree_tabs_smart_startup_focus = 1
 let g:nerdtree_tabs_open_on_new_tab = 1 " if NERDTree was globally opened by :NERDTreeTabsToggle
 
+" startify settings
+let g:startify_bookmarks = [ '~/.vimrc' ]
+let g:startify_change_to_vcs_root = 1
+let g:startify_relative_path = 1
+let g:startify_skiplist = [ 'COMMIT_EDITMSG' ]
+let g:startify_custom_header = map(split(system('toilet -f ivrit "Vim 7.3"'), '\n'), '"   ". v:val') + ['','']
+let g:startify_custom_footer = ['',''] + map(split(system('fortune'), '\n'), '"   ". v:val')
+let g:startify_list_order = [
+        \ ['   My sessions:'],
+        \ 'sessions',
+        \ ['   Last recently opened files:'],
+        \ 'files',
+        \ ['   Last recently modified files in the current directory:'],
+        \ 'dir',
+        \ ['   My bookmarks:'],
+        \ 'bookmarks',
+        \ ]
+
 " youcompleteme settings
 let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
@@ -241,6 +262,7 @@ endif
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 let g:unite_source_history_yank_enable = 1
 let g:unite_enable_start_insert = 1
+let g:unite_source_session_path = "~/.vim/session"
 let g:unite_source_session_enable_auto_save = 1
 let g:unite_cursor_line_highlight = 'TabLineSel'
 autocmd FileType unite call s:unite_settings()
