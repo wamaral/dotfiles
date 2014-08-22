@@ -189,7 +189,7 @@ let g:startify_bookmarks = [ '~/.vimrc' ]
 let g:startify_change_to_vcs_root = 1
 let g:startify_relative_path = 1
 let g:startify_skiplist = [ 'COMMIT_EDITMSG' ]
-let g:startify_custom_header = map(split(system('toilet -f ivrit "Vim 7.3"'), '\n'), '"   ". v:val') + ['','']
+let g:startify_custom_header = map(split(system('toilet -f ivrit "Vim 7.4"'), '\n'), '"   ". v:val') + ['','']
 let g:startify_custom_footer = ['',''] + map(split(system('fortune'), '\n'), '"   ". v:val')
 let g:startify_list_order = [
         \ ['   My sessions:'],
