@@ -87,7 +87,6 @@ NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light 
 
 " Colors
 NeoBundle 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
-NeoBundle 'altercation/vim-colors-solarized' " precision colorscheme for the vim text editor
 NeoBundle 'nathanaelkane/vim-indent-guides' " A Vim plugin for visually displaying indent levels in code
 NeoBundle 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
 
