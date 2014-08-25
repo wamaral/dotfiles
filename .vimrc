@@ -42,8 +42,12 @@ NeoBundle 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipm
 NeoBundle 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
 
 " File browsing
-NeoBundle 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
-NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
+"NeoBundle 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
+"NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
+NeoBundle 'Shougo/vimfiler.vim' " Powerful file explorer implemented by Vim script               <F1>
+
+" Tags
+NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F2>
 
 " Syntax checker
 NeoBundle 'scrooloose/syntastic' " Syntax checking hacks for vim
@@ -77,9 +81,6 @@ NeoBundle 'godlygeek/tabular' " Vim script for text filtering and alignment
 NeoBundle 'Lokaltog/vim-easymotion' " Vim motions on speed!
 NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
 NeoBundle 'zhaocai/GoldenView.Vim' " Always have a nice view for vim split windows
-
-" Tags
-NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F2>
 
 " Status line
 NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
@@ -115,7 +116,7 @@ NeoBundleCheck
 
 " Custom mappings help
 nnoremap <Leader>? :echo "[s] EasyMotion : [\\hjkl] EasyMotion move : [A-jk] drag line : [A-hl] indent : [U] redo : [C-u] Gundo : [ff] toggle fold : [:w!!] sudo w : [\\Y] checkout line"<cr>
-nnoremap <Leader>?? :echo "[F1] NERDTree : [F2] Unite Buffers : [F3] Tagbar : [F4] Unite : [F5] GView toggle : [S-F5] GView Split : [F6] GView resize : [S-F6] GView autoresize : [F10] New tab : [F11-F12] Tab change"<cr>
+nnoremap <Leader>?? :echo "[F1] VimFiler : [F2] Tagbar : [F3] Unite Buffers : [F4] Unite : [F5] GView toggle : [S-F5] GView Split : [F6] GView resize : [S-F6] GView autoresize : [F10] New tab : [F11-F12] Tab change"<cr>
 
 " syntax
 syntax enable
@@ -162,6 +163,12 @@ set cursorline " Highlight the screen line of the cursor
 autocmd WinLeave * setlocal nocursorline
 autocmd WinEnter * setlocal cursorline
 
+" explorer mappings
+nnoremap <silent> <f1> :VimFilerExplorer<cr>
+nnoremap <silent> <f2> :TagbarToggle<cr>
+nnoremap <silent> <f3> :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
+nnoremap <silent> <f4> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+
 " airline settings
 set laststatus=2 " always show status line
 let g:airline#extensions#tabline#enabled = 1 " Automatically displays tab line.
@@ -174,15 +181,16 @@ let g:airline#extensions#tabline#tab_min_count = 1
 " syntastic settings
 let g:syntastic_check_on_open = 1
 
-" nerdtree settings
-let g:NERDTreeMouseMode = 2
-let g:NERDTreeWinSize = 40
-let g:NERDTreeShowHidden = 0
-let g:nerdtree_tabs_open_on_console_startup = 0
-let g:nerdtree_tabs_open_on_gui_startup = 0
-let g:nerdtree_tabs_no_startup_for_diff = 1
-let g:nerdtree_tabs_smart_startup_focus = 1
-let g:nerdtree_tabs_open_on_new_tab = 1 " if NERDTree was globally opened by :NERDTreeTabsToggle
+" vimfiler settings
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_tree_leaf_icon = ' '
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_file_icon = '-'
+let g:vimfiler_marked_file_icon = '*'
+let g:vimfiler_force_overwrite_statusline = 0
+autocmd FileType vimfiler nmap <buffer> <2-LeftMouse> <Plug>(vimfiler_edit_file)
 
 " startify settings
 let g:startify_bookmarks = [ '~/.vimrc' ]
@@ -382,12 +390,6 @@ vnoremap <A-l> >gv
 nnoremap <f10> :tabnew<cr>
 nnoremap <f11> :tabp<cr>
 nnoremap <f12> :tabn<cr>
-
-" explorer mappings
-nnoremap <f1> :NERDTreeTabsToggle<cr>
-nnoremap <f2> :TagbarToggle<cr>
-nnoremap <f3> :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
-nnoremap <f4> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 
 " Yank from HEAD (aka per-line checkout from HEAD)
 nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+1 HEAD '.expand('%').'<Bar>tail -n1 <Bar>cut -c2-<Bar>tr -d "\n"')<CR>0
