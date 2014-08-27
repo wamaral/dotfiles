@@ -162,6 +162,9 @@ set cursorline " Highlight the screen line of the cursor
 autocmd WinLeave * setlocal nocursorline
 autocmd WinEnter * setlocal cursorline
 
+" checks if file has changed outside vim, on cursor stop
+autocmd CursorHold * checktime
+
 " explorer mappings
 nnoremap <silent> <f1> :VimFilerExplorer<cr>
 nnoremap <silent> <f2> :TagbarToggle<cr>
