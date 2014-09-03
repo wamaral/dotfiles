@@ -65,6 +65,7 @@ NeoBundle 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more
 " Versioning
 NeoBundle 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
 NeoBundle 'mattn/gist-vim' " vimscript for gist
+NeoBundle 'mattn/webapi-vim' " vim interface to Web API (required for gist)
 NeoBundle 'gregsexton/gitv' " gitk for Vim
 NeoBundle 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
 
@@ -200,7 +201,8 @@ let g:startify_change_to_vcs_root = 1
 let g:startify_relative_path = 1
 let g:startify_skiplist = [ 'COMMIT_EDITMSG' ]
 let g:startify_custom_header = map(split(system('toilet -f ivrit "Vim 7.4"'), '\n'), '"   ". v:val') + ['','']
-let g:startify_custom_footer = ['',''] + map(split(system('fortune'), '\n'), '"   ". v:val')
+" http://www.shlomifish.org/humour/fortunes/
+let g:startify_custom_footer = ['',''] + map(split(system('fortune joel-on-software osp_rules paul-graham sharp-perl sharp-programming'), '\n'), '"   ". v:val')
 let g:startify_list_order = [
         \ ['   My sessions:'],
         \ 'sessions',
