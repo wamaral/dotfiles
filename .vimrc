@@ -157,6 +157,7 @@ set hlsearch " Highlight searches
 set incsearch " Incremental search (move while searching)
 set directory=$HOME/.vim/swapfiles// " Directory to put temp file in
 set viewoptions=folds,options,cursor,unix,slash " unix/windows compatibility
+set hidden " Buffer becomes hidden when it is abandoned
 
 " cursorline only for curent buffer
 set cursorline " Highlight the screen line of the cursor
