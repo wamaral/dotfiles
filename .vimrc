@@ -168,7 +168,7 @@ autocmd WinEnter * setlocal cursorline
 autocmd CursorHold * checktime
 
 " explorer mappings
-nnoremap <silent> <f1> :VimFilerExplorer<cr>
+nnoremap <silent> <f1> :VimFilerExplorer -buffer-name=vimfiler<cr>
 nnoremap <silent> <f2> :TagbarToggle<cr>
 nnoremap <silent> <f3> :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
 nnoremap <silent> <f4> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
@@ -362,6 +362,9 @@ nnoremap ; :
 " C-Tab to switch current/last buffers
 " tmux in ROXTerm sends C-Tab as C-I
 nnoremap <silent> <C-I> :b#<cr>
+
+" C-c closes all plugin windows plus quickfix
+nnoremap <silent> <C-c> :cclose<cr>:GundoHide<cr>:UniteClose<cr>:VimFilerClose vimfiler<cr>:TagbarClose<cr>
 
 " navigate splits with C-move
 nnoremap <C-Left> <C-w>h
