@@ -359,6 +359,10 @@ nmap [unite]? :echo "[ ]General [A]sources [B]uffer/mru [C]ommand c[D] [F]ile [G
 " map ; to : (get faster)
 nnoremap ; :
 
+" C-Tab to switch current/last buffers
+" tmux in ROXTerm sends C-Tab as C-I
+nnoremap <silent> <C-I> :b#<cr>
+
 " navigate splits with C-move
 nnoremap <C-Left> <C-w>h
 nnoremap <C-Down> <C-w>j
