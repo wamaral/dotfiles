@@ -194,6 +194,7 @@ let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_file_icon = '-'
 let g:vimfiler_marked_file_icon = '*'
 let g:vimfiler_force_overwrite_statusline = 0
+let g:vimfiler_expand_jump_to_first_child = 0
 autocmd FileType vimfiler nmap <buffer> <2-LeftMouse> <Plug>(vimfiler_edit_file)
 
 " startify settings
