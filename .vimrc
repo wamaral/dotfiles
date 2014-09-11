@@ -314,7 +314,7 @@ nmap , [unite]
 vnoremap [unite] <Nop>
 vmap , [unite]
 " General fuzzy search
-nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_rec/async file_mru bookmark<CR>
 " sources
 nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
 " buffers and mru
