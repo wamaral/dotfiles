@@ -119,7 +119,7 @@ NeoBundleCheck
 
 " Custom mappings help
 nnoremap <Leader>? :echo "[s] EasyMotion : [-hjkl] EasyMotion move : [A-jk] drag line : [A-hl] indent : [U] redo : [C-u] Gundo : [ff] toggle fold : [:w!!] sudo w : [-Y] checkout line"<cr>
-nnoremap <Leader>?? :echo "[F1] VimFiler : [F2] Tagbar : [F3] Unite Buffers : [F4] Unite : [F5] GView toggle : [S-F5] GView Split : [F6] GView resize : [S-F6] GView autoresize : [F9] Rainbow : [F10] New tab : [F11-F12] Tab change"<cr>
+nnoremap <Leader>?? :echo "[F1] VimFiler : [F2] Tagbar : [F3] Unite Buffers : [F4] Unite : [F5] GView toggle : [S-F5] GView Split : [F6] GView resize : [S-F6] GView autoresize : [F9] Rainbow"<cr>
 
 " syntax
 syntax enable
@@ -410,11 +410,6 @@ vnoremap <A-j> :m'>+<CR>gv=gv
 vnoremap <A-k> :m-2<CR>gv=gv
 vnoremap <A-h> <gv
 vnoremap <A-l> >gv
-
-" tabs
-nnoremap <f10> :tabnew<cr>
-nnoremap <f11> :tabp<cr>
-nnoremap <f12> :tabn<cr>
 
 " Yank from HEAD (aka per-line checkout from HEAD)
 nnoremap <silent> <Leader>Y :exe 'norm! 0C'.system('git blame -pL'.line('.').',+1 HEAD '.expand('%').'<Bar>tail -n1 <Bar>cut -c2-<Bar>tr -d "\n"')<CR>0
