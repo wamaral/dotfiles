@@ -362,6 +362,12 @@ nmap [unite]? :echo "[ ]General [A]sources [B]uffer/mru [C]ommand c[D] [F]ile [G
 " map ; to : (get faster)
 nnoremap ; :
 
+" delete buffer
+nnoremap <Leader>q :bd<cr>
+
+" reselect pasted text
+nnoremap <leader>v V`]
+
 " C-Tab to switch current/last buffers
 " tmux in ROXTerm sends C-Tab as C-I
 nnoremap <silent> <C-I> :b#<cr>

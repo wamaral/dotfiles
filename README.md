@@ -36,6 +36,7 @@ Vim keys:
 - F10 = new tab
 - F11 = previous tab
 - F12 = next tab
+- -d = delete buffer
 - s = EasyMotion search
 - -hjkl = EasyMotion move
 - C-arrows = navigate splits
