@@ -142,8 +142,6 @@ set shiftwidth=2 " number of spaces used for each step of (auto)indent
 set smarttab " a <Tab> in an indent inserts 'shiftwidth' spaces
 set expandtab " expand <Tab> to spaces in Insert mode
 set autoindent " automatically set the indent of a new line
-set smartindent " do clever autoindenting
-set cindent " enable specific indenting for C code
 set history=1000 " how many command lines are remembered
 set list " show <Tab> as ^I and end-of-line as $
 set listchars=tab:▷⋅,trail:⋅,nbsp:⋅ " list of strings used for list mode
