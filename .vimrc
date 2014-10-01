@@ -4,6 +4,8 @@ let s:is_windows = has('win32') || has('win64')
 let s:is_cygwin = has('win32unix')
 let s:is_macvim = has('gui_macvim')
 
+let mapleader = "-"
+
 "NeoBundle Scripts-----------------------------
 if has('vim_starting')
   " Required:
@@ -115,7 +117,7 @@ NeoBundleCheck
 
 
 " Custom mappings help
-nnoremap <Leader>? :echo "[s] EasyMotion : [\\hjkl] EasyMotion move : [A-jk] drag line : [A-hl] indent : [U] redo : [C-u] Gundo : [ff] toggle fold : [:w!!] sudo w : [\\Y] checkout line"<cr>
+nnoremap <Leader>? :echo "[s] EasyMotion : [-hjkl] EasyMotion move : [A-jk] drag line : [A-hl] indent : [U] redo : [C-u] Gundo : [ff] toggle fold : [:w!!] sudo w : [-Y] checkout line"<cr>
 nnoremap <Leader>?? :echo "[F1] VimFiler : [F2] Tagbar : [F3] Unite Buffers : [F4] Unite : [F5] GView toggle : [S-F5] GView Split : [F6] GView resize : [S-F6] GView autoresize : [F10] New tab : [F11-F12] Tab change"<cr>
 
 " syntax

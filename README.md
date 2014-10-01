@@ -21,8 +21,8 @@ Optional powerline fonts https://powerline.readthedocs.org/en/latest/installatio
 
 Help on runtime:
 - ,? = Unite
-- \? = Custom keys
-- \?? = F keys
+- -? = Custom keys
+- -?? = F keys
 
 Vim keys:
 - F1 = NERDTree
@@ -37,7 +37,7 @@ Vim keys:
 - F11 = previous tab
 - F12 = next tab
 - s = EasyMotion search
-- \hjkl = EasyMotion move
+- -hjkl = EasyMotion move
 - C-arrows = navigate splits
 - A-Left/Right = indent
 - A-Up/Down = drag line
@@ -51,4 +51,4 @@ Vim commands:
 - ; = :
 - :W = :w
 - :w!! = sudo :w
-- \Y = checkout current line from git HEAD
+- -Y = checkout current line from git HEAD
