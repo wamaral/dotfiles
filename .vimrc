@@ -84,6 +84,7 @@ NeoBundle 'godlygeek/tabular' " Vim script for text filtering and alignment
 NeoBundle 'Lokaltog/vim-easymotion' " Vim motions on speed!
 NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
 NeoBundle 'zhaocai/GoldenView.Vim' " Always have a nice view for vim split windows
+NeoBundle 'tpope/vim-repeat' " repeat.vim: enable repeating supported plugin maps with .
 
 " Status line
 NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
