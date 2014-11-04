@@ -151,7 +151,7 @@ set wildmode=list:longest " specifies how command line completion works (bash-li
 set wildmenu " command-line completion shows a list of matches
 set wildignore=*.o,*.obj,*~ " list of patterns to ignore files for file name completion
 set formatoptions-=o " don't continue comments when o/O
-set foldmethod=syntax " The kind of folding used for the current window.
+set foldmethod=indent " The kind of folding used for the current window.
 set foldcolumn=2 " Folding column width (0 = off)
 set foldlevelstart=99 " Fold level start (0 = fold all, 99 = fold none)
 set foldnestmax=6 " Fold nesting max level
