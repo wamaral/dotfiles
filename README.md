@@ -7,11 +7,10 @@ Requires https://github.com/Shougo/neobundle.vim
 - :Unite neobundle/install (if unite is installed)
 
 Requires https://github.com/Valloric/YouCompleteMe
-(on Debian, use unstable repositories from http://llvm.org/apt/)
 - apt-get install build-essential cmake python-dev libclang-dev
 - cd ~/.vim/bundle/YouCompleteMe
 - git submodule update --init --recursive
-- ./install.sh --clang-completer --system-libclang
+- ./install.sh
 - (not sure if below lines are needed)
 - mkdir build && cd build
 - cmake -G "Unix Makefiles" . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
@@ -25,7 +24,7 @@ Help on runtime:
 - -?? = F keys
 
 Vim keys:
-- F1 = NERDTree
+- F1 = vimfiler
 - F2 = Tagbar
 - F3 = Unite buffers
 - F4 = Unite files
@@ -37,6 +36,8 @@ Vim keys:
 - F11 = previous tab
 - F12 = next tab
 - -d = delete buffer
+- C-j = next buffer
+- C-k = prev buffer
 - s = EasyMotion search
 - -hjkl = EasyMotion move
 - C-arrows = navigate splits

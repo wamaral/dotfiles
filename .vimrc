@@ -369,8 +369,10 @@ nmap [unite]? :echo "[ ]General [A]sources [B]uffer/mru [C]ommand c[D] [F]ile [G
 " map ; to : (get faster)
 nnoremap ; :
 
-" delete buffer
-nnoremap <Leader>q :bd<cr>
+" buffer management
+nnoremap <Leader>q :bdelete<cr>
+nnoremap <C-j> :bnext<cr>
+nnoremap <C-k> :bprevious<cr>
 
 " reselect pasted text
 nnoremap <leader>v V`]
