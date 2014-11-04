@@ -188,6 +188,7 @@ let g:airline#extensions#tabline#tab_min_count = 1
 let g:syntastic_check_on_open = 1
 
 " vimfiler settings
+let g:loaded_netrwPlugin = 1
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_tree_leaf_icon = ' '
