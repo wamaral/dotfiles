@@ -1,4 +1,6 @@
-" Base defaults
+" vim:fdm=marker
+
+" Base defaults {{{
 set nocompatible
 
 let s:is_windows = has('win32') || has('win64')
@@ -6,6 +8,7 @@ let s:is_cygwin = has('win32unix')
 let s:is_macvim = has('gui_macvim')
 
 let mapleader = "-"
+" }}}
 
 " VimPlug
 call plug#begin('~/.vim/plugged')
@@ -23,14 +26,7 @@ Plug 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
 Plug 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
 
 " Code completion
-function! BuildYCM(info)
-  if a:info.status == 'installed' || a:info.force
-    !./install.sh
-  endif
-endfunction
-
-" A code-completion engine for Vim
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' } " A code-completion engine for Vim
 
 " Snippets
 Plug 'SirVer/ultisnips' " The ultimate snippet solution for Vim
