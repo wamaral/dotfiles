@@ -353,6 +353,8 @@ nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR
 nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new<CR>
 " registers
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+" vimfiler
+nnoremap <silent> [unite]t :VimFiler -toggle -buffer-name=vimfiler<cr>
 " mru and buffers
 nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
 " grep word under cursor
@@ -363,7 +365,7 @@ nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 " commands
 nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
 " Command list
-nmap [unite]? :echo "[ ]General [A]sources [B]uffer/mru [C]ommand c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]ffer [W]ordcursor [Y]ank [:]quick-command"<cr>
+nmap [unite]? :echo "[ ]main [A]sources [B]uf/mru [C]md c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister file[T]ree mru/b[U]f [W]ord [Y]ank [:]quick-cmd"<cr>
 
 
 " map ; to : (get faster)
