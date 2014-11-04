@@ -472,7 +472,7 @@ autocmd filetype svn,*commit* setlocal spell
 "
 " add a mapping on .. to view parent tree
 autocmd BufReadPost fugitive://* set bufhidden=delete
-autocmd BufReadPost fugitive://*
+autocmd User fugitive
   \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
   \   nnoremap <buffer> .. :edit %:h<CR> |
   \ endif
