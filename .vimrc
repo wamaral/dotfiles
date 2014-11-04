@@ -1,4 +1,5 @@
-set nocompatible               " Be iMproved
+" Base defaults
+set nocompatible
 
 let s:is_windows = has('win32') || has('win64')
 let s:is_cygwin = has('win32unix')
@@ -6,116 +7,104 @@ let s:is_macvim = has('gui_macvim')
 
 let mapleader = "-"
 
-"NeoBundle Scripts-----------------------------
-if has('vim_starting')
-  " Required:
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-
-" Required:
-call neobundle#begin(expand('~/.vim/bundle'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+" VimPlug
+call plug#begin('~/.vim/plugged')
+let g:plug_window = 'above new'
 
 " My Bundles here:
-NeoBundle 'Shougo/vimproc.vim', {'build': {'unix': 'make'}} " Interactive command execution in Vim.
+Plug 'Shougo/vimproc.vim', {'do': 'make'} " Interactive command execution in Vim.
 
 " Fuzzy search
-NeoBundle 'Shougo/unite.vim' " Unite and create user interfaces
-NeoBundle 'Shougo/unite-outline' " outline source for unite.vim
-NeoBundle 'Shougo/unite-help' " help source for unite.vim
-NeoBundle 'Shougo/unite-session' " unite.vim session source
-NeoBundle 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
-NeoBundle 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
+Plug 'Shougo/unite.vim' " Unite and create user interfaces
+Plug 'Shougo/unite-outline' " outline source for unite.vim
+Plug 'Shougo/unite-help' " help source for unite.vim
+Plug 'Shougo/unite-session' " unite.vim session source
+Plug 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
+Plug 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
 
 " Code completion
-NeoBundle 'Valloric/YouCompleteMe'
-"NeoBundle 'Valloric/YouCompleteMe', {
-"      \ 'build': {'unix': 'sh install.sh --clang-completer --system-libclang'},
-"      \ } " A code-completion engine for Vim
+function! BuildYCM(info)
+  if a:info.status == 'installed' || a:info.force
+    !./install.sh
+  endif
+endfunction
+
+" A code-completion engine for Vim
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
 " Snippets
-NeoBundle 'SirVer/ultisnips' " The ultimate snippet solution for Vim
-NeoBundle 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
+Plug 'SirVer/ultisnips' " The ultimate snippet solution for Vim
+Plug 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
 
 " Comments
-NeoBundle 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
+Plug 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
 
 " File browsing
-"NeoBundle 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
-"NeoBundle 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
-NeoBundle 'Shougo/vimfiler.vim' " Powerful file explorer implemented by Vim script               <F1>
+"Plug 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem           <F1>
+"Plug 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
+Plug 'Shougo/vimfiler.vim' " Powerful file explorer implemented by Vim script               <F1>
 
 " Tags
-NeoBundle 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F2>
+Plug 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F2>
 
 " Syntax checker
-NeoBundle 'scrooloose/syntastic' " Syntax checking hacks for vim
+Plug 'scrooloose/syntastic' " Syntax checking hacks for vim
 
 " File types
-NeoBundle 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
-NeoBundle 'kchmck/vim-coffee-script' " CoffeeScript support for vim
-NeoBundle 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
-NeoBundle 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
-NeoBundle 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
-NeoBundle 'tpope/vim-rails' " rails.vim: Ruby on Rails power tools
-NeoBundle 'tpope/vim-bundler' " bundler.vim: Lightweight support for Ruby's Bundler
-NeoBundle 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
+Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
+Plug 'kchmck/vim-coffee-script' " CoffeeScript support for vim
+Plug 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
+Plug 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
+Plug 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
+Plug 'tpope/vim-rails' " rails.vim: Ruby on Rails power tools
+Plug 'tpope/vim-bundler' " bundler.vim: Lightweight support for Ruby's Bundler
+Plug 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 
 " Versioning
-NeoBundle 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
-NeoBundle 'mattn/gist-vim' " vimscript for gist
-NeoBundle 'mattn/webapi-vim' " vim interface to Web API (required for gist)
-NeoBundle 'gregsexton/gitv' " gitk for Vim
-NeoBundle 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+Plug 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
+Plug 'mattn/gist-vim' " vimscript for gist
+Plug 'mattn/webapi-vim' " vim interface to Web API (required for gist)
+Plug 'gregsexton/gitv' " gitk for Vim
+Plug 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
 
 " Build
-NeoBundle 'tpope/vim-dispatch' " asynchronous build and test dispatcher
+Plug 'tpope/vim-dispatch' " asynchronous build and test dispatcher
 
 " Text manipulation
-NeoBundle 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
-NeoBundle 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
-NeoBundle 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
-NeoBundle 'godlygeek/tabular' " Vim script for text filtering and alignment
+Plug 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
+Plug 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
+Plug 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
+Plug 'godlygeek/tabular' " Vim script for text filtering and alignment
 
 " Movement
-NeoBundle 'Lokaltog/vim-easymotion' " Vim motions on speed!
-NeoBundle 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
-NeoBundle 'zhaocai/GoldenView.Vim' " Always have a nice view for vim split windows
-NeoBundle 'tpope/vim-repeat' " repeat.vim: enable repeating supported plugin maps with .
+Plug 'Lokaltog/vim-easymotion' " Vim motions on speed!
+Plug 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
+Plug 'zhaocai/GoldenView.Vim' " Always have a nice view for vim split windows
+Plug 'tpope/vim-repeat' " repeat.vim: enable repeating supported plugin maps with .
 
 " Status line
-NeoBundle 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
+Plug 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
 
 " Colors
-NeoBundle 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
-NeoBundle 'nathanaelkane/vim-indent-guides' " A Vim plugin for visually displaying indent levels in code
-NeoBundle 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
-NeoBundle 'oblitum/rainbow' " Rainbow Parentheses Improved
+Plug 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
+Plug 'nathanaelkane/vim-indent-guides' " A Vim plugin for visually displaying indent levels in code
+Plug 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
+Plug 'oblitum/rainbow' " Rainbow Parentheses Improved
 
 " Undo
-NeoBundle 'vim-scripts/Gundo' " Visualize your undo tree.
+Plug 'vim-scripts/Gundo' " Visualize your undo tree.
 
 " Help
-NeoBundle 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
-NeoBundle 'chrisbra/vim_faq' " The Vim FAQ from http://vimdoc.sourceforge.net/
+Plug 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
+Plug 'chrisbra/vim_faq' " The Vim FAQ from http://vimdoc.sourceforge.net/
 
 " Start screen
-NeoBundle 'mhinz/vim-startify' " A fancy start screen for Vim
+Plug 'mhinz/vim-startify' " A fancy start screen for Vim
 
-
-" Required:
-call neobundle#end()
+call plug#end()
 
 " Required:
 filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-"End NeoBundle Scripts-------------------------
 
 
 " Custom mappings help

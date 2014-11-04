@@ -1,10 +1,10 @@
 dotfiles
 ========
 
-Requires https://github.com/Shougo/neobundle.vim
-- curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
-- :NeoBundleInstall
-- :Unite neobundle/install (if unite is installed)
+Requires https://github.com/junegunn/vim-plug
+- mkdir -p ~/.vim/autoload
+- curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+- :PlugInstall
 
 Requires https://github.com/Valloric/YouCompleteMe
 - apt-get install build-essential cmake python-dev libclang-dev
