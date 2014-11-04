@@ -212,8 +212,6 @@ let g:startify_list_order = [
         \ 'sessions',
         \ ['   Last recently opened files:'],
         \ 'files',
-        \ ['   Last recently modified files in the current directory:'],
-        \ 'dir',
         \ ['   My bookmarks:'],
         \ 'bookmarks',
         \ ]
