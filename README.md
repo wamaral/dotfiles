@@ -40,12 +40,11 @@ Vim keys:
 - C-k = prev buffer
 - s = EasyMotion search
 - -hjkl = EasyMotion move
-- C-arrows = navigate splits
 - A-Left/Right = indent
 - A-Up/Down = drag line
 - U = redo
 - C-u = Gundo
-- ff = toggle fold
+- tt = toggle fold
 - Enter = follow link (help only)
 - Backspace = go back from link (help only)
 
