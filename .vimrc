@@ -173,7 +173,8 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " }}}
 
 " Comments {{{
-Plug 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
+"Plug 'scrooloose/nerdcommenter' " A plugin that allows for easy commenting of code for many filetypes
+Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 " }}}
 
 " Navigation {{{
