@@ -269,8 +269,12 @@ nnoremap U <C-r>
 " Starting from vim 7.3 undo can be persisted across sessions
 " http://www.reddit.com/r/vim/comments/kz84u/what_are_some_simple_yet_mindblowing_tweaks_to/c2onmqe
 if has("persistent_undo")
-    set undodir=~/.vim/undodir
-    set undofile
+  set undodir=~/.vim/undodir
+  set undofile
+
+  if !isdirectory(&undodir)
+    call mkdir(&undodir, 'p')
+  endif
 endif
 " }}}
 
@@ -423,6 +427,9 @@ let g:unite_enable_start_insert = 1
 let g:unite_source_session_path = "~/.vim/session"
 let g:unite_source_session_enable_auto_save = 1
 let g:unite_cursor_line_highlight = 'TabLineSel'
+if !isdirectory('~/.vim/session')
+  call mkdir('~/.vim/session', 'p')
+endif
 
 " Set up some custom ignores
 call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
