@@ -261,6 +261,12 @@ Plug 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
 Plug 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
 Plug 'godlygeek/tabular' " Vim script for text filtering and alignment
 
+" Easy Align {{{
+Plug 'junegunn/vim-easy-align' " A Vim alignment plugin
+vmap a <Plug>(EasyAlign)
+nmap <Leader>a <Plug>(EasyAlign)
+" }}}
+
 " Undo {{{
 Plug 'vim-scripts/Gundo' " Visualize your undo tree.
 nnoremap <C-u> :GundoToggle<CR>
