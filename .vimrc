@@ -207,6 +207,7 @@ nnoremap <silent> <f2> :TagbarToggle<cr>
 " Syntax checker {{{
 Plug 'scrooloose/syntastic' " Syntax checking hacks for vim
 let g:syntastic_check_on_open = 1
+let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java', 'scala']}
 " }}}
 
 " File types {{{
@@ -216,6 +217,7 @@ Plug 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with sni
 Plug 'tpope/vim-rails' " rails.vim: Ruby on Rails power tools
 Plug 'tpope/vim-bundler' " bundler.vim: Lightweight support for Ruby's Bundler
 Plug 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
+Plug 'derekwyatt/vim-scala' " My work on integration of Scala into Vim - not a ton here, but useful for me.
 
 " Javascript {{{
 Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
@@ -292,6 +294,7 @@ let g:pasta_disabled_filetypes = ['python', 'coffee', 'yaml', 'unite']
 
 " Movement {{{
 Plug 'tpope/vim-repeat' " repeat.vim: enable repeating supported plugin maps with .
+Plug 'wellle/targets.vim' " Vim plugin that provides additional text objects
 
 " EasyMotion {{{
 Plug 'Lokaltog/vim-easymotion' " Vim motions on speed!
