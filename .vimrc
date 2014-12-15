@@ -239,6 +239,13 @@ Plug 'mattn/webapi-vim' " vim interface to Web API (required for gist)
 Plug 'gregsexton/gitv' " gitk for Vim
 Plug 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
 
+" Signify {{{
+Plug 'mhinz/vim-signify' " Show a VCS diff using Vim's sign column.
+
+let g:signify_vcs_list = [ 'git', 'svn' ]
+let g:signify_update_on_focusgained = 1
+" }}}
+
 " Fugitive {{{
 Plug 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
 
@@ -336,6 +343,7 @@ colorscheme distinguished
 
 Plug 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
 Plug 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
+Plug 'zenorocha/dracula-theme' " A dark theme for Atom, Alfred, Chrome DevTools, iTerm, Sublime Text, Textmate, Terminal.app, Vim, Xcode, Zsh
 
 " Rainbow {{{
 Plug 'oblitum/rainbow' " Rainbow Parentheses Improved
