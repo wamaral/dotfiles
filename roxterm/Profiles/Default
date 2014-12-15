@@ -17,3 +17,6 @@ scrollback_lines=10000
 scroll_on_keystroke=1
 cursor_blink_mode=0
 cursor_shape=0
+browser=/etc/alternatives/x-www-browser
+background_type=0
+saturation=0.128049
