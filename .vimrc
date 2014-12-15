@@ -178,12 +178,12 @@ Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 " }}}
 
 " Navigation {{{
-Plug 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
+"Plug 'mileszs/ack.vim' " Vim plugin for the Perl module / CLI script 'ack'
 "Plug 'scrooloose/nerdtree' " A tree explorer plugin for navigating the filesystem
 "Plug 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
 
 " Vimfiler {{{
-Plug 'Shougo/vimfiler.vim' " Powerful file explorer implemented by Vim script               <F1>
+Plug 'Shougo/vimfiler.vim', {'on':['VimFiler','VimFilerExplorer']} " Powerful file explorer implemented by Vim script               <F1>
 nnoremap <silent> <f1> :VimFilerExplorer -buffer-name=vimfiler<cr>
 let g:loaded_netrwPlugin = 1
 let g:vimfiler_as_default_explorer = 1
@@ -234,10 +234,10 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " }}}
 
 " Versioning {{{
-Plug 'mattn/gist-vim' " vimscript for gist
+Plug 'mattn/gist-vim', {'on':'Gist'} " vimscript for gist
 Plug 'mattn/webapi-vim' " vim interface to Web API (required for gist)
-Plug 'gregsexton/gitv' " gitk for Vim
-Plug 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+Plug 'gregsexton/gitv', {'on':'Gitv'} " gitk for Vim
+"Plug 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
 
 " Signify {{{
 Plug 'mhinz/vim-signify' " Show a VCS diff using Vim's sign column.
@@ -262,7 +262,7 @@ autocmd User fugitive
 " }}}
 
 " Build {{{
-Plug 'tpope/vim-dispatch' " asynchronous build and test dispatcher
+Plug 'tpope/vim-dispatch', {'on':['Make','Dispatch','Focus','Start']} " asynchronous build and test dispatcher
 " }}}
 
 " Text manipulation {{{
@@ -277,7 +277,7 @@ nmap <Leader>a <Plug>(EasyAlign)
 " }}}
 
 " Undo {{{
-Plug 'vim-scripts/Gundo' " Visualize your undo tree.
+Plug 'vim-scripts/Gundo', {'on':'GundoToggle'} " Visualize your undo tree.
 nnoremap <C-u> :GundoToggle<CR>
 " U = redo (I never use the undo-line stuff anyway)
 nnoremap U <C-r>
@@ -315,7 +315,7 @@ nmap s <Plug>(easymotion-s)
 " }}}
 
 " GoldenView {{{
-Plug 'zhaocai/GoldenView.Vim' " Always have a nice view for vim split windows
+Plug 'zhaocai/GoldenView.Vim', {'on':['GoldenViewSwitchToggle','GoldenViewSplit','GoldenViewResize','ToggleGoldenViewAutoResize']} " Always have a nice view for vim split windows
 let g:goldenview__enable_default_mapping=0
 let g:goldenview__enable_at_startup=0
 nmap <silent> <F5> <Plug>GoldenViewSwitchToggle
