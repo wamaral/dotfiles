@@ -499,7 +499,7 @@ nnoremap <silent> <C-I> :b#<cr>
 nnoremap <leader>v V`]
 
 " C-c closes all plugin windows plus quickfix
-nnoremap <silent> <C-c> :cclose<cr>:GundoHide<cr>:UniteClose<cr>:VimFilerClose vimfiler<cr>:TagbarClose<cr>
+nnoremap <silent> <C-c> :cclose<cr>:UniteClose<cr>:VimFilerClose vimfiler<cr>:TagbarClose<cr>
 
 " make <C-l> clear the highlight as well as redraw
 nnoremap <C-l> :nohls<cr><C-l>
