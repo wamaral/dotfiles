@@ -488,6 +488,10 @@ nnoremap <Leader>?? :echo "[F1] VimFiler : [F2] Tagbar : [F3] Unite Buffers : [F
 
 nnoremap ; :
 
+" swap backticks (` works for columns aswell, while ' goes to start of line)
+nnoremap ' `
+nnoremap ` '
+
 " buffer management
 nnoremap <Leader>q :bdelete<cr>
 nnoremap <C-j> :bnext<cr>
