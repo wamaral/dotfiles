@@ -5,7 +5,7 @@ set nocompatible
 syntax enable
 filetype plugin indent on
 
-let mapleader = "-"
+let mapleader = "\<Space>"
 
 " Portability {{{
 let s:is_windows = has('win32') || has('win64')
@@ -75,11 +75,13 @@ endfunction
 nnoremap <silent> <f3> :<C-u>Unite -no-split -buffer-name=buffers buffer<CR>
 nnoremap <silent> <f4> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async:!<CR>
 
-" Map , to the prefix for Unite
+" Map the prefix for Unite
 nnoremap [unite] <Nop>
-nmap , [unite]
+nmap <Leader>u [unite]
+nmap - [unite]
 vnoremap [unite] <Nop>
-vmap , [unite]
+vmap <Leader>u [unite]
+vmap - [unite]
 
 " General fuzzy search
 nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_rec/async:! file_mru bookmark<CR>
@@ -483,7 +485,7 @@ autocmd! BufWritePost .vimrc,_vimrc,vimrc source $MYVIMRC
 " }}}
 
 " Custom Mappings {{{
-nnoremap <Leader>? :echo "[s] EasyMotion : [-hjkl] EasyMotion move : [A-jk] drag line : [A-hl] indent : [U] redo : [C-u] Gundo : [ff] toggle fold : [:w!!] sudo w : [-Y] checkout line"<cr>
+nnoremap <Leader>? :echo "[s] EasyMotion : [ hjkl] EasyMotion move : [A-jk] drag line : [A-hl] indent : [U] redo : [C-u] Gundo : [tt] toggle fold : [:w!!] sudo w"<cr>
 nnoremap <Leader>?? :echo "[F1] VimFiler : [F2] Tagbar : [F3] Unite Buffers : [F4] Unite : [F5] GView toggle : [S-F5] GView Split : [F6] GView resize : [S-F6] GView autoresize : [F9] Rainbow"<cr>
 
 nnoremap ; :
@@ -496,11 +498,24 @@ nnoremap ` '
 nnoremap <Leader>q :bdelete<cr>
 nnoremap <C-j> :bnext<cr>
 nnoremap <C-k> :bprevious<cr>
+nnoremap <C-Right> :bnext<cr>
+nnoremap <C-Left>  :bprevious<cr>
 " C-Tab to switch current/last buffers
 nnoremap <silent> <C-I> :b#<cr>
 
 " reselect pasted text
 nnoremap <leader>v V`]
+
+" save all buffers
+nnoremap <leader>w :wa<cr>
+
+" system clipboard
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
 
 " C-c closes all plugin windows plus quickfix
 nnoremap <silent> <C-c> :cclose<cr>:UniteClose<cr>:VimFilerClose vimfiler<cr>:TagbarClose<cr>
