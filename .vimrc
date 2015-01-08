@@ -494,6 +494,12 @@ nnoremap ; :
 nnoremap ' `
 nnoremap ` '
 
+" tag navigation
+nnoremap <Leader>] g<C-]>
+vnoremap <Leader>] g<C-]>
+nnoremap <Leader>[ <C-t>
+nnoremap <Leader>= <C-w>}
+
 " buffer management
 nnoremap <Leader>q :bdelete<cr>
 nnoremap <C-j> :bnext<cr>
@@ -517,8 +523,8 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
-" C-c closes all plugin windows plus quickfix
-nnoremap <silent> <C-c> :cclose<cr>:UniteClose<cr>:VimFilerClose vimfiler<cr>:TagbarClose<cr>
+" C-c closes all plugin windows plus quickfix and preview window
+nnoremap <silent> <C-c> :pclose<cr>:cclose<cr>:UniteClose<cr>:VimFilerClose vimfiler<cr>:TagbarClose<cr>
 
 " make <C-l> clear the highlight as well as redraw
 nnoremap <C-l> :nohls<cr><C-l>
