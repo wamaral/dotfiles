@@ -296,8 +296,8 @@ endif
 " }}}
 
 " Vim Pasta {{{
-Plug 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
-let g:pasta_disabled_filetypes = ['python', 'coffee', 'yaml', 'unite']
+"Plug 'sickill/vim-pasta' " Pasting in Vim with indentation adjusted to destination context
+"let g:pasta_disabled_filetypes = ['python', 'coffee', 'yaml', 'unite']
 " }}}
 " }}}
 
