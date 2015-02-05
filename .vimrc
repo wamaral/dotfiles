@@ -154,13 +154,22 @@ endif
 " }}}
 
 " Code completion {{{
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' } " A code-completion engine for Vim
-let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-let g:ycm_complete_in_comments = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_add_preview_to_completeopt = 1
+" neocomplete {{{
+Plug 'Shougo/neocomplete.vim' " Next generation completion framework after neocomplcache
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 2
+" }}}
+
+" YCM {{{
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' } " A code-completion engine for Vim
+"let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+"let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+"let g:ycm_complete_in_comments = 1
+"let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_seed_identifiers_with_syntax = 1
+"let g:ycm_add_preview_to_completeopt = 1
+" }}}
 " }}}
 
 " Snippets {{{
@@ -458,8 +467,8 @@ let g:unite_enable_start_insert = 1
 let g:unite_source_session_path = "~/.vim/session"
 let g:unite_source_session_enable_auto_save = 1
 let g:unite_cursor_line_highlight = 'TabLineSel'
-if !isdirectory('~/.vim/session')
-  call mkdir('~/.vim/session', 'p')
+if !isdirectory($HOME . '/.vim/session')
+  call mkdir($HOME . '/.vim/session', 'p')
 endif
 
 " Set up some custom ignores
