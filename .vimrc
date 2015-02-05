@@ -464,7 +464,7 @@ call unite#filters#sorter_default#use(['sorter_selecta'])
 call unite#custom#profile('default', 'context', { 'marked_icon':'✓'})
 let g:unite_source_history_yank_enable = 1
 let g:unite_enable_start_insert = 1
-let g:unite_source_session_path = "~/.vim/session"
+let g:unite_source_session_path = $HOME . "/.vim/session"
 let g:unite_source_session_enable_auto_save = 1
 let g:unite_cursor_line_highlight = 'TabLineSel'
 if !isdirectory($HOME . '/.vim/session')
