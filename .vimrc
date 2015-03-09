@@ -155,20 +155,25 @@ endif
 
 " Code completion {{{
 " neocomplete {{{
-Plug 'Shougo/neocomplete.vim' " Next generation completion framework after neocomplcache
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 2
+if !has('nvim')
+  Plug 'Shougo/neocomplete.vim' " Next generation completion framework after neocomplcache
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#sources#syntax#min_keyword_length = 2
+endif
 " }}}
 
 " YCM {{{
-"Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' } " A code-completion engine for Vim
-"let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-"let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-"let g:ycm_complete_in_comments = 1
-"let g:ycm_collect_identifiers_from_tags_files = 1
-"let g:ycm_seed_identifiers_with_syntax = 1
-"let g:ycm_add_preview_to_completeopt = 1
+if has('nvim')
+  " should prefer neocomplete, when neovim implements Lua support
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' } " A code-completion engine for Vim
+  let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+  let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+  let g:ycm_complete_in_comments = 1
+  let g:ycm_collect_identifiers_from_tags_files = 1
+  let g:ycm_seed_identifiers_with_syntax = 1
+  let g:ycm_add_preview_to_completeopt = 1
+endif
 " }}}
 " }}}
 
@@ -326,6 +331,11 @@ endif
 Plug 'tpope/vim-repeat' " repeat.vim: enable repeating supported plugin maps with .
 Plug 'wellle/targets.vim' " Vim plugin that provides additional text objects
 
+" FuzzySearch {{{
+Plug 'ggVGc/vim-fuzzysearch' " Makes search in vim fuzzy
+map <Leader>/ :FuzzySearch<cr>
+" }}}
+
 " EasyMotion {{{
 Plug 'Lokaltog/vim-easymotion' " Vim motions on speed!
 let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
@@ -455,6 +465,7 @@ set directory=$HOME/.vim/swapfiles// " Directory to put temp file in
 set viewoptions=folds,options,cursor,unix,slash " unix/windows compatibility
 set hidden " Buffer becomes hidden when it is abandoned
 set cursorline " Highlight the screen line of the cursor
+set updatetime=500 " Miliseconds to wait before writing swap and triggering CursorHold
 " }}}
 
 " Unite settings {{{
