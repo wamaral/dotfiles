@@ -466,7 +466,18 @@ set viewoptions=folds,options,cursor,unix,slash " unix/windows compatibility
 set hidden " Buffer becomes hidden when it is abandoned
 set cursorline " Highlight the screen line of the cursor
 set updatetime=500 " Miliseconds to wait before writing swap and triggering CursorHold
+
+" vim-sensible {{{
 set backspace=indent,eol,start
+set complete-=i
+set nrformats-=octal
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j " Delete comment character when joining commented lines
+endif
+if has('path_extra')
+  setglobal tags-=./tags tags^=./tags;
+endif
+" }}}
 " }}}
 
 " Unite settings {{{
