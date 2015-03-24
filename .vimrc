@@ -139,15 +139,15 @@ if executable('ag')
   let g:ackprg = "ag --nogroup --column --smart-case --follow"
   let g:unite_source_grep_command='ag'
   let g:unite_source_grep_default_opts =
-  \ '-i -S -C4 --line-numbers --nocolor --nogroup --hidden --ignore ' .
-  \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+        \ '-i -S -C4 --line-numbers --nocolor --nogroup --hidden --ignore ' .
+        \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
   let g:unite_source_grep_recursive_opt=''
 elseif executable('ack')
   set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
   set grepformat=%f:%l:%c:%m
   let g:unite_source_grep_command='ack'
   let g:unite_source_grep_default_opts =
-  \ '-i --nogroup --column --smart-case --no-heading --no-color -k -H -C4'
+        \ '-i --nogroup --column --smart-case --no-heading --no-color -k -H -C4'
   let g:unite_source_grep_recursive_opt=''
 endif
 " }}}
@@ -283,9 +283,9 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " add a mapping on .. to view parent tree
 autocmd User fugitive
-  \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-  \   nnoremap <buffer> .. :edit %:h<CR> |
-  \ endif
+      \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+      \   nnoremap <buffer> .. :edit %:h<CR> |
+      \ endif
 " }}}
 " }}}
 
@@ -411,13 +411,13 @@ let g:startify_custom_header = map(split(system('toilet -f ivrit "Vim 7.4"'), '\
 " http://www.shlomifish.org/humour/fortunes/
 let g:startify_custom_footer = ['',''] + map(split(system('fortune joel-on-software osp_rules paul-graham sharp-perl sharp-programming'), '\n'), '"   ". v:val')
 let g:startify_list_order = [
-        \ ['   My sessions:'],
-        \ 'sessions',
-        \ ['   Last recently opened files:'],
-        \ 'files',
-        \ ['   My bookmarks:'],
-        \ 'bookmarks',
-        \ ]
+      \ ['   My sessions:'],
+      \ 'sessions',
+      \ ['   Last recently opened files:'],
+      \ 'files',
+      \ ['   My bookmarks:'],
+      \ 'bookmarks',
+      \ ]
 " }}}
 " }}}
 
@@ -523,12 +523,12 @@ autocmd WinEnter * setlocal cursorline
 " dont do it when writing a commit log entry
 autocmd BufReadPost * call SetCursorPosition()
 function! SetCursorPosition()
-    if &filetype !~ 'svn\|commit\c'
-        if line("'\"") > 0 && line("'\"") <= line("$")
-            exe "normal! g`\""
-            normal! zz
-        endif
-    end
+  if &filetype !~ 'svn\|commit\c'
+    if line("'\"") > 0 && line("'\"") <= line("$")
+      exe "normal! g`\""
+      normal! zz
+    endif
+  end
 endfunction
 
 " spell check when writing commit logs
