@@ -114,7 +114,7 @@ nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new
 " registers
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 " vimfiler
-"nnoremap <silent> [unite]t :VimFiler -toggle -buffer-name=vimfiler<cr>
+nnoremap <silent> [unite]t :VimFiler -toggle -buffer-name=vimfiler<cr>
 " mru and buffers
 nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
 " git ls-files
@@ -199,31 +199,33 @@ Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 "Plug 'jistr/vim-nerdtree-tabs' " NERDTree and tabs together in Vim, painlessly
 
 " netrw {{{
-nnoremap <silent><f1> :Vexplore<cr>
-nnoremap <silent><leader>f :Explore<cr>
-let g:netrw_preview   = 1
-let g:netrw_liststyle = 3 " tree
-let g:netrw_winsize   = 25
-
-autocmd FileType netrw call s:setup_netrw()
-function! s:setup_netrw() abort
-  nnoremap <buffer> <esc> :Rexplore<cr>
-endfunction
+"nnoremap <silent><f1> :Vexplore<cr>
+"nnoremap <silent><leader>f :Explore<cr>
+"let g:netrw_preview   = 1
+"let g:netrw_liststyle = 3 " tree
+"let g:netrw_winsize   = 25
+"
+"autocmd FileType netrw call s:setup_netrw()
+"function! s:setup_netrw() abort
+"  nnoremap <buffer> <esc> :Rexplore<cr>
+"endfunction
 " }}}
 
 " Vimfiler {{{
-"Plug 'Shougo/vimfiler.vim', {'on':['VimFiler','VimFilerExplorer']} " Powerful file explorer implemented by Vim script               <F1>
-"nnoremap <silent> <f1> :VimFilerExplorer -buffer-name=vimfiler<cr>
-""let g:vimfiler_as_default_explorer = 1
-"let g:vimfiler_safe_mode_by_default = 0
-"let g:vimfiler_tree_leaf_icon = ' '
-"let g:vimfiler_tree_opened_icon = '▾'
-"let g:vimfiler_tree_closed_icon = '▸'
-"let g:vimfiler_file_icon = '-'
-"let g:vimfiler_marked_file_icon = '*'
-"let g:vimfiler_force_overwrite_statusline = 0
-"let g:vimfiler_expand_jump_to_first_child = 0
-"autocmd FileType vimfiler nmap <buffer> <2-LeftMouse> <Plug>(vimfiler_edit_file)
+Plug 'Shougo/vimfiler.vim', {'on':['VimFiler','VimFilerExplorer']} " Powerful file explorer implemented by Vim script               <F1>
+nnoremap <silent> <f1> :VimFilerExplorer -buffer-name=vimfiler<cr>
+nnoremap <silent><leader>f :VimFiler -force-quit<cr>
+let g:loaded_netrwPlugin = 1
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_tree_leaf_icon = ' '
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_file_icon = '-'
+let g:vimfiler_marked_file_icon = '*'
+let g:vimfiler_force_overwrite_statusline = 0
+let g:vimfiler_expand_jump_to_first_child = 0
+autocmd FileType vimfiler nmap <buffer> <2-LeftMouse> <Plug>(vimfiler_edit_file)
 " }}}
 
 " Tagbar {{{
