@@ -4,6 +4,7 @@
 set nocompatible
 syntax enable
 filetype plugin indent on
+set backspace=indent,eol,start
 
 let mapleader = "\<Space>"
 
