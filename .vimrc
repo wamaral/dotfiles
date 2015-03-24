@@ -430,6 +430,12 @@ nnoremap <silent> <leader><f1> :call investigate#Investigate()<CR>
 " }}}
 " }}}
 
+" Remote {{{
+if has('nvim')
+  Plug 'floobits/floobits-neovim' " Floobits plugin for NeoVim
+endif
+" }}}
+
 call plug#end()
 " }}}
 
