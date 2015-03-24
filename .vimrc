@@ -436,6 +436,10 @@ if has('nvim')
 endif
 " }}}
 
+" Events {{{
+Plug 'tmux-plugins/vim-tmux-focus-events' " Make terminal vim and tmux work better together.
+" }}}
+
 call plug#end()
 " }}}
 
