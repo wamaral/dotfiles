@@ -1,6 +1,6 @@
-source $BYOBU_PREFIX/share/byobu/profiles/tmux
+source-file $BYOBU_PREFIX/share/byobu/profiles/tmux
 
-source $BYOBU_PREFIX/share/byobu/keybindings/f-keys.tmux.disable
+source-file $BYOBU_PREFIX/share/byobu/keybindings/f-keys.tmux.disable
 
 set-option -g bell-on-alert on
 set-option -g display-panes-time 400

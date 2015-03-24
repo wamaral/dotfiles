@@ -1,4 +1,4 @@
-source /usr/share/byobu/keybindings/f-keys.tmux.disable \; display-message "Byobu F-keys: DISABLED [S-F12]"
+source-file /usr/share/byobu/keybindings/f-keys.tmux.disable \; display-message "Byobu F-keys: DISABLED [S-F12]"
 
 bind-key -n F11 previous-window
 bind-key -n F12 next-window
@@ -13,8 +13,8 @@ bind-key -n M-S-Down resize-pane -D
 bind-key -n M-S-Left resize-pane -L
 bind-key -n M-S-Right resize-pane -R
 
-bind-key -n S-F12 source /usr/share/byobu/keybindings/f-keys.tmux.disable \; display-message "Byobu F-keys: DISABLED"
-bind-key -n M-F12 source /usr/share/byobu/keybindings/mouse.tmux.enable
+bind-key -n S-F12 source-file /usr/share/byobu/keybindings/f-keys.tmux.disable \; display-message "Byobu F-keys: DISABLED"
+bind-key -n M-F12 source-file /usr/share/byobu/keybindings/mouse.tmux.enable
 
 unbind-key -n C-a
 unbind-key -n C-o
