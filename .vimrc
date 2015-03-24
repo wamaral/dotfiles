@@ -4,7 +4,6 @@
 set nocompatible
 syntax enable
 filetype plugin indent on
-set backspace=indent,eol,start
 
 let mapleader = "\<Space>"
 
@@ -467,6 +466,7 @@ set viewoptions=folds,options,cursor,unix,slash " unix/windows compatibility
 set hidden " Buffer becomes hidden when it is abandoned
 set cursorline " Highlight the screen line of the cursor
 set updatetime=500 " Miliseconds to wait before writing swap and triggering CursorHold
+set backspace=indent,eol,start
 " }}}
 
 " Unite settings {{{
