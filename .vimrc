@@ -541,6 +541,7 @@ nnoremap <C-Right> :bnext<cr>
 nnoremap <C-Left>  :bprevious<cr>
 " C-Tab to switch current/last buffers
 nnoremap <silent> <C-I> :b#<cr>
+nnoremap <Leader>b :ls<cr>:b<space>
 
 " reselect pasted text
 nnoremap <leader>v V`]
