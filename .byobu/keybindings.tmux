@@ -17,7 +17,7 @@ bind-key -n S-F12 source-file /usr/share/byobu/keybindings/f-keys.tmux.disable \
 bind-key -n M-F12 source-file /usr/share/byobu/keybindings/mouse.tmux.enable
 
 unbind-key -n C-a
-unbind-key -n C-o
-set -g prefix ^O
-set -g prefix2 ^O
-bind o send-prefix
+unbind-key -n C-s
+set -g prefix ^S
+set -g prefix2 ^S
+bind s send-prefix
