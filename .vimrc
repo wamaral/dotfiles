@@ -248,6 +248,7 @@ Plug 'tpope/vim-rails' " rails.vim: Ruby on Rails power tools
 Plug 'tpope/vim-bundler' " bundler.vim: Lightweight support for Ruby's Bundler
 Plug 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plug 'derekwyatt/vim-scala' " My work on integration of Scala into Vim - not a ton here, but useful for me.
+Plug 'mustache/vim-mustache-handlebars' " mustache and handlebars mode for vim http://mustache.github.io
 
 " Javascript {{{
 Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
