@@ -32,24 +32,23 @@ Vim keys:
 - S-F5 = GoldenView split
 - F6 = GoldenView resize current buffer
 - S-F6 = Toggle GoldenView auto resize
+- F9 = Rainbow parenthesis
 - F10 = new tab
 - F11 = previous tab
 - F12 = next tab
-- -d = delete buffer
+- L-q = delete buffer
+- L-w = write all buffers
 - C-j = next buffer
 - C-k = prev buffer
-- s = EasyMotion search
-- -hjkl = EasyMotion move
+- L-s = EasyMotion search
+- L-hjkl = EasyMotion move
 - A-Left/Right = indent
 - A-Up/Down = drag line
 - U = redo
 - C-u = Gundo
-- tt = toggle fold
 - Enter = follow link (help only)
 - Backspace = go back from link (help only)
 
 Vim commands:
-- ; = :
 - :W = :w
 - :w!! = sudo :w
-- -Y = checkout current line from git HEAD

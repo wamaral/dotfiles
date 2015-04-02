@@ -212,7 +212,7 @@ Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 " }}}
 
 " Vimfiler {{{
-Plug 'Shougo/vimfiler.vim', {'on':['VimFiler','VimFilerExplorer']} " Powerful file explorer implemented by Vim script               <F1>
+Plug 'Shougo/vimfiler.vim', {'on':['VimFiler','VimFilerExplorer']} " Powerful file explorer implemented by Vim script
 nnoremap <silent> <f1> :VimFilerExplorer -buffer-name=vimfiler<cr>
 nnoremap <silent><leader>f :VimFiler -force-quit<cr>
 let g:loaded_netrwPlugin = 1
@@ -229,7 +229,7 @@ autocmd FileType vimfiler nmap <buffer> <2-LeftMouse> <Plug>(vimfiler_edit_file)
 " }}}
 
 " Tagbar {{{
-Plug 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope      <F2>
+Plug 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope
 nnoremap <silent> <f2> :TagbarToggle<cr>
 " }}}
 " }}}
@@ -347,7 +347,7 @@ map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
 map <Leader>h <Plug>(easymotion-linebackward)
-nmap s <Plug>(easymotion-s)
+nmap <Leader>s <Plug>(easymotion-s)
 " }}}
 
 " GoldenView {{{
@@ -382,7 +382,7 @@ Plug 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
 Plug 'zenorocha/dracula-theme' " A dark theme for Atom, Alfred, Chrome DevTools, iTerm, Sublime Text, Textmate, Terminal.app, Vim, Xcode, Zsh
 
 " Rainbow {{{
-Plug 'oblitum/rainbow' " Rainbow Parentheses Improved
+Plug 'oblitum/rainbow', {'on':'RainbowToggle'} " Rainbow Parentheses Improved
 nnoremap <silent> <F9> :RainbowToggle<cr>
 " }}}
 " }}}
@@ -405,22 +405,22 @@ endif
 " }}}
 
 " Start screen {{{
-Plug 'mhinz/vim-startify' " A fancy start screen for Vim
-let g:startify_bookmarks = [ '~/.vimrc' ]
-let g:startify_change_to_vcs_root = 1
-let g:startify_relative_path = 1
-let g:startify_skiplist = [ 'COMMIT_EDITMSG' ]
-let g:startify_custom_header = map(split(system('toilet -f ivrit "Vim 7.4"'), '\n'), '"   ". v:val') + ['','']
-" http://www.shlomifish.org/humour/fortunes/
-let g:startify_custom_footer = ['',''] + map(split(system('fortune joel-on-software osp_rules paul-graham sharp-perl sharp-programming'), '\n'), '"   ". v:val')
-let g:startify_list_order = [
-      \ ['   My sessions:'],
-      \ 'sessions',
-      \ ['   Last recently opened files:'],
-      \ 'files',
-      \ ['   My bookmarks:'],
-      \ 'bookmarks',
-      \ ]
+"Plug 'mhinz/vim-startify' " A fancy start screen for Vim
+"let g:startify_bookmarks = [ '~/.vimrc' ]
+"let g:startify_change_to_vcs_root = 1
+"let g:startify_relative_path = 1
+"let g:startify_skiplist = [ 'COMMIT_EDITMSG' ]
+"let g:startify_custom_header = map(split(system('toilet -f ivrit "Vim 7.4"'), '\n'), '"   ". v:val') + ['','']
+"" http://www.shlomifish.org/humour/fortunes/
+"let g:startify_custom_footer = ['',''] + map(split(system('fortune joel-on-software osp_rules paul-graham sharp-perl sharp-programming'), '\n'), '"   ". v:val')
+"let g:startify_list_order = [
+"      \ ['   My sessions:'],
+"      \ 'sessions',
+"      \ ['   Last recently opened files:'],
+"      \ 'files',
+"      \ ['   My bookmarks:'],
+"      \ 'bookmarks',
+"      \ ]
 " }}}
 " }}}
 
@@ -561,8 +561,8 @@ nnoremap <C-j> :bnext<cr>
 nnoremap <C-k> :bprevious<cr>
 nnoremap <C-Right> :bnext<cr>
 nnoremap <C-Left>  :bprevious<cr>
-" C-Tab to switch current/last buffers
-nnoremap <silent> <C-I> :b#<cr>
+" Leader-Tab to switch current/last buffers
+nnoremap <silent> <Leader><C-I> :b#<cr>
 nnoremap <Leader>b :ls<cr>:b<space>
 
 " reselect pasted text
@@ -585,10 +585,6 @@ nnoremap <silent> <C-c> :pclose<cr>:cclose<cr>:UniteClose<cr>:TagbarClose<cr>
 " make <C-l> clear the highlight as well as redraw
 nnoremap <C-l> :nohls<cr><C-l>
 inoremap <C-l> <C-o>:nohls<cr>
-
-" tt toggles folding - http://vim.wikia.com/wiki/Folding
-nnoremap <silent> tt za
-vnoremap tt zf
 
 " make Y consistent with C and D
 nnoremap Y y$
