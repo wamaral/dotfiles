@@ -24,4 +24,6 @@ hide_menubar=1
 always_show_tabs=0
 show_add_tab_btn=1
 show_resize_grip=1
-visible_bell=0
+visible_bell=1
+color_term=gnome-terminal
+scrollbar_pos=0
