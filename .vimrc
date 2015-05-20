@@ -39,7 +39,7 @@ set ttimeoutlen=100
 set hlsearch
 set incsearch
 set list
-set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
+set listchars=tab:▷•,trail:•,nbsp:•
 set laststatus=2
 set ruler
 set showcmd
