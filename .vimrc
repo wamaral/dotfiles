@@ -60,7 +60,7 @@ set fileformats+=mac
 set history=1000
 set tabpagemax=50
 set viminfo^=!
-set sessionoptions-=options
+set sessionoptions-=help,options,tabpages
 set directory=$HOME/.vim/swapfiles// " Directory to put temp file in
 set viewoptions=folds,options,cursor,unix,slash " unix/windows compatibility
 set hidden " Buffer becomes hidden when it is abandoned
