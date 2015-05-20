@@ -326,6 +326,11 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " }}}
 " }}}
 
+Plug 'ludovicchabant/vim-gutentags' " A Vim plugin that manages your tag files
+" Gutentags {{{
+let g:gutentags_exclude = 'node_modules'
+" }}}
+
 call plug#end()
 " }}}
 
