@@ -201,10 +201,12 @@ Plug 'mattn/webapi-vim' " vim interface to Web API (required for gist)
 
 Plug 'gregsexton/gitv', {'on':'Gitv'} " gitk for Vim
 
-Plug 'mhinz/vim-signify' " Show a VCS diff using Vim's sign column.
-" Signify {{{
-let g:signify_vcs_list = [ 'git', 'svn' ]
-let g:signify_update_on_focusgained = 1
+Plug 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+" Gitgutter {{{
+nmap <Leader>ga <Plug>GitGutterStageHunk
+nmap <Leader>gr <Plug>GitGutterRevertHunk
+nmap <Leader>gv <Plug>GitGutterPreviewHunk
+let g:gitgutter_override_sign_column_highlight = 0
 " }}}
 
 Plug 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
@@ -303,6 +305,11 @@ nnoremap <silent> <leader><f1> :call investigate#Investigate()<CR>
 
 "Plug 'tmux-plugins/vim-tmux-focus-events' " Make terminal vim and tmux work better together.
 
+Plug 'ludovicchabant/vim-gutentags' " A Vim plugin that manages your tag files
+" Gutentags {{{
+let g:gutentags_exclude = ['node_modules']
+" }}}
+
 " File types {{{
 Plug 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
 Plug 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
@@ -326,11 +333,6 @@ let coffee_watch_vert = 1
 let coffee_run_vert = 1
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " }}}
-" }}}
-
-Plug 'ludovicchabant/vim-gutentags' " A Vim plugin that manages your tag files
-" Gutentags {{{
-let g:gutentags_exclude = ['node_modules']
 " }}}
 
 call plug#end()
