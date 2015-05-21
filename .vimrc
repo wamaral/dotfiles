@@ -247,8 +247,8 @@ Plug 'godlygeek/tabular' " Vim script for text filtering and alignment
 
 Plug 'junegunn/vim-easy-align' " A Vim alignment plugin
 " Easy Align {{{
-vmap a <Plug>(EasyAlign)
-nmap <Leader>a <Plug>(EasyAlign)
+vmap <bar> <Plug>(EasyAlign)
+nmap <Leader><bar> <Plug>(EasyAlign)
 " }}}
 
 Plug 'vim-scripts/Gundo', {'on':'GundoToggle'} " Visualize your undo tree.
