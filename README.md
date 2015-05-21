@@ -6,49 +6,34 @@ Requires https://github.com/junegunn/vim-plug
 - curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - :PlugInstall
 
-Requires https://github.com/Valloric/YouCompleteMe
-- apt-get install build-essential cmake python-dev libclang-dev
-- cd ~/.vim/bundle/YouCompleteMe
-- git submodule update --init --recursive
-- ./install.sh
-- (not sure if below lines are needed)
-- mkdir build && cd build
-- cmake -G "Unix Makefiles" . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
-- make ycm_support_libs
-
 Optional powerline fonts https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
 
-Help on runtime:
-- ,? = Unite
-- -? = Custom keys
-- -?? = F keys
-
 Vim keys:
-- F1 = vimfiler
+- F1 = filer
 - F2 = Tagbar
-- F3 = Unite buffers
-- F4 = Unite files
-- F5 = Toggle buffer with main split (GoldenView)
-- S-F5 = GoldenView split
-- F6 = GoldenView resize current buffer
-- S-F6 = Toggle GoldenView auto resize
 - F9 = Rainbow parenthesis
-- F10 = new tab
-- F11 = previous tab
-- F12 = next tab
-- L-q = delete buffer
-- L-w = write all buffers
-- C-j = next buffer
-- C-k = prev buffer
+- F10 = Indent guides
+- L-F1 = Investigate (online help)
+- L-u<space> = CtrlP
+- L-u? = CtrlP Help
+- L-f = Explore
+- L-b = List buffers
+- L-q = Delete buffer
+- L-w = Write all buffers
+- L-ga = Git stage hunk
+- L-gr = Git revert hunk
+- L-gv = Git preview hunk
+- L-| = Align
+- L-/ = Fuzzy search
+- L-] = Follow tag
+- L-[ = Back from tag
+- L-= = Preview tag
+- L-v = Reselect pasted text
 - L-s = EasyMotion search
 - L-hjkl = EasyMotion move
-- A-Left/Right = indent
-- A-Up/Down = drag line
+- L-ydp = System clipboard
 - U = redo
 - C-u = Gundo
-- Enter = follow link (help only)
-- Backspace = go back from link (help only)
 
 Vim commands:
-- :W = :w
 - :w!! = sudo :w
