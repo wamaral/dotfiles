@@ -187,6 +187,21 @@ endfunction
 Plug 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope
 " Tagbar {{{
 nnoremap <silent> <f2> :TagbarToggle<cr>
+
+let g:tagbar_type_coffee = {
+      \ 'ctagstype' : 'coffee',
+      \ 'kinds'     : [ 'c:classes', 'm:methods', 'f:functions', 'v:variables', 'f:fields' ]
+      \}
+
+let g:tagbar_type_puppet = {
+      \ 'ctagstype': 'puppet',
+      \ 'kinds': [ 'c:class', 's:site', 'n:node', 'd:definition' ]
+      \}
+
+let g:tagbar_type_xslt = {
+      \ 'ctagstype' : 'xslt',
+      \ 'kinds' : [ 'v:variables', 't:templates' ]
+      \}
 " }}}
 
 Plug 'scrooloose/syntastic' " Syntax checking hacks for vim
