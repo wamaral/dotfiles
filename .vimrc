@@ -55,7 +55,6 @@ set scrolloff=3
 set sidescrolloff=7
 set display+=lastline
 set encoding=utf-8
-set autoread
 set fileformats+=mac
 set history=1000
 set tabpagemax=50
