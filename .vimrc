@@ -92,6 +92,7 @@ endif
 if executable('ag')
   set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
   set grepformat=%f:%l:%c:%m
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 elseif executable('ack')
   set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
   set grepformat=%f:%l:%c:%m
@@ -125,12 +126,14 @@ endif
 
 Plug 'kien/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder.
 " CtrlP {{{
-nnoremap <silent> <leader>u? :echo "[ ]all [.]last Buffert[A]g [B]uffer [D]ir [L]ine [M]enu [P]roject [T]ag MR[U] [Y]ank"<cr>
+let g:ctrlp_mruf_relative = 1
+nnoremap <silent> <leader>u? :echo "[ ]all [.]last Buffert[A]g [B]uffer [D]ir [L]ine [M]enu [P]roject [Q]uickfiX [T]ag MR[U] [Y]ank"<cr>
 nnoremap <silent> <leader>u<space> :CtrlPMixed<cr>
 nnoremap <silent> <leader>ua :CtrlPBufTagAll<cr>
 nnoremap <silent> <leader>ub :CtrlPBuffer<cr>
 nnoremap <silent> <leader>ud :CtrlPDir<cr>
 nnoremap <silent> <leader>ul :CtrlPLine<cr>
+nnoremap <silent> <leader>uq :CtrlPQuickfix<cr>
 nnoremap <silent> <leader>ut :CtrlPTag<cr>
 nnoremap <silent> <leader>uu :CtrlPMRUFiles<cr>
 nnoremap <silent> <leader>u. :CtrlPLastMode --dir<cr>
