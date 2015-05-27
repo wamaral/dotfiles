@@ -148,6 +148,11 @@ nnoremap <silent> <leader>up :CtrlPSession<cr>
 let g:ctrlp_session_path = '~/.vim/session'
 " }}}
 
+Plug 'FelikZ/ctrlp-py-matcher' " Fast vim CtrlP matcher based on python
+" CtrlP Py-Matcher {{{
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+" }}}
+
 Plug 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
 
 Plug 'SirVer/ultisnips' " The ultimate snippet solution for Vim
