@@ -148,7 +148,6 @@ nnoremap <silent> <leader>uy :CtrlPYankring<cr>
 Plug 'okcompute/vim-ctrlp-session' " CtrlP extension to manage Vim sessions
 " CtrlP Session {{{
 nnoremap <silent> <leader>up :CtrlPSession<cr>
-let g:ctrlp_session_path = '~/.vim/session'
 " }}}
 
 Plug 'FelikZ/ctrlp-py-matcher' " Fast vim CtrlP matcher based on python
