@@ -8,6 +8,12 @@ filetype plugin indent on
 let mapleader = "\<Space>"
 
 " Required dirs {{{
+if !isdirectory($HOME.'/.vim/autoload')
+  call mkdir($HOME.'/.vim/autoload', 'p')
+endif
+if !isdirectory($HOME.'/.vim/bundle')
+  call mkdir($HOME.'/.vim/bundle', 'p')
+endif
 if !isdirectory($HOME.'/.vim_sessions')
   call mkdir($HOME.'/.vim_sessions', 'p')
 endif
@@ -102,8 +108,7 @@ endif
 " Plugins {{{
 " VimPlug automatic installation {{{
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !mkdir -p ~/.vim/autoload
-  silent !curl -fLo ~/.vim/autoload/plug.vim
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
@@ -421,10 +426,6 @@ nnoremap U <C-r>
 if has("persistent_undo")
   set undodir=~/.vim/undodir
   set undofile
-
-  if !isdirectory(&undodir)
-    call mkdir(&undodir, 'p')
-  endif
 endif
 " }}}
 
