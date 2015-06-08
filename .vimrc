@@ -327,9 +327,9 @@ nnoremap <silent> <leader><f1> :call investigate#Investigate()<CR>
 
 "Plug 'tmux-plugins/vim-tmux-focus-events' " Make terminal vim and tmux work better together.
 
-Plug 'ludovicchabant/vim-gutentags' " A Vim plugin that manages your tag files
+"Plug 'ludovicchabant/vim-gutentags' " A Vim plugin that manages your tag files
 " Gutentags {{{
-let g:gutentags_exclude = ['node_modules']
+"let g:gutentags_exclude = ['node_modules']
 " }}}
 
 " File types {{{
@@ -431,7 +431,7 @@ endif
 
 " Events {{{
 " checks if file has changed outside vim, on cursor stop
-autocmd CursorHold * checktime
+autocmd CursorHold * silent! checktime
 
 " spell check when writing commit logs
 autocmd filetype svn,*commit* setlocal spell
