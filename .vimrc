@@ -337,6 +337,7 @@ nnoremap <silent> <leader><f1> :call investigate#Investigate()<CR>
 " }}}
 
 " File types {{{
+Plug 'vim-ruby/vim-ruby' " Vim/Ruby Configuration Files
 Plug 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
 Plug 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
 Plug 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
