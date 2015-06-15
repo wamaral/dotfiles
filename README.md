@@ -29,8 +29,7 @@ Vim keys:
 - L-[ = Back from tag
 - L-= = Preview tag
 - L-v = Reselect pasted text
-- L-s = EasyMotion search
-- L-hjkl = EasyMotion move
+- L-s = EasyMotion
 - L-ydp = System clipboard
 - U = redo
 - C-u = Gundo

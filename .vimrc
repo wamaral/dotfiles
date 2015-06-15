@@ -280,11 +280,7 @@ Plug 'Lokaltog/vim-easymotion' " Vim motions on speed!
 " EasyMotion {{{
 let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
 let g:EasyMotion_smartcase = 1
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
-nmap <Leader>s <Plug>(easymotion-s)
+map <Leader>s <Plug>(easymotion-prefix)
 " }}}
 
 Plug 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
