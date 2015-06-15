@@ -276,6 +276,13 @@ Plug 'ggVGc/vim-fuzzysearch' " Makes search in vim fuzzy
 map <Leader>/ :FuzzySearch<cr>
 " }}}
 
+Plug 'haya14busa/incsearch.vim' " Improved incremental searching for Vim
+" incsearch {{{
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+" }}}
+
 Plug 'Lokaltog/vim-easymotion' " Vim motions on speed!
 " EasyMotion {{{
 let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
