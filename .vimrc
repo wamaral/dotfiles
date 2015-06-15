@@ -283,6 +283,14 @@ map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 " }}}
 
+Plug 'justinmk/vim-sneak' " The missing motion for Vim
+" vim sneak {{{
+nmap <Leader>z <Plug>Sneak_s
+nmap <Leader>Z <Plug>Sneak_Z
+xmap <leader>z <Plug>Sneak_s
+xmap <leader>Z <Plug>Sneak_S
+" }}}
+
 Plug 'Lokaltog/vim-easymotion' " Vim motions on speed!
 " EasyMotion {{{
 let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion

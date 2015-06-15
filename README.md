@@ -30,6 +30,7 @@ Vim keys:
 - L-= = Preview tag
 - L-v = Reselect pasted text
 - L-s = EasyMotion
+- L-z = Sneak
 - L-ydp = System clipboard
 - U = redo
 - C-u = Gundo
