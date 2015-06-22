@@ -14,8 +14,10 @@ Vim keys:
 - F9 = Rainbow parenthesis
 - F10 = Indent guides
 - L-F1 = Investigate (online help)
-- L-u Space = CtrlP
-- L-u? = CtrlP Help
+- L-u Space = Unite
+- L-u? = Unice Help
+- L-i Space = CtrlP
+- L-i? = CtrlP Help
 - L-f = Explore
 - L-b = List buffers
 - L-q = Delete buffer

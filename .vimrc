@@ -95,14 +95,22 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
+" Grep {{{
 if executable('ag')
   set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
   set grepformat=%f:%l:%c:%m
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:unite_source_grep_command='ag'
+  let g:unite_source_grep_default_opts = '-i -S -C4 --line-numbers --nocolor --nogroup --hidden --ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+  let g:unite_source_grep_recursive_opt=''
 elseif executable('ack')
   set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
   set grepformat=%f:%l:%c:%m
+  let g:unite_source_grep_command='ack'
+  let g:unite_source_grep_default_opts = '-i --nogroup --column --smart-case --no-heading --no-color -k -H -C4'
+  let g:unite_source_grep_recursive_opt=''
 endif
+" }}}
 " }}}
 
 " Plugins {{{
@@ -129,31 +137,121 @@ if !has('nvim')
 " }}}
 endif
 
+Plug 'Shougo/unite.vim' " Unite and create user interfaces
+" Unite {{{
+Plug 'Shougo/unite-outline' " outline source for unite.vim
+Plug 'Shougo/unite-help' " help source for unite.vim
+Plug 'Shougo/unite-session' " unite.vim session source
+Plug 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
+Plug 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
+
+" Unite buffers mappings {{{
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  let unite = unite#get_current_unite()
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+  imap <buffer> <ESC> <Plug>(unite_insert_leave)
+  imap <buffer> <C-j> <Plug>(unite_select_next_line)
+  imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+  imap <buffer> <Down> <Plug>(unite_select_next_line)
+  imap <buffer> <Up> <Plug>(unite_select_previous_line)
+  nmap <buffer> p <Plug>(unite_toggle_auto_preview)
+  imap <buffer> <C-p> <Plug>(unite_toggle_auto_preview)
+  nmap <buffer> > <Plug>(unite_rotate_next_source)
+  nnoremap <silent><buffer><expr> <C-i> unite#do_action('split')
+  inoremap <silent><buffer><expr> <C-i> unite#do_action('split')
+  nnoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+  inoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+  " sorter
+  " from: https://github.com/LeafCage/dotfiles/blob/master/unite_setting.vim
+  nnoremap <buffer><expr>sa unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_selecta'] : [])
+  nnoremap <buffer><expr>sk unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_rank'] : [])
+  nnoremap <buffer><expr>sr unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
+  nnoremap <buffer><expr>sw unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_word'] : [])
+  nnoremap <buffer><expr>sl unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_length'] : [])
+endfunction
+" }}}
+
+" Global mappings {{{
+" Map the prefix for Unite
+nnoremap [unite] <Nop>
+nmap <Leader>u [unite]
+vnoremap [unite] <Nop>
+vmap <Leader>u [unite]
+
+" General fuzzy search
+nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_rec/async:! file_mru bookmark<CR>
+" sources
+nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
+" buffers and mru
+nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
+" commands
+nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
+" switch lcd
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async:! directory/new<CR>
+" file search
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async:! file/new<CR>
+" grep from cwd
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+" help
+nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
+" bookmarks
+nnoremap <silent> [unite]k :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
+" line
+nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
+" MRU search
+nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
+" find
+nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
+" outline
+nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+" sessions (projects)
+nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new<CR>
+" registers
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+" mru and buffers
+nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
+" git ls-files
+nnoremap <silent> [unite]v :<C-u>Unite -buffer-name=git file_rec/git:--cached:--others:--exclude-standard<CR>
+" grep word under cursor
+nnoremap <silent> [unite]w :<C-u>Unite -buffer-name=grep grep:.::<C-R><C-w><CR>
+vnoremap <silent> [unite]w "uy:let @u=substitute(@u, ':', '\\:', 'g')<CR>:<C-u>Unite -buffer-name=grep grep:.::<C-R>u<CR>
+" yank history
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+" commands
+nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
+" resume
+nnoremap <silent> [unite]. :<C-u>UniteResume<CR>
+" Command list
+nmap [unite]? :echo "[ ]main [A]sources [B]uf/mru [C]md c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]f [V]git [W]ord [Y]ank [:]quick-cmd [.]resume"<cr>
+" }}}
+" }}}
+
 Plug 'kien/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder.
 " CtrlP {{{
 let g:ctrlp_mruf_relative = 1
-nnoremap <silent> <leader>u? :echo "[ ]all [.]last Buffert[A]g [B]uffer [D]ir [L]ine [M]enu [P]roject [Q]uickfiX [T]ag MR[U] [Y]ank"<cr>
-nnoremap <silent> <leader>u<space> :CtrlPMixed<cr>
-nnoremap <silent> <leader>ua :CtrlPBufTagAll<cr>
-nnoremap <silent> <leader>ub :CtrlPBuffer<cr>
-nnoremap <silent> <leader>ud :CtrlPDir<cr>
-nnoremap <silent> <leader>ul :CtrlPLine<cr>
-nnoremap <silent> <leader>uq :CtrlPQuickfix<cr>
-nnoremap <silent> <leader>ut :CtrlPTag<cr>
-nnoremap <silent> <leader>uu :CtrlPMRUFiles<cr>
-nnoremap <silent> <leader>u. :CtrlPLastMode --dir<cr>
+nnoremap <silent> <leader>i? :echo "[ ]all [.]last Buffert[A]g [B]uffer [D]ir [L]ine [M]enu [Q]uickfiX [T]ag MR[U] [Y]ank"<cr>
+nnoremap <silent> <leader>i<space> :CtrlPMixed<cr>
+nnoremap <silent> <leader>ia :CtrlPBufTagAll<cr>
+nnoremap <silent> <leader>ib :CtrlPBuffer<cr>
+nnoremap <silent> <leader>id :CtrlPDir<cr>
+nnoremap <silent> <leader>il :CtrlPLine<cr>
+nnoremap <silent> <leader>iq :CtrlPQuickfix<cr>
+nnoremap <silent> <leader>it :CtrlPTag<cr>
+nnoremap <silent> <leader>iu :CtrlPMRUFiles<cr>
+nnoremap <silent> <leader>i. :CtrlPLastMode --dir<cr>
 " }}}
 
 Plug 'sgur/ctrlp-extensions.vim' " Plugins for ctrlp.vim
 " CtrlP Extensions {{{
-nnoremap <silent> <leader>um :CtrlPMenu<cr>
-nnoremap <silent> <leader>uy :CtrlPYankring<cr>
+nnoremap <silent> <leader>im :CtrlPMenu<cr>
+nnoremap <silent> <leader>iy :CtrlPYankring<cr>
 " }}}
 
-Plug 'okcompute/vim-ctrlp-session' " CtrlP extension to manage Vim sessions
-" CtrlP Session {{{
-nnoremap <silent> <leader>up :CtrlPSession<cr>
-" }}}
+"Plug 'okcompute/vim-ctrlp-session' " CtrlP extension to manage Vim sessions
+"" CtrlP Session {{{
+"nnoremap <silent> <leader>up :CtrlPSession<cr>
+"" }}}
 
 Plug 'FelikZ/ctrlp-py-matcher' " Fast vim CtrlP matcher based on python
 " CtrlP Py-Matcher {{{
@@ -374,6 +472,23 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " }}}
 
 call plug#end()
+" }}}
+
+" Unite settings {{{
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_selecta'])
+call unite#custom#profile('default', 'context', { 'marked_icon':'✓'})
+let g:unite_source_history_yank_enable = 1
+let g:unite_enable_start_insert = 1
+let g:unite_source_session_path = $HOME . "/.vim_sessions"
+let g:unite_source_session_enable_auto_save = 1
+let g:unite_cursor_line_highlight = 'TabLineSel'
+
+" Set up some custom ignores
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/', 'git5/.*/review/', 'google/obj/', 'tmp/', '.sass-cache', 'node_modules/', 'bower_components/', 'dist/', '.git5_specs/', '.pyc', 'log/',
+      \ ], '\|'))
 " }}}
 
 " Mappings {{{
