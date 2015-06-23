@@ -331,6 +331,7 @@ nmap <Leader>ga <Plug>GitGutterStageHunk
 nmap <Leader>gr <Plug>GitGutterRevertHunk
 nmap <Leader>gv <Plug>GitGutterPreviewHunk
 let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_max_signs = 5000
 " }}}
 
 Plug 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
