@@ -385,7 +385,7 @@ map g/ <Plug>(incsearch-stay)
 Plug 'justinmk/vim-sneak' " The missing motion for Vim
 " vim sneak {{{
 nmap <Leader>z <Plug>Sneak_s
-nmap <Leader>Z <Plug>Sneak_Z
+nmap <Leader>Z <Plug>Sneak_S
 xmap <leader>z <Plug>Sneak_s
 xmap <leader>Z <Plug>Sneak_S
 " }}}
