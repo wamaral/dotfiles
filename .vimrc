@@ -530,8 +530,9 @@ nnoremap <leader>v V`]
 vnoremap < <gv
 vnoremap > >gv
 
-" save all buffers
-nnoremap <leader>w :wa<cr>
+" fast save
+nnoremap <leader>w :update<cr>
+nnoremap <leader>W :wa<cr>
 
 " system clipboard
 vmap <Leader>y "+y
