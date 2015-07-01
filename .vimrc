@@ -439,6 +439,13 @@ Plug 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
 nnoremap <silent> <leader><f1> :call investigate#Investigate()<CR>
 " }}}
 
+Plug 'mhinz/vim-sayonara' " Sane buffer/window deletion.
+" Sayonara {{{
+nnoremap <leader>q :Sayonara!<cr>
+nnoremap <leader>Q :Sayonara<cr>
+let g:sayonara_confirm_quit = 1
+" }}}
+
 "Plug 'tmux-plugins/vim-tmux-focus-events' " Make terminal vim and tmux work better together.
 
 "Plug 'ludovicchabant/vim-gutentags' " A Vim plugin that manages your tag files
@@ -508,7 +515,6 @@ nnoremap <Leader>[ <C-t>
 nnoremap <Leader>= <C-w>}
 
 " buffer management
-nnoremap <Leader>q :bdelete<cr>
 nnoremap <C-j> :bnext<cr>
 nnoremap <C-k> :bprevious<cr>
 nnoremap <C-Right> :bnext<cr>
