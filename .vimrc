@@ -227,7 +227,7 @@ nmap [unite]? :echo "[ ]main [A]sources [B]uf/mru [C]md c[D] [F]ile [G]rep [H]el
 " }}}
 " }}}
 
-Plug 'kien/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder.
+Plug 'ctrlpvim/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder.
 " CtrlP {{{
 let g:ctrlp_mruf_relative = 1
 nnoremap <silent> <leader>i? :echo "[ ]all [.]last Buffert[A]g [B]uffer [D]ir [L]ine [M]enu [Q]uickfiX [T]ag MR[U] [Y]ank"<cr>
