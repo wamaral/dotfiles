@@ -358,6 +358,12 @@ Plug 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, p
 
 Plug 'godlygeek/tabular' " Vim script for text filtering and alignment
 
+Plug 'AndrewRadev/splitjoin.vim' " A vim plugin that simplifies the transition between multiline and single-line code
+" SplitJoin {{{
+let g:splitjoin_align = 1
+let g:splitjoin_ruby_hanging_args = 0
+" }}}
+
 Plug 'junegunn/vim-easy-align' " A Vim alignment plugin
 " Easy Align {{{
 vmap <bar> <Plug>(EasyAlign)
