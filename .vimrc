@@ -377,6 +377,10 @@ nnoremap <C-u> :GundoToggle<CR>
 
 Plug 'tpope/vim-repeat' " repeat.vim: enable repeating supported plugin maps with .
 
+Plug 'kana/vim-textobj-user' " Vim plugin: Create your own text objects
+
+Plug 'nelstrom/vim-textobj-rubyblock' " A custom text object for selecting ruby blocks. - ar/ir
+
 Plug 'wellle/targets.vim' " Vim plugin that provides additional text objects
 
 Plug 'ggVGc/vim-fuzzysearch' " Makes search in vim fuzzy
