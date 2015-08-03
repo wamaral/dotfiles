@@ -408,6 +408,8 @@ let g:EasyMotion_smartcase = 1
 map <Leader>s <Plug>(easymotion-prefix)
 " }}}
 
+Plug 'unblevable/quick-scope' " Lightning fast left-right movement in Vim
+
 Plug 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
 " Airline {{{
 let g:airline#extensions#tabline#enabled = 0 " Automatically displays tab line.
