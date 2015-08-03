@@ -487,9 +487,14 @@ Plug 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more in v
 Plug 'derekwyatt/vim-scala' " My work on integration of Scala into Vim - not a ton here, but useful for me.
 Plug 'mustache/vim-mustache-handlebars' " mustache and handlebars mode for vim http://mustache.github.io
 Plug 'yaymukund/vim-rabl' " Treat RABL files as ruby files, with a little extra sugar for RABL-specific DSL methods.
+Plug 'moll/vim-node' " Tools and environment to make Vim superb for developing with Node.js. Like Rails.vim for Node.
+Plug 'marijnh/tern_for_vim', {'do': 'npm install'} " Tern plugin for Vim
+Plug 'jelera/vim-javascript-syntax' " Enhanced javascript syntax file for Vim
+Plug 'othree/javascript-libraries-syntax.vim' " Syntax for JavaScript libraries
+Plug 'vim-scripts/JavaScript-Indent' " Javascript indenter (HTML indent is included)
 
-Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
-" Javascript {{{
+" Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
+" Pangloss Javascript {{{
 let javascript_enable_domhtmlcss = 1
 " }}}
 
