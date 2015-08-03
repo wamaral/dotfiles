@@ -337,6 +337,11 @@ let g:gitgutter_max_signs = 5000
 
 Plug 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
 " Fugitive {{{
+nmap <Leader>g? :echo "[b]lame [d]iff [s]tatus [p]ush :: st[a]ge-hunk pre[v]iew-hunk [r]evert-hunk :: [c = prev change :: ]c = next change"<cr>
+nmap <Leader>gd :Gdiff<cr>
+nmap <Leader>gb :Gblame<cr>
+nmap <Leader>gs :Gstatus<cr>
+nmap <Leader>gp :Gpush<cr>
 " Delete fugitive buffers when we leave them
 " http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
 autocmd BufReadPost fugitive://* set bufhidden=delete
