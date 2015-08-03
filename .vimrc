@@ -449,7 +449,16 @@ endif
 
 Plug 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
 " Investigate {{{
-nnoremap <silent> <leader><f1> :call investigate#Investigate()<CR>
+nnoremap <silent> <leader>hh :call investigate#Investigate()<CR>
+" }}}
+
+Plug 'KabbAmine/zeavim.vim' " Zeal for Vim
+" Zeal {{{
+let g:zv_disable_mapping = 1
+nmap <leader>hz <Plug>Zeavim
+vmap <leader>hz <Plug>ZVVisSelection
+nmap <leader>hZ <Plug>ZVKeyword
+nmap <leader>hx <Plug>ZVKeyDocset
 " }}}
 
 Plug 'mhinz/vim-sayonara' " Sane buffer/window deletion.
