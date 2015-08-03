@@ -457,6 +457,7 @@ endif
 " }}}
 
 Plug 'ryanoasis/vim-devicons' " adds font icons to programming languages, libraries, and web developer filetypes
+
 Plug 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
 " Investigate {{{
 nnoremap <silent> <leader>hh :call investigate#Investigate()<CR>
