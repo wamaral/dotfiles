@@ -74,8 +74,6 @@ set hidden " Buffer becomes hidden when it is abandoned
 set cursorline " Highlight the screen line of the cursor
 set updatetime=500 " Miliseconds to wait before writing swap and triggering CursorHold
 set laststatus=2 " always show status line
-set background=dark
-colorscheme distinguished
 
 if v:version > 703 || v:version == 703 && has("patch541")
   set formatoptions+=j " Delete comment character when joining commented lines
@@ -424,6 +422,8 @@ Plug 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in te
 
 Plug 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
 
+Plug 'mhinz/vim-janah' " A dark colorscheme for Vim.
+
 Plug 'oblitum/rainbow', {'on':'RainbowToggle'} " Rainbow Parentheses Improved
 " Rainbow {{{
 nnoremap <silent> <F9> :RainbowToggle<cr>
@@ -493,6 +493,12 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " }}}
 
 call plug#end()
+" }}}
+
+" {{{ Colors
+set background=dark
+autocmd ColorScheme * highlight Normal guibg=NONE ctermbg=NONE
+colorscheme janah
 " }}}
 
 " Unite settings {{{
