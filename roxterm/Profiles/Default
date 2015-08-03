@@ -1,6 +1,6 @@
 [roxterm profile]
 colour_scheme=Wagner
-font=Inconsolata Medium 11
+font=Inconsolata for Powerline Plus Nerd File Types Mono Plus Pomicons Medium 11
 audible_bell=0
 term=xterm-256color
 disable_menu_access=1
@@ -15,11 +15,11 @@ use_custom_command=0
 command=/bin/bash -l
 scrollback_lines=10000
 scroll_on_keystroke=1
-cursor_blink_mode=0
+cursor_blink_mode=2
 cursor_shape=0
 browser=/etc/alternatives/x-www-browser
 background_type=0
-saturation=0.128049
+saturation=0.207207
 hide_menubar=1
 always_show_tabs=0
 show_add_tab_btn=1
