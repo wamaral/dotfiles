@@ -319,6 +319,7 @@ Plug 'scrooloose/syntastic' " Syntax checking hacks for vim
 " Syntastic {{{
 let g:syntastic_check_on_open = 1
 let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java', 'scala']}
+let g:syntastic_javascript_checkers = ['jshint']
 " }}}
 
 Plug 'mattn/gist-vim', {'on':'Gist'} " vimscript for gist
