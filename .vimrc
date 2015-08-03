@@ -267,6 +267,8 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " }}}
 
+Plug 'mattn/emmet-vim' " emmet for vim
+
 Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 
 " netrw {{{
