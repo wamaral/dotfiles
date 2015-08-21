@@ -516,6 +516,16 @@ Plug 'jelera/vim-javascript-syntax' " Enhanced javascript syntax file for Vim
 Plug 'othree/javascript-libraries-syntax.vim' " Syntax for JavaScript libraries
 Plug 'vim-scripts/JavaScript-Indent' " Javascript indenter (HTML indent is included)
 
+" Uncomment when tpope's version supports figwheel
+"Plug 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
+Plug 'wamaral/vim-fireplace' " fireplace.vim: Clojure REPL support
+Plug 'tpope/vim-salve' " salve.vim: static support for Leiningen and Boot
+Plug 'tpope/vim-classpath' " classpath.vim: Set 'path' from the Java class path
+Plug 'guns/vim-sexp' " Precision Editing for S-expressions
+Plug 'tpope/vim-sexp-mappings-for-regular-people' " vim-sexp mappings for regular people
+Plug 'guns/vim-slamhound' " Slamhound integration for vim.
+Plug 'Deraen/vim-cider' " Additional IDE-like functionality for Clojure development using cider-nrepl
+
 " Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
 " Pangloss Javascript {{{
 let javascript_enable_domhtmlcss = 1
