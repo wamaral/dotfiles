@@ -610,9 +610,6 @@ nnoremap Y y$
 " http://stackoverflow.com/questions/95072/what-are-your-favorite-vim-tricks/96492#96492
 cmap w!! %!sudo tee > /dev/null %
 
-" U = redo
-nnoremap U <C-r>
-
 " Starting from vim 7.3 undo can be persisted across sessions
 " http://www.reddit.com/r/vim/comments/kz84u/what_are_some_simple_yet_mindblowing_tweaks_to/c2onmqe
 if has("persistent_undo")
