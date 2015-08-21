@@ -136,6 +136,18 @@ if !has('nvim')
 " }}}
 endif
 
+" Plug 'Valloric/YouCompleteMe', {'do': './install.sh'} " A code-completion engine for Vim
+" YCM {{{
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:ycm_complete_in_comments = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_min_num_of_chars_for_completion = 2
+" }}}
+
 Plug 'Shougo/unite.vim' " Unite and create user interfaces
 " Unite {{{
 Plug 'Shougo/unite-outline' " outline source for unite.vim
