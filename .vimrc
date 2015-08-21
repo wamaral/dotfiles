@@ -525,6 +525,7 @@ Plug 'guns/vim-sexp' " Precision Editing for S-expressions
 Plug 'tpope/vim-sexp-mappings-for-regular-people' " vim-sexp mappings for regular people
 Plug 'guns/vim-slamhound' " Slamhound integration for vim.
 Plug 'Deraen/vim-cider' " Additional IDE-like functionality for Clojure development using cider-nrepl
+Plug 'venantius/vim-eastwood' " A Vim plugin for Clojure's Eastwood linter
 
 " Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
 " Pangloss Javascript {{{
