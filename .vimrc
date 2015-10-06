@@ -25,13 +25,13 @@ if !isdirectory($HOME.'/.vim/undodir')
 endif
 " }}}
 
-set regexpengine=1 " use new regex (vim >7.4), improves syntax speed
+" use new regex (vim >7.4), improves syntax speed
+set regexpengine=1
 set number
 set relativenumber
 set splitbelow
 set splitright
 set mouse=a
-set ttymouse=xterm2
 set smarttab
 set expandtab
 set tabstop=2
@@ -68,15 +68,25 @@ set viminfo^=!
 set sessionoptions-=help
 set sessionoptions-=options
 set sessionoptions-=tabpages
-set directory=$HOME/.vim/swapfiles// " Directory to put temp file in
-set viewoptions=folds,options,cursor,unix,slash " unix/windows compatibility
-set hidden " Buffer becomes hidden when it is abandoned
-set cursorline " Highlight the screen line of the cursor
-set updatetime=500 " Miliseconds to wait before writing swap and triggering CursorHold
-set laststatus=2 " always show status line
+" Directory to put temp file in
+set directory=$HOME/.vim/swapfiles//
+" unix/windows compatibility
+set viewoptions=folds,options,cursor,unix,slash
+" Buffer becomes hidden when it is abandoned
+set hidden
+" Highlight the screen line of the cursor
+set cursorline
+" Miliseconds to wait before writing swap and triggering CursorHold
+set updatetime=500
+" always show status line
+set laststatus=2
+if !has('nvim')
+set ttymouse=xterm2
+endif
 
 if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j " Delete comment character when joining commented lines
+  " Delete comment character when joining commented lines
+  set formatoptions+=j
 endif
 
 if has('path_extra')
@@ -98,15 +108,15 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
   set grepformat=%f:%l:%c:%m
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:unite_source_grep_command='ag'
-  let g:unite_source_grep_default_opts = '-i -S -C4 --line-numbers --nocolor --nogroup --hidden --ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-  let g:unite_source_grep_recursive_opt=''
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden --ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+  let g:unite_source_grep_recursive_opt = ''
 elseif executable('ack')
   set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
   set grepformat=%f:%l:%c:%m
-  let g:unite_source_grep_command='ack'
-  let g:unite_source_grep_default_opts = '-i --nogroup --column --smart-case --no-heading --no-color -k -H -C4'
-  let g:unite_source_grep_recursive_opt=''
+  let g:unite_source_grep_command = 'ack'
+  let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
+  let g:unite_source_grep_recursive_opt = ''
 endif
 " }}}
 " }}}
@@ -126,17 +136,8 @@ call plug#begin('~/.vim/bundle')
 
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 
-if !has('nvim')
-  Plug 'Shougo/neocomplete.vim' " Next generation completion framework after neocomplcache
-" neocomplete {{{
-  let g:neocomplete#enable_cursor_hold_i = 1
-  let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#sources#syntax#min_keyword_length = 2
-" }}}
-endif
-
-" Plug 'Valloric/YouCompleteMe', {'do': './install.sh'} " A code-completion engine for Vim
+" A code-completion engine for Vim
+Plug 'Valloric/YouCompleteMe', {'do': './install.py'}
 " YCM {{{
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -148,13 +149,13 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_min_num_of_chars_for_completion = 2
 " }}}
 
-Plug 'Shougo/unite.vim' " Unite and create user interfaces
+" Unite and create user interfaces
+Plug 'Shougo/unite.vim'
 " Unite {{{
 Plug 'Shougo/unite-outline' " outline source for unite.vim
 Plug 'Shougo/unite-help' " help source for unite.vim
 Plug 'Shougo/unite-session' " unite.vim session source
 Plug 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
-Plug 'thinca/vim-unite-history' " A source of unite.vim for history of command/search.
 
 " Unite buffers mappings {{{
 autocmd FileType unite call s:unite_settings()
@@ -227,66 +228,41 @@ nnoremap <silent> [unite]v :<C-u>Unite -buffer-name=git file_rec/git:--cached:--
 " grep word under cursor
 nnoremap <silent> [unite]w :<C-u>Unite -buffer-name=grep grep:.::<C-R><C-w><CR>
 vnoremap <silent> [unite]w "uy:let @u=substitute(@u, ':', '\\:', 'g')<CR>:<C-u>Unite -buffer-name=grep grep:.::<C-R>u<CR>
-" yank history
-nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 " commands
 nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
 " resume
 nnoremap <silent> [unite]. :<C-u>UniteResume<CR>
 " Command list
-nmap [unite]? :echo "[ ]main [A]sources [B]uf/mru [C]md c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]f [V]git [W]ord [Y]ank [:]quick-cmd [.]resume"<cr>
+nmap [unite]? :echo "[ ]main [A]sources [B]uf/mru [C]md c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]f [V]git [W]ord [:]quick-cmd [.]resume"<cr>
 " }}}
 " }}}
 
-Plug 'ctrlpvim/ctrlp.vim' " Fuzzy file, buffer, mru, tag, etc finder.
-" CtrlP {{{
-let g:ctrlp_mruf_relative = 1
-nnoremap <silent> <leader>i? :echo "[ ]all [.]last Buffert[A]g [B]uffer [D]ir [L]ine [M]enu [Q]uickfiX [T]ag MR[U] [Y]ank"<cr>
-nnoremap <silent> <leader>i<space> :CtrlPMixed<cr>
-nnoremap <silent> <leader>ia :CtrlPBufTagAll<cr>
-nnoremap <silent> <leader>ib :CtrlPBuffer<cr>
-nnoremap <silent> <leader>id :CtrlPDir<cr>
-nnoremap <silent> <leader>il :CtrlPLine<cr>
-nnoremap <silent> <leader>iq :CtrlPQuickfix<cr>
-nnoremap <silent> <leader>it :CtrlPTag<cr>
-nnoremap <silent> <leader>iu :CtrlPMRUFiles<cr>
-nnoremap <silent> <leader>i. :CtrlPLastMode --dir<cr>
-" }}}
+" A command-line fuzzy finder written in Go
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
-Plug 'sgur/ctrlp-extensions.vim' " Plugins for ctrlp.vim
-" CtrlP Extensions {{{
-nnoremap <silent> <leader>im :CtrlPMenu<cr>
-nnoremap <silent> <leader>iy :CtrlPYankring<cr>
-" }}}
+" vim-snipmate default snippets (Previously snipmate-snippets)
+Plug 'honza/vim-snippets'
 
-"Plug 'okcompute/vim-ctrlp-session' " CtrlP extension to manage Vim sessions
-"" CtrlP Session {{{
-"nnoremap <silent> <leader>up :CtrlPSession<cr>
-"" }}}
-
-Plug 'FelikZ/ctrlp-py-matcher' " Fast vim CtrlP matcher based on python
-" CtrlP Py-Matcher {{{
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-" }}}
-
-Plug 'honza/vim-snippets' " vim-snipmate default snippets (Previously snipmate-snippets)
-
-Plug 'SirVer/ultisnips' " The ultimate snippet solution for Vim
+" The ultimate snippet solution for Vim
+Plug 'SirVer/ultisnips'
 " UltiSnips {{{
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " }}}
 
-Plug 'mattn/emmet-vim' " emmet for vim
+" emmet for vim
+Plug 'mattn/emmet-vim'
 
-Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
+" commentary.vim: comment stuff out
+Plug 'tpope/vim-commentary'
 
 " netrw {{{
 nnoremap <silent><f1> :Vexplore<cr>
 nnoremap <silent><leader>f :Explore<cr>
 let g:netrw_preview   = 1
-let g:netrw_liststyle = 3 " tree
+" tree
+let g:netrw_liststyle = 3
 let g:netrw_winsize   = 25
 
 autocmd FileType netrw call s:setup_netrw()
@@ -306,7 +282,8 @@ function! s:quit_netrw()
 endfunction
 " }}}
 
-Plug 'majutsushi/tagbar' " Vim plugin that displays tags in a window, ordered by scope
+" Vim plugin that displays tags in a window, ordered by scope
+Plug 'majutsushi/tagbar'
 " Tagbar {{{
 nnoremap <silent> <f2> :TagbarToggle<cr>
 
@@ -326,20 +303,22 @@ let g:tagbar_type_xslt = {
       \}
 " }}}
 
-Plug 'scrooloose/syntastic' " Syntax checking hacks for vim
+" Syntax checking hacks for vim
+Plug 'scrooloose/syntastic'
 " Syntastic {{{
 let g:syntastic_check_on_open = 1
 let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java', 'scala']}
-let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers = ['eslint']
 " }}}
 
-Plug 'mattn/gist-vim', {'on':'Gist'} " vimscript for gist
+" vimscript for gist
+Plug 'mattn/gist-vim', {'on':'Gist'} | Plug 'mattn/webapi-vim'
 
-Plug 'mattn/webapi-vim' " vim interface to Web API (required for gist)
+" gitk for Vim
+Plug 'gregsexton/gitv', {'on':'Gitv'}
 
-Plug 'gregsexton/gitv', {'on':'Gitv'} " gitk for Vim
-
-Plug 'airblade/vim-gitgutter' " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+" A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
+Plug 'airblade/vim-gitgutter'
 " Gitgutter {{{
 nmap <Leader>ga <Plug>GitGutterStageHunk
 nmap <Leader>gr <Plug>GitGutterRevertHunk
@@ -348,7 +327,8 @@ let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_max_signs = 5000
 " }}}
 
-Plug 'tpope/vim-fugitive' " A Git wrapper so awesome, it should be illegal
+" A Git wrapper so awesome, it should be illegal
+Plug 'tpope/vim-fugitive'
 " Fugitive {{{
 nmap <Leader>g? :echo "[b]lame [d]iff [s]tatus [p]ush :: st[a]ge-hunk pre[v]iew-hunk [r]evert-hunk :: [c = prev change :: ]c = next change"<cr>
 nmap <Leader>gd :Gdiff<cr>
@@ -366,52 +346,50 @@ autocmd User fugitive
       \ endif
 " }}}
 
-Plug 'tpope/vim-dispatch', {'on':['Make','Dispatch','Focus','Start']} " asynchronous build and test dispatcher
+" asynchronous build and test dispatcher
+Plug 'tpope/vim-dispatch', {'on':['Make','Dispatch','Focus','Start']}
 
-Plug 'tpope/vim-surround' " surround.vim: quoting/parenthesizing made simple
+" surround.vim: quoting/parenthesizing made simple
+Plug 'tpope/vim-surround'
 
-Plug 'Raimondi/delimitMate' " provides insert mode auto-completion for quotes, parens, brackets, etc.
+" provides insert mode auto-completion for quotes, parens, brackets, etc.
+Plug 'Raimondi/delimitMate'
 
-Plug 'godlygeek/tabular' " Vim script for text filtering and alignment
-
-Plug 'AndrewRadev/splitjoin.vim' " A vim plugin that simplifies the transition between multiline and single-line code
-" SplitJoin {{{
-let g:splitjoin_align = 1
-let g:splitjoin_ruby_hanging_args = 0
-" }}}
-
-Plug 'junegunn/vim-easy-align' " A Vim alignment plugin
+" A Vim alignment plugin
+Plug 'junegunn/vim-easy-align'
 " Easy Align {{{
 vmap <bar> <Plug>(EasyAlign)
 nmap <Leader><bar> <Plug>(EasyAlign)
 " }}}
 
-Plug 'vim-scripts/Gundo', {'on':'GundoToggle'} " Visualize your undo tree.
+" Visualize your undo tree.
+Plug 'vim-scripts/Gundo', {'on':'GundoToggle'}
 " Gundo {{{
 nnoremap <C-u> :GundoToggle<CR>
 " }}}
 
-Plug 'tpope/vim-repeat' " repeat.vim: enable repeating supported plugin maps with .
+" repeat.vim: enable repeating supported plugin maps with .
+Plug 'tpope/vim-repeat'
 
-Plug 'kana/vim-textobj-user' " Vim plugin: Create your own text objects
+" Vim plugin: Create your own text objects
+Plug 'kana/vim-textobj-user'
 
-Plug 'nelstrom/vim-textobj-rubyblock' " A custom text object for selecting ruby blocks. - ar/ir
+" A custom text object for selecting ruby blocks. - ar/ir
+Plug 'nelstrom/vim-textobj-rubyblock'
 
-Plug 'wellle/targets.vim' " Vim plugin that provides additional text objects
+" Vim plugin that provides additional text objects
+Plug 'wellle/targets.vim'
 
-Plug 'ggVGc/vim-fuzzysearch' " Makes search in vim fuzzy
-" FuzzySearch {{{
-map <Leader>/ :FuzzySearch<cr>
-" }}}
-
-Plug 'haya14busa/incsearch.vim' " Improved incremental searching for Vim
+" Improved incremental searching for Vim
+Plug 'haya14busa/incsearch.vim'
 " incsearch {{{
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 " }}}
 
-Plug 'justinmk/vim-sneak' " The missing motion for Vim
+" The missing motion for Vim
+Plug 'justinmk/vim-sneak'
 " vim sneak {{{
 nmap <Leader>z <Plug>Sneak_s
 nmap <Leader>Z <Plug>Sneak_S
@@ -419,39 +397,70 @@ xmap <leader>z <Plug>Sneak_s
 xmap <leader>Z <Plug>Sneak_S
 " }}}
 
-Plug 'Lokaltog/vim-easymotion' " Vim motions on speed!
+" Vim motions on speed!
+Plug 'Lokaltog/vim-easymotion'
 " EasyMotion {{{
-let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+" keep cursor colum when JK motion
+let g:EasyMotion_startofline = 0
 let g:EasyMotion_smartcase = 1
 map <Leader>s <Plug>(easymotion-prefix)
 " }}}
 
-Plug 'unblevable/quick-scope' " Lightning fast left-right movement in Vim
-
-Plug 'Konfekt/FastFold' " Speed up Vim by updating folds only when just.
-
-Plug 'bling/vim-airline' " lean & mean status/tabline for vim that's light as air
-" Airline {{{
-let g:airline#extensions#tabline#enabled = 0 " Automatically displays tab line.
-let g:airline_powerline_fonts = 1 " Integrating with powerline fonts
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved' " smartly uniquify buffers names with similar filename,
-let g:airline_inactive_collapse=1 " collapse inactive windows to filename only
-let g:airline#extensions#tabline#fnamecollapse = 0
-let g:airline#extensions#tabline#tab_min_count = 1
+" Lightning fast left-right movement in Vim
+Plug 'unblevable/quick-scope'
+" {{{ quick scope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " }}}
 
-Plug 'godlygeek/csapprox' " Make gvim-only colorschemes work transparently in terminal vim
+" Speed up Vim by updating folds only when just.
+Plug 'Konfekt/FastFold'
 
-Plug 'flazz/vim-colorschemes' " one colorscheme pack to rule them all!
+" lean & mean status/tabline for vim that's light as air
+Plug 'bling/vim-airline'
+" Airline {{{
+" Disable tab line
+let g:airline#extensions#tabline#enabled = 0
+" Integrating with powerline fonts
+let g:airline_powerline_fonts = 1
+" smartly uniquify buffers names with similar filename,
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+" collapse inactive windows to filename only
+let g:airline_inactive_collapse=1
+let g:airline#extensions#tabline#fnamecollapse = 0
+let g:airline#extensions#tabline#tab_min_count = 1
+let g:airline#theme='myluna'
+let g:airline#extensions#default#section_truncate_width = {
+  \ 'b': 79,
+  \ 'x': 60,
+  \ 'y': 88,
+  \ 'z': 45,
+  \ }
+" from https://github.com/ompugao/vim-airline-cwd
+function! Shrinkedcwd()
+  return substitute(getcwd(), '\v\w\zs.{-}\ze(\\|/)', '', 'g')
+endfunction
+let g:airline_section_b = '%{airline#util#wrap(airline#extensions#hunks#get_hunks(),0)}' .
+  \ ' %{Shrinkedcwd()}' .
+  \ ' %{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
+" }}}
 
-Plug 'mhinz/vim-janah' " A dark colorscheme for Vim.
+" Make gvim-only colorschemes work transparently in terminal vim
+Plug 'godlygeek/csapprox'
 
-Plug 'oblitum/rainbow', {'on':'RainbowToggle'} " Rainbow Parentheses Improved
+" one colorscheme pack to rule them all!
+Plug 'flazz/vim-colorschemes'
+
+" A dark colorscheme for Vim.
+Plug 'mhinz/vim-janah'
+
+" Rainbow Parentheses Improved
+Plug 'oblitum/rainbow', {'on': 'RainbowToggle'}
 " Rainbow {{{
 nnoremap <silent> <F9> :RainbowToggle<cr>
 " }}}
 
-Plug 'nathanaelkane/vim-indent-guides', {'on':'IndentGuidesToggle'} " A Vim plugin for visually displaying indent levels in code
+" A Vim plugin for visually displaying indent levels in code
+Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 " Indent Guides {{{
 nnoremap <silent> <F10> :IndentGuidesToggle<cr>
 let g:indent_guides_start_level=2
@@ -469,14 +478,17 @@ if !has('gui_running')
 endif
 " }}}
 
-Plug 'ryanoasis/vim-devicons' " adds font icons to programming languages, libraries, and web developer filetypes
+" adds font icons to programming languages, libraries, and web developer filetypes
+Plug 'ryanoasis/vim-devicons'
 
-Plug 'Keithbsmiley/investigate.vim' " A Vim plugin for looking up documentation
+" A Vim plugin for looking up documentation
+Plug 'Keithbsmiley/investigate.vim'
 " Investigate {{{
 nnoremap <silent> <leader>hh :call investigate#Investigate()<CR>
 " }}}
 
-Plug 'KabbAmine/zeavim.vim' " Zeal for Vim
+" Zeal for Vim
+Plug 'KabbAmine/zeavim.vim'
 " Zeal {{{
 let g:zv_disable_mapping = 1
 nmap <leader>hz <Plug>Zeavim
@@ -485,54 +497,81 @@ nmap <leader>hZ <Plug>ZVKeyword
 nmap <leader>hx <Plug>ZVKeyDocset
 " }}}
 
-Plug 'mhinz/vim-sayonara' " Sane buffer/window deletion.
+" Sane buffer/window deletion.
+Plug 'mhinz/vim-sayonara'
 " Sayonara {{{
 nnoremap <leader>q :Sayonara!<cr>
 nnoremap <leader>Q :Sayonara<cr>
 let g:sayonara_confirm_quit = 1
 " }}}
 
-"Plug 'tmux-plugins/vim-tmux-focus-events' " Make terminal vim and tmux work better together.
-
-"Plug 'ludovicchabant/vim-gutentags' " A Vim plugin that manages your tag files
-" Gutentags {{{
-"let g:gutentags_exclude = ['node_modules']
-" }}}
+" Make terminal vim and tmux work better together.
+"Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " File types {{{
-Plug 'vim-ruby/vim-ruby' " Vim/Ruby Configuration Files
-Plug 'rodjek/vim-puppet' " Puppet niceties for your Vim setup
-Plug 'vim-scripts/JSON.vim' " A syntax highlighting file for JSON
-Plug 'hallison/vim-markdown' " Markdown syntax highlight for Vim editor with snippets support
-Plug 'tpope/vim-rails' " rails.vim: Ruby on Rails power tools
-Plug 'tpope/vim-bundler' " bundler.vim: Lightweight support for Ruby's Bundler
-Plug 'tpope/vim-endwise' " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
-Plug 'derekwyatt/vim-scala' " My work on integration of Scala into Vim - not a ton here, but useful for me.
-Plug 'mustache/vim-mustache-handlebars' " mustache and handlebars mode for vim http://mustache.github.io
-Plug 'yaymukund/vim-rabl' " Treat RABL files as ruby files, with a little extra sugar for RABL-specific DSL methods.
-Plug 'moll/vim-node' " Tools and environment to make Vim superb for developing with Node.js. Like Rails.vim for Node.
-Plug 'marijnh/tern_for_vim', {'do': 'npm install'} " Tern plugin for Vim
-Plug 'jelera/vim-javascript-syntax' " Enhanced javascript syntax file for Vim
-Plug 'othree/javascript-libraries-syntax.vim' " Syntax for JavaScript libraries
-Plug 'vim-scripts/JavaScript-Indent' " Javascript indenter (HTML indent is included)
+" Puppet niceties for your Vim setup
+Plug 'rodjek/vim-puppet', {'for': 'puppet'}
+" Markdown syntax highlight for Vim editor with snippets support
+Plug 'hallison/vim-markdown'
+" My work on integration of Scala into Vim - not a ton here, but useful for me.
+" Plug 'derekwyatt/vim-scala'
 
-" Uncomment when tpope's version supports figwheel
-"Plug 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
-Plug 'wamaral/vim-fireplace' " fireplace.vim: Clojure REPL support
-Plug 'tpope/vim-salve' " salve.vim: static support for Leiningen and Boot
-Plug 'tpope/vim-classpath' " classpath.vim: Set 'path' from the Java class path
-Plug 'guns/vim-sexp' " Precision Editing for S-expressions
-Plug 'tpope/vim-sexp-mappings-for-regular-people' " vim-sexp mappings for regular people
-Plug 'guns/vim-slamhound' " Slamhound integration for vim.
-Plug 'Deraen/vim-cider' " Additional IDE-like functionality for Clojure development using cider-nrepl
-Plug 'venantius/vim-eastwood' " A Vim plugin for Clojure's Eastwood linter
+" ruby
+" Vim/Ruby Configuration Files
+Plug 'vim-ruby/vim-ruby'
+" rails.vim: Ruby on Rails power tools
+Plug 'tpope/vim-rails'
+" bundler.vim: Lightweight support for Ruby's Bundler
+Plug 'tpope/vim-bundler'
+" wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
+Plug 'tpope/vim-endwise'
+" Treat RABL files as ruby files, with a little extra sugar for RABL-specific DSL methods.
+Plug 'yaymukund/vim-rabl'
 
-" Plug 'pangloss/vim-javascript' " Vastly improved Javascript indentation and syntax support in Vim
+"javascript
+" Tools and environment to make Vim superb for developing with Node.js. Like Rails.vim for Node.
+Plug 'moll/vim-node', {'for': 'javascript'}
+" Tern plugin for Vim
+Plug 'marijnh/tern_for_vim', {'do': 'npm install', 'for': 'javascript'}
+" YAJS.vim: Yet Another JavaScript Syntax for Vim
+Plug 'othree/yajs.vim', {'for': 'javascript'}
+" Syntax for JavaScript libraries
+Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
+" JavaScript indentation for VIM
+Plug 'gavocanov/vim-js-indent', {'for': 'javascript'}
+" mustache and handlebars mode for vim http://mustache.github.io
+" Plug 'mustache/vim-mustache-handlebars'
+" A syntax highlighting file for JSON
+" Plug 'vim-scripts/JSON.vim'
+
+" clojure
+" fireplace.vim: Clojure REPL support
+Plug 'tpope/vim-fireplace', {'for':'clojure'}
+" salve.vim: static support for Leiningen and Boot
+Plug 'tpope/vim-salve', {'for': 'clojure'}
+" classpath.vim: Set 'path' from the Java class path
+Plug 'tpope/vim-classpath', {'for': 'clojure'}
+" Slamhound integration for vim.
+Plug 'guns/vim-slamhound', {'for': 'clojure'}
+" Additional IDE-like functionality for Clojure development using cider-nrepl
+Plug 'Deraen/vim-cider', {'for': 'clojure'}
+" A Vim plugin for Clojure's Eastwood linter
+Plug 'venantius/vim-eastwood', {'for': 'clojure'}
+
+" lisps
+" Precision Editing for S-expressions
+Plug 'guns/vim-sexp'
+" vim-sexp mappings for regular people
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+
+" Vastly improved Javascript indentation and syntax support in Vim
+" Plug 'pangloss/vim-javascript'
 " Pangloss Javascript {{{
-let javascript_enable_domhtmlcss = 1
+"let javascript_enable_domhtmlcss = 1
 " }}}
 
-Plug 'kchmck/vim-coffee-script' " CoffeeScript support for vim
+" CoffeeScript support for vim
+Plug 'kchmck/vim-coffee-script'
 " CoffeeScript {{{
 let coffee_compile_vert = 1
 let coffee_watch_vert = 1
@@ -554,7 +593,6 @@ colorscheme janah
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_selecta'])
 call unite#custom#profile('default', 'context', { 'marked_icon':'✓'})
-let g:unite_source_history_yank_enable = 1
 let g:unite_enable_start_insert = 1
 let g:unite_source_session_path = $HOME . "/.vim_sessions"
 let g:unite_source_session_enable_auto_save = 1
@@ -600,6 +638,7 @@ vnoremap > >gv
 
 " fast save
 nnoremap <leader>w :update<cr>
+nnoremap <leader>fs :update<cr>
 nnoremap <leader>W :wa<cr>
 
 " system clipboard
