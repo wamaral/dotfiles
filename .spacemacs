@@ -38,6 +38,7 @@ values."
      extra-langs
      eyebrowse
      git
+     github
      gtags
      (haskell :variables
               haskell-enable-ghc-mod-support t
@@ -248,14 +249,25 @@ layers configuration."
         engine/browser-function 'browse-url-generic
         browse-url-generic-program "google-chrome")
 
+  ;; auto complete
   (global-company-mode)
+  (setq ac-auto-start 2)
+  (setq ac-auto-show-menu 0.8)
+  (setq ac-quick-help-delay 1)
+  (add-hook 'ruby-mode-hook
+            (lambda ()
+              (make-local-variable 'ac-stop-words)
+              (add-to-list 'ac-stop-words "end")))
+
+  ;; cider
+  (add-hook 'cider-mode-hook #'eldoc-mode)
+  (setq cider-repl-pop-to-buffer-on-connect t)
 
   (setq evil-shift-width 2)
   (setq evil-find-skip-newlines t)
+  (setq-default evil-want-fine-undo nil)
 
   (setq magit-repository-directories '("~/dev/abril/"))
-
-  (setq-default evil-want-fine-undo nil)
 
   ;; (setq projectile-tags-command "ctags")
   (defun ao/expand-completion-table (orig-fun &rest args)
@@ -279,9 +291,28 @@ layers configuration."
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
 
+  (setq web-mode-enable-auto-pairing t)
+
+  ;; coffee mode
+  (setq coffee-tab-width 2)
+  (setq coffee-args-compile '("-c" "-m")) ;; generating sourcemap
+  (add-hook 'coffee-after-compile-hook 'sourcemap-goto-corresponding-point)
+
+  ;; json mode
+  (setq json-reformat:indent-width 2)
+  (setq json-reformat:pretty-string t)
+
+  ;; tern
+  (eval-after-load 'tern
+    '(progn
+       (require 'tern-auto-complete)
+       (tern-ac-setup)))
+
   (setq-default ruby-version-manager 'rbenv)
   (setq ruby-insert-encoding-magic-comment nil)
   (setq enh-ruby-add-encoding-comment-on-save nil)
+
+  (volatile-highlights-mode t)
 
   (indent-guide-global-mode)
   (setq indent-guide-recursive t)
