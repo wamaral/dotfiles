@@ -46,7 +46,7 @@ myTerminal = "/usr/bin/sakura"
 
 -- Fonts and colors
 myFont = "-*-montecarlo-medium-r-normal-*-11-*-*-*-c-*-*-*"
-myIconDir = "/home/wagner/.xmonad/dzen2"
+myIconDir = "/home/wamaral/.xmonad/dzen2"
 -- general
 myNormalFGColor = "#ffffff"
 myNormalBGColor = "#0f0f0f"
