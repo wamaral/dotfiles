@@ -77,7 +77,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(4clojure clojure-cheatsheet inf-clojure rbenv)
+   dotspacemacs-additional-packages '(4clojure clojure-cheatsheet inf-clojure rbenv editorconfig)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(php-extras)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that

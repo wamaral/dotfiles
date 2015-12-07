@@ -508,6 +508,12 @@ let g:sayonara_confirm_quit = 1
 " Make terminal vim and tmux work better together.
 "Plug 'tmux-plugins/vim-tmux-focus-events'
 
+" EditorConfig plugin for Vim http://editorconfig.org
+Plug 'editorconfig/editorconfig-vim'
+" EditorConfig {{{
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+" }}}
+
 " File types {{{
 " Puppet niceties for your Vim setup
 Plug 'rodjek/vim-puppet', {'for': 'puppet'}
