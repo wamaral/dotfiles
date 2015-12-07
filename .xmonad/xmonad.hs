@@ -214,7 +214,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 -- Custom config options:
 --
 
-myStatusBar = "dzen2 -x '0' -y '0' -h '20' -w '1100' -ta 'l' -fg '" ++ myNormalFGColor ++ "' -bg '" ++ myNormalBGColor ++ "' -fn '" ++ myFont ++ "'"
+myStatusBar = "dzen2 -x '0' -y '0' -h '20' -w '950' -ta 'l' -fg '" ++ myNormalFGColor ++ "' -bg '" ++ myNormalBGColor ++ "' -fn '" ++ myFont ++ "'"
 
 myXPConfig = defaultXPConfig
     { font = "" ++ myFont ++ ""
