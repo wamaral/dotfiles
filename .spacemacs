@@ -267,7 +267,7 @@ layers configuration."
   (setq evil-find-skip-newlines t)
   (setq-default evil-want-fine-undo nil)
 
-  (setq magit-repository-directories '("~/dev/abril/"))
+  (setq magit-repository-directories '("~/dev/"))
 
   ;; (setq projectile-tags-command "ctags")
   (defun ao/expand-completion-table (orig-fun &rest args)
