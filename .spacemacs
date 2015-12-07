@@ -250,6 +250,15 @@ layers configuration."
         engine/browser-function 'browse-url-generic
         browse-url-generic-program "google-chrome")
 
+  ;; aggressive indent
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  (add-hook 'css-mode-hook #'aggressive-indent-mode)
+
+  ;; smartparens
+  (add-hook 'emacs-lisp-mode-hook #'smartparens-strict-mode)
+  (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+
   ;; auto complete
   (global-company-mode)
   (setq ac-auto-start 2)
