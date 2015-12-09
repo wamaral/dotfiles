@@ -282,7 +282,9 @@ layers configuration."
   (setq evil-find-skip-newlines t)
   (setq-default evil-want-fine-undo nil)
 
+  ;; magit
   (setq magit-repository-directories '("~/dev/"))
+  (evil-leader/set-key "gB" 'magit-blame-quit)
 
   ;; tags
   (setq projectile-tags-command "ctags -e '--options=/home/wamaral/.ctags'")
