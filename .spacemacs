@@ -279,7 +279,8 @@ layers configuration."
 
   (setq magit-repository-directories '("~/dev/"))
 
-  ;; (setq projectile-tags-command "ctags")
+  ;; tags
+  (setq projectile-tags-command "ctags -e '--options=/home/wamaral/.ctags'")
   (defun ao/expand-completion-table (orig-fun &rest args)
     "Extract all symbols from COMPLETION-TABLE before calling projectile--tags."
     (let ((completion-table (all-completions "" (car args))))
@@ -287,6 +288,10 @@ layers configuration."
   (advice-add 'projectile--tags :around #'ao/expand-completion-table)
   (setq helm-gtags-display-style 'detail)
   (setq helm-gtags-auto-update t)
+  (setq helm-gtags-ignore-case t)
+  (setq tags-revert-without-query t)
+  (setq tags-case-fold-search t) ; t=case-insensitive, nil=case-sensitive
+  (setq large-file-warning-threshold (* 50 1024 1024)) ; 50MB
 
   (setq-default js2-basic-offset 2
                 js-indent-level 2
