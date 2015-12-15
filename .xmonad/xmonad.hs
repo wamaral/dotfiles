@@ -159,9 +159,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_Tab), shiftNextScreen >> nextScreen) -- window to next xinerama screen
     , ((modm .|. controlMask, xK_Tab), swapNextScreen >> nextScreen) -- swap xinerama screens
 
-    -- Kill xfdesktop (automatically starts after plugging external monitor)
-    , ((modm, xK_q), spawn "killall xfdesktop")
-
     -- Quit xmonad
     , ((modm .|. controlMask, xK_q), io exitSuccess)
 
