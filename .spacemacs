@@ -24,7 +24,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      (auto-completion :variables
-                      ;; auto-completion-enable-help-tooltip t
+                      auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t)
      better-defaults
@@ -32,13 +32,22 @@ values."
      ;;          clojure-enable-fancify-symbols t)
      clojure
      colors
+     command-log
      common-lisp
+     dash
+     dockerfile
+     elixir
+     elm
      emacs-lisp
+     erlang
+     evil-cleverparens
      evil-commentary
      extra-langs
      eyebrowse
+     games
      git
      github
+     go
      gtags
      (haskell :variables
               haskell-enable-ghc-mod-support t
@@ -64,14 +73,18 @@ values."
             shell-default-height 30
             shell-default-position 'bottom)
      shell-scripts
-     spell-checking
+     (spell-checking :variables
+                     spell-checking-enable-by-default nil
+                     spell-checking-enable-auto-dictionary t)
+     sql
      (syntax-checking :variables
                       syntax-checking-enable-tooltips nil)
-     sql
      themes-megapack
+     typescript
      unimpaired
      version-control
      ;; vim-empty-lines
+     xkcd
      yaml
      )
    ;; List of additional packages that will be installed without being
@@ -338,6 +351,8 @@ layers configuration."
 
   (indent-guide-global-mode)
   (setq indent-guide-recursive t)
+
+  (global-flycheck-mode)
 
   (global-whitespace-mode)
   (setq whitespace-style '(face trailing tabs empty))
