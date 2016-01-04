@@ -3,6 +3,7 @@
 -- validate syntax: xmonad --recompile
 {-# OPTIONS -fno-warn-missing-signatures #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE FlexibleContexts #-}
 ------------------------------------------------------------------------
 
 import XMonad hiding ( (|||) )
@@ -20,6 +21,8 @@ import XMonad.Actions.FloatKeys
 import XMonad.Actions.GridSelect
 
 import XMonad.Config.Xfce
+-- import XMonad.Config.Desktop
+-- import XMonad.Config.Gnome
 
 import XMonad.Hooks.DynamicHooks
 import XMonad.Hooks.DynamicLog
