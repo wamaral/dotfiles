@@ -16,9 +16,12 @@ import qualified XMonad.Actions.FlexibleResize as Flex
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
+import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
+import XMonad.Actions.DwmPromote
 import XMonad.Actions.FloatKeys
 import XMonad.Actions.GridSelect
+import XMonad.Actions.Submap
 
 import XMonad.Config.Xfce
 -- import XMonad.Config.Desktop
@@ -26,20 +29,30 @@ import XMonad.Config.Xfce
 
 import XMonad.Hooks.DynamicHooks
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 
+import XMonad.Layout.Drawer
+import XMonad.Layout.HintedGrid
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
+import XMonad.Layout.Renamed
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.TwoPane
 
 import XMonad.Prompt
+import XMonad.Prompt.RunOrRaise
 import XMonad.Prompt.Shell
 import XMonad.Prompt.XMonad
 
+import XMonad.Util.Dzen hiding (font)
+import XMonad.Util.EZConfig
 import XMonad.Util.NamedWindows
+import XMonad.Util.Replace
 import XMonad.Util.Run
 
 -- The preferred terminal program, which is used in a binding below and by
@@ -100,9 +113,10 @@ myWorkspaces = ["1:chat", "2:web", "3:dev", "4:dev", "5:servers", "6:misc", "7:m
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_c), spawn $ XMonad.terminal conf) -- launch term
     , ((mod1Mask, xK_F4), kill) -- kill window
+    , ((mod1Mask, xK_F5), kill1) -- close or kill window
 
       -- Runners
-    , ((modm, xK_space), shellPrompt myXPConfig) -- app runner
+    , ((modm, xK_space), runOrRaisePrompt myXPConfig) -- app runner
     , ((modm .|. shiftMask, xK_space), xmonadPrompt myXPConfig) -- xmonad actions runner
 
       -- Printscreen
@@ -113,7 +127,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
       -- Selecting windows
     , ((modm, xK_h), windows W.focusUp) -- move focus to the previous window
     , ((modm, xK_l), windows W.focusDown) -- move focus to the next window
-    , ((modm, xK_m), windows W.focusMaster) -- move focus to the master window
+    , ((modm, xK_m), dwmpromote) -- swap focused with master
     , ((modm, xK_Return), focusUrgent) -- move focus to urgent window
       -- Grid select
     , ((modm, xK_g), goToSelected myGSConfig)
@@ -133,8 +147,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_f), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_f), setLayout $ XMonad.layoutHook conf) -- Default workspace layout
     , ((modm, xK_F1), sendMessage $ JumpToLayout "Full")
-    , ((modm, xK_F2), sendMessage $ JumpToLayout "ResizableTall")
-    , ((modm, xK_F3), sendMessage $ JumpToLayout "Mirror ResizableTall")
+    , ((modm, xK_F2), sendMessage $ JumpToLayout "RTile")
+    , ((modm, xK_F3), sendMessage $ JumpToLayout "MirrorRTile")
+    , ((modm, xK_F4), sendMessage $ JumpToLayout "MiddleTile")
+    , ((modm, xK_F5), sendMessage $ JumpToLayout "MirrorMiddleTile")
 
       -- Resizing layouts
     , ((modm .|. shiftMask, xK_j), sendMessage Shrink) -- shrink the master area
@@ -181,6 +197,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-shift-[1..0], Move client to workspace N
     --
     [((modm .|. shiftMask, k), windows $ W.shift i)
+        | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])]
+    ++
+
+    --
+    -- mod-ctrl-[1..0], Copy client to workspace N
+    --
+    [((modm .|. controlMask, k), windows $ copy i)
         | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])]
     ++
 
@@ -258,13 +281,21 @@ myGSConfig = defaultGSConfig
 -- which denotes layout choice.
 --
 myLayout = avoidStruts $ layoutHints $ smartBorders
-     (Full |||  resizableTile ||| Mirror resizableTile)
+     (rTile ||| rMirTile ||| Full ||| rMidTile ||| rMirMidTile)
   where
     -- default tiling algorithm partitions the screen into two panes
-    -- tiled   = Tall nmaster delta 1/2
+    -- tiled = ResizableTall nmaster delta 1/2
+
+    myMiddleTile = ResizableTall nmaster delta 0.5 []
+    myMirrorMiddleTile = Mirror myMiddleTile
+    rMidTile = renamed [Replace "MiddleTile"] $ myMiddleTile
+    rMirMidTile = renamed [Replace "MirrorMiddleTile"] $ myMirrorMiddleTile
 
     -- resizable version
-    resizableTile = ResizableTall nmaster delta ratio []
+    myResizableTile = ResizableTall nmaster delta ratio []
+    myMirrorResizableTile = Mirror myResizableTile
+    rTile = renamed [Replace "RTile"] $ myResizableTile
+    rMirTile = renamed [Replace "MirrorRTile"] $ myMirrorResizableTile
 
     -- The default number of windows in the master pane
     nmaster = 1
@@ -273,7 +304,7 @@ myLayout = avoidStruts $ layoutHints $ smartBorders
     ratio = toRational (2 / (1 + sqrt 5 :: Double))
 
     -- Percent of screen to increment by when resizing panes
-    delta   = 3/100
+    delta = 0.03
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -298,14 +329,15 @@ myManageHook = composeAll . concat $
     , [ className =? x --> doIgnore | x <- ignoreByClass ]
     , [ title     =? x --> doIgnore | x <- ignoreByTitle ]
     , [ resource  =? x --> doIgnore | x <- ignoreByResource ]
-    , [ stringProperty "WM_WINDOW_ROLE" =? x --> doIgnore | x <- floatByResource ]
+    , [ stringProperty "WM_WINDOW_ROLE" =? x --> doIgnore | x <- ignoreByResource ]
+    , [ stringProperty "WM_NAME" =? x --> doFloat | x <- floatByTitle ]
     ] where
-    floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts"]
-    floatByTitle    = ["Downloads", "Iceweasel Preferences", "Save As..."]
+    floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts", "mplayer2", "File-roller", "Gcalctool", "Exo-helper-1", "Gksu", "XClock", "Main", "wrapper-1.0"]
+    floatByTitle    = ["Downloads", "Iceweasel Preferences", "Save As...", "Choose a file", "Open Image", "File Operation Progress", "Firefox Preferences", "Preferences", "Search Engines", "Set up sync", "Passwords and Exceptions", "Autofill Options", "Rename File", "Copying files", "Moving files", "File Properties", "Replace", "Quit GIMP", "Change Foreground Color", "Change Background Color", ""]
     floatByResource = ["pop-up", "presentationWidget"]
-    ignoreByClass    = ["Xfce4-notifyd"]
+    ignoreByClass    = ["Xfce4-notifyd", "desktop_window"]
     ignoreByTitle    = []
-    ignoreByResource = ["desktop_window", "kdesktop"]
+    ignoreByResource = ["desktop", "desktop_window", "kdesktop"]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -319,7 +351,8 @@ myManageHook = composeAll . concat $
 -- It will add EWMH event handling to your custom event hooks by
 -- combining them with ewmhDesktopsEventHook.
 --
-myEventHook _ = return (All True)
+-- myEventHook _ = return (All True)
+myEventHook = mempty
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -348,31 +381,33 @@ myEventHook _ = return (All True)
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 --
-myStartupHook = return ()
+myStartupHook = startupHook xfceConfig >> setWMName "LG3D"
 
 
 ------------------------------------------------------------------------
 -- dynamicLog pretty printer for dzen:
 --
 myDzenPP h = defaultPP
-    { ppCurrent = currentFmt . \wsId -> dropIx wsId
-    , ppVisible = visibleFmt . \wsId -> dropIx wsId
+    { ppCurrent = currentFmt . \wsId -> dropIx wsId -- xinerama current screen
+    , ppVisible = visibleFmt . \wsId -> dropIx wsId -- xinerama other screen
     , ppHidden = hiddenFmt . \wsId -> dropIx wsId
     , ppHiddenNoWindows = \wsId -> if wsId `notElem` staticWs
                                    then ""
                                    else hiddenNoWinFmt . dropIx $ wsId
     , ppUrgent = urgentFmt . \wsId -> dropIx wsId
-    , ppSep = " "
+    , ppSep = " " -- sections other than workspaces
     , ppWsSep = ""
     , ppTitle = dzenColor ("" ++ myNormalFGColor ++ "") "" . titleFmt
     , ppLayout = dzenColor ("" ++ myNormalFGColor ++ "") "" .
         (\x -> case x of
         "Hinted Full" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_full.xbm)"
-        "Hinted ResizableTall" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_tall.xbm)"
-        "Hinted Mirror ResizableTall" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_mirror_tall.xbm)"
-        "Hinted combining Tabbed Bottom Simplest and Full with TwoPane using Not (Role \"gimp-toolbox\")" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout-gimp.xbm)"
+        "Hinted RTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_tall.xbm)"
+        "Hinted MirrorRTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_mirror_tall.xbm)"
+        "Hinted MiddleTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_tall.xbm)"
+        "Hinted MirrorMiddleTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_mirror_tall.xbm)"
         _ -> x
         )
+    -- , ppExtras = []
     , ppOutput = hPutStrLn h
     }
     where
@@ -454,8 +489,9 @@ instance UrgencyHook LibNotifyUrgencyHook where
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
+  replace
   myDzen <- spawnPipe myStatusBar
-  xmonad $ withUrgencyHook NoUrgencyHook $ xfceConfig {
+  xmonad $ withUrgencyHook NoUrgencyHook $ ewmh xfceConfig {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
