@@ -25,7 +25,7 @@ if !isdirectory($HOME.'/.vim/undodir')
 endif
 " }}}
 
-" use old regex (vim >7.4), improves syntax speed
+" use new regex (vim >7.4), improves syntax speed
 set regexpengine=1
 set number
 set relativenumber
@@ -53,7 +53,6 @@ set wildmenu
 set wildmode=list:longest
 set wildignore=*.o,*.obj,*~
 set formatoptions-=o
-set formatoptions+=j
 set foldmethod=indent
 set foldcolumn=2
 set foldlevelstart=99
@@ -83,6 +82,11 @@ set updatetime=500
 set laststatus=2
 if !has('nvim')
 set ttymouse=xterm2
+endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+  " Delete comment character when joining commented lines
+  set formatoptions+=j
 endif
 
 if has('path_extra')
@@ -132,13 +136,18 @@ call plug#begin('~/.vim/bundle')
 
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 
-" Next generation completion framework after neocomplcache
-Plug 'Shougo/neocomplete.vim'
-" neocomplete {{{
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-"}}}
+" A code-completion engine for Vim
+Plug 'Valloric/YouCompleteMe', {'do': './install.py'}
+" YCM {{{
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:ycm_complete_in_comments = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_min_num_of_chars_for_completion = 2
+" }}}
 
 " Unite and create user interfaces
 Plug 'Shougo/unite.vim'
@@ -231,6 +240,20 @@ nmap [unite]? :echo "[ ]main [A]sources [B]uf/mru [C]md c[D] [F]ile [G]rep [H]el
 " A command-line fuzzy finder written in Go
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
+" vim-snipmate default snippets (Previously snipmate-snippets)
+Plug 'honza/vim-snippets'
+
+" The ultimate snippet solution for Vim
+Plug 'SirVer/ultisnips'
+" UltiSnips {{{
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" }}}
+
+" emmet for vim
+Plug 'mattn/emmet-vim'
+
 " commentary.vim: comment stuff out
 Plug 'tpope/vim-commentary'
 
@@ -238,6 +261,8 @@ Plug 'tpope/vim-commentary'
 nnoremap <silent><f1> :Vexplore<cr>
 nnoremap <silent><leader>f :Explore<cr>
 let g:netrw_preview   = 1
+" tree
+let g:netrw_liststyle = 3
 let g:netrw_winsize   = 25
 
 autocmd FileType netrw call s:setup_netrw()
@@ -257,6 +282,27 @@ function! s:quit_netrw()
 endfunction
 " }}}
 
+" Vim plugin that displays tags in a window, ordered by scope
+Plug 'majutsushi/tagbar'
+" Tagbar {{{
+nnoremap <silent> <f2> :TagbarToggle<cr>
+
+let g:tagbar_type_coffee = {
+      \ 'ctagstype' : 'coffee',
+      \ 'kinds'     : [ 'c:classes', 'm:methods', 'f:functions', 'v:variables', 'f:fields' ]
+      \}
+
+let g:tagbar_type_puppet = {
+      \ 'ctagstype': 'puppet',
+      \ 'kinds': [ 'c:class', 's:site', 'n:node', 'd:definition' ]
+      \}
+
+let g:tagbar_type_xslt = {
+      \ 'ctagstype' : 'xslt',
+      \ 'kinds' : [ 'v:variables', 't:templates' ]
+      \}
+" }}}
+
 " Syntax checking hacks for vim
 Plug 'scrooloose/syntastic'
 " Syntastic {{{
@@ -264,6 +310,12 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java', 'scala']}
 let g:syntastic_javascript_checkers = ['eslint']
 " }}}
+
+" vimscript for gist
+Plug 'mattn/gist-vim', {'on':'Gist'} | Plug 'mattn/webapi-vim'
+
+" gitk for Vim
+Plug 'gregsexton/gitv', {'on':'Gitv'}
 
 " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
 Plug 'airblade/vim-gitgutter'
@@ -303,6 +355,19 @@ Plug 'tpope/vim-surround'
 " provides insert mode auto-completion for quotes, parens, brackets, etc.
 Plug 'Raimondi/delimitMate'
 
+" A Vim alignment plugin
+Plug 'junegunn/vim-easy-align'
+" Easy Align {{{
+vmap <bar> <Plug>(EasyAlign)
+nmap <Leader><bar> <Plug>(EasyAlign)
+" }}}
+
+" Visualize your undo tree.
+Plug 'vim-scripts/Gundo', {'on':'GundoToggle'}
+" Gundo {{{
+nnoremap <C-u> :GundoToggle<CR>
+" }}}
+
 " repeat.vim: enable repeating supported plugin maps with .
 Plug 'tpope/vim-repeat'
 
@@ -321,6 +386,30 @@ Plug 'haya14busa/incsearch.vim'
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
+" }}}
+
+" The missing motion for Vim
+Plug 'justinmk/vim-sneak'
+" vim sneak {{{
+nmap <Leader>z <Plug>Sneak_s
+nmap <Leader>Z <Plug>Sneak_S
+xmap <leader>z <Plug>Sneak_s
+xmap <leader>Z <Plug>Sneak_S
+" }}}
+
+" Vim motions on speed!
+Plug 'Lokaltog/vim-easymotion'
+" EasyMotion {{{
+" keep cursor colum when JK motion
+let g:EasyMotion_startofline = 0
+let g:EasyMotion_smartcase = 1
+map <Leader>s <Plug>(easymotion-prefix)
+" }}}
+
+" Lightning fast left-right movement in Vim
+Plug 'unblevable/quick-scope'
+" {{{ quick scope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " }}}
 
 " Speed up Vim by updating folds only when just.
@@ -364,6 +453,12 @@ Plug 'flazz/vim-colorschemes'
 " A dark colorscheme for Vim.
 Plug 'mhinz/vim-janah'
 
+" Rainbow Parentheses Improved
+Plug 'oblitum/rainbow', {'on': 'RainbowToggle'}
+" Rainbow {{{
+nnoremap <silent> <F9> :RainbowToggle<cr>
+" }}}
+
 " A Vim plugin for visually displaying indent levels in code
 Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 " Indent Guides {{{
@@ -383,10 +478,23 @@ if !has('gui_running')
 endif
 " }}}
 
+" adds font icons to programming languages, libraries, and web developer filetypes
+Plug 'ryanoasis/vim-devicons'
+
 " A Vim plugin for looking up documentation
 Plug 'Keithbsmiley/investigate.vim'
 " Investigate {{{
 nnoremap <silent> <leader>hh :call investigate#Investigate()<CR>
+" }}}
+
+" Zeal for Vim
+Plug 'KabbAmine/zeavim.vim'
+" Zeal {{{
+let g:zv_disable_mapping = 1
+nmap <leader>hz <Plug>Zeavim
+vmap <leader>hz <Plug>ZVVisSelection
+nmap <leader>hZ <Plug>ZVKeyword
+nmap <leader>hx <Plug>ZVKeyDocset
 " }}}
 
 " Sane buffer/window deletion.
@@ -407,8 +515,12 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 " }}}
 
 " File types {{{
+" Puppet niceties for your Vim setup
+Plug 'rodjek/vim-puppet', {'for': 'puppet'}
 " Markdown syntax highlight for Vim editor with snippets support
 Plug 'hallison/vim-markdown'
+" My work on integration of Scala into Vim - not a ton here, but useful for me.
+" Plug 'derekwyatt/vim-scala'
 
 " ruby
 " Vim/Ruby Configuration Files
@@ -434,7 +546,7 @@ Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
 " JavaScript indentation for VIM
 Plug 'gavocanov/vim-js-indent', {'for': 'javascript'}
 " mustache and handlebars mode for vim http://mustache.github.io
-Plug 'mustache/vim-mustache-handlebars'
+" Plug 'mustache/vim-mustache-handlebars'
 " A syntax highlighting file for JSON
 " Plug 'vim-scripts/JSON.vim'
 
