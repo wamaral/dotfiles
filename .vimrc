@@ -132,13 +132,21 @@ call plug#begin('~/.vim/bundle')
 
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 
-" Next generation completion framework after neocomplcache
-Plug 'Shougo/neocomplete.vim'
-" neocomplete {{{
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-"}}}
+if has('nvim')
+  " Dark powered asynchronous completion framework for neovim
+  Plug 'Shougo/deoplete.nvim'
+  " deoplete {{{
+  let g:deoplete#enable_at_startup = 1
+  " }}}
+else
+  " Next generation completion framework after neocomplcache
+  Plug 'Shougo/neocomplete.vim'
+  " neocomplete {{{
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  "}}}
+endif
 
 " Unite and create user interfaces
 Plug 'Shougo/unite.vim'
@@ -315,51 +323,36 @@ Plug 'nelstrom/vim-textobj-rubyblock'
 " Vim plugin that provides additional text objects
 Plug 'wellle/targets.vim'
 
-" Improved incremental searching for Vim
-Plug 'haya14busa/incsearch.vim'
-" incsearch {{{
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-" }}}
-
 " Speed up Vim by updating folds only when just.
 Plug 'Konfekt/FastFold'
 
-" lean & mean status/tabline for vim that's light as air
-Plug 'bling/vim-airline'
-" Airline {{{
-" Disable tab line
-let g:airline#extensions#tabline#enabled = 0
-" Integrating with powerline fonts
-let g:airline_powerline_fonts = 1
-" smartly uniquify buffers names with similar filename,
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-" collapse inactive windows to filename only
-let g:airline_inactive_collapse=1
-let g:airline#extensions#tabline#fnamecollapse = 0
-let g:airline#extensions#tabline#tab_min_count = 1
-let g:airline#theme='myluna'
-let g:airline#extensions#default#section_truncate_width = {
-  \ 'b': 79,
-  \ 'x': 60,
-  \ 'y': 88,
-  \ 'z': 45,
-  \ }
-" from https://github.com/ompugao/vim-airline-cwd
-function! Shrinkedcwd()
-  return substitute(getcwd(), '\v\w\zs.{-}\ze(\\|/)', '', 'g')
-endfunction
-let g:airline_section_b = '%{airline#util#wrap(airline#extensions#hunks#get_hunks(),0)}' .
-  \ ' %{Shrinkedcwd()}' .
-  \ ' %{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
+" A light and configurable statusline/tabline for Vim
+Plug 'itchyny/lightline.vim'
+" lightline {{{
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
+      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component': {
+      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+      \ },
+      \ 'component_visible_condition': {
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+      \ },
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag',
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'error',
+      \ }
+      \ }
+
+let g:unite_force_overwrite_statusline = 0
+let g:vimfiler_force_overwrite_statusline = 0
+let g:vimshell_force_overwrite_statusline = 0
 " }}}
-
-" Make gvim-only colorschemes work transparently in terminal vim
-Plug 'godlygeek/csapprox'
-
-" one colorscheme pack to rule them all!
-Plug 'flazz/vim-colorschemes'
 
 " A dark colorscheme for Vim.
 Plug 'mhinz/vim-janah'
@@ -396,9 +389,6 @@ nnoremap <leader>q :Sayonara!<cr>
 nnoremap <leader>Q :Sayonara<cr>
 let g:sayonara_confirm_quit = 1
 " }}}
-
-" Make terminal vim and tmux work better together.
-"Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " EditorConfig plugin for Vim http://editorconfig.org
 Plug 'editorconfig/editorconfig-vim'
@@ -440,7 +430,7 @@ Plug 'mustache/vim-mustache-handlebars'
 
 " clojure
 " fireplace.vim: Clojure REPL support
-Plug 'tpope/vim-fireplace', {'for':'clojure'}
+Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 " salve.vim: static support for Leiningen and Boot
 Plug 'tpope/vim-salve', {'for': 'clojure'}
 " classpath.vim: Set 'path' from the Java class path
