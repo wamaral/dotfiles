@@ -44,7 +44,7 @@ values."
      evil-commentary
      extra-langs
      eyebrowse
-     ;; games
+     games
      git
      github
      go
@@ -59,7 +59,6 @@ values."
      markdown
      (org :variables
           org-enable-github-support t)
-     puppet
      racket
      react
      restclient
@@ -309,6 +308,8 @@ user code here.  The exception is org related code, which should be placed in
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+  (setq powerline-default-separator nil)
+
   (setq browse-url-browser-function 'browse-url-generic
         engine/browser-function 'browse-url-generic
         browse-url-generic-program "google-chrome")
