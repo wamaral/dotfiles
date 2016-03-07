@@ -74,6 +74,7 @@
 --exclude=.git
 --exclude=.svn
 --exclude=.hg
+--exclude=bundle
 --exclude=min
 --exclude=vendor
 --exclude=\*.min.\*
