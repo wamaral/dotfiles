@@ -8,8 +8,8 @@
 
 import XMonad hiding ( (|||) )
 
-import Control.Applicative
-import Data.Monoid
+-- import Control.Applicative
+-- import Data.Monoid
 import System.Exit
 
 import qualified XMonad.Actions.FlexibleResize as Flex
@@ -21,7 +21,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.DwmPromote
 import XMonad.Actions.FloatKeys
 import XMonad.Actions.GridSelect
-import XMonad.Actions.Submap
+-- import XMonad.Actions.Submap
 
 import XMonad.Config.Xfce
 -- import XMonad.Config.Desktop
@@ -35,22 +35,22 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 
-import XMonad.Layout.Drawer
-import XMonad.Layout.HintedGrid
+-- import XMonad.Layout.Drawer
+-- import XMonad.Layout.HintedGrid
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.Renamed
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
-import XMonad.Layout.TwoPane
+-- import XMonad.Layout.TwoPane
 
 import XMonad.Prompt
 import XMonad.Prompt.RunOrRaise
-import XMonad.Prompt.Shell
+-- import XMonad.Prompt.Shell
 import XMonad.Prompt.XMonad
 
-import XMonad.Util.Dzen hiding (font)
-import XMonad.Util.EZConfig
+-- import XMonad.Util.Dzen hiding (font)
+-- import XMonad.Util.EZConfig
 import XMonad.Util.NamedWindows
 import XMonad.Util.Replace
 import XMonad.Util.Run
@@ -61,22 +61,22 @@ import XMonad.Util.Run
 myTerminal = "/usr/bin/sakura"
 
 -- Fonts and colors
-myFont = "-*-montecarlo-medium-r-normal-*-11-*-*-*-c-*-*-*"
+myFont = "-*-calibri-normal-r-normal-*-12-*-*-*-c-*-*-*"
 myIconDir = "/home/wamaral/.xmonad/dzen2"
--- general
-myNormalFGColor = "#ffffff"
-myNormalBGColor = "#0f0f0f"
-myUrgentFGColor = "#0099ff"
-myUrgentBGColor = "#0077ff"
--- dzenpp
-myDzenFGColor = "#555555"
-myIconFGColor = "#777777"
-myFocusedFGColor = "#f0f0f0"
-myFocusedBGColor = "#555555"
-myPatternColor = "#1f1f1f"
--- Border colors for unfocused and focused windows, respectively.
-myNormalBorderColor = "#0f0f0f"
-myFocusedBorderColor = "#af1f1f"
+
+-- Material color palette
+-- https://www.google.com/design/spec/style/color.html#
+black = "#000000"
+white = "#FFFFFF"
+grey = "#9E9E9E"
+darkgrey = "#424242"
+bluegrey = "#607D8B"
+red = "#F44336"
+darkred = "#B71C1C"
+amber = "#FFC107"
+green = "#4CAF50"
+teal = "#009688"
+indigo = "#3F51B5"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse = False
@@ -104,13 +104,15 @@ myModMask = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces = ["1:chat", "2:web", "3:dev", "4:dev", "5:servers", "6:misc", "7:misc", "8:misc", "9:misc", "0:scratch"]
-
+--myWorkspaces = ["1:chat", "2:web", "3:dev", "4:dev", "5:servers", "6:misc", "7:misc", "8:misc", "9:misc", "0:scratch"]
+myWorkspaces = clickable ["1.chat", "2.web", "3.dev", "4.dev", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.scratch"]
+  where clickable ws = [ "^ca(1,xdotool key super+" ++ show idx ++ ")" ++ name ++ "^ca()" |
+                         (idx,name) <- zip [1..] ws]
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     [ ((modm, xK_c), spawn $ XMonad.terminal conf) -- launch term
     , ((mod1Mask, xK_F4), kill) -- kill window
     , ((mod1Mask, xK_F5), kill1) -- close or kill window
@@ -164,6 +166,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_n), refresh)
       -- toggle the statusbar gap
     , ((modm, xK_b), sendMessage ToggleStruts)
+      -- restart xfce panel
+    , ((modm .|. shiftMask, xK_b), spawn "xfce4-panel -r")
 
       -- Floating
     , ((modm .|. controlMask, xK_Left), withFocused (keysMoveWindow (-30,0)))
@@ -182,6 +186,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_q), io exitSuccess)
 
     -- Restart xmonad
+    , ((modm .|. shiftMask, xK_r), spawn "xmonad --restart")
     , ((modm .|. controlMask, xK_r), spawn "xmonad --recompile && xmonad --restart")
     ]
     ++
@@ -219,13 +224,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
+myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 
     -- mod-button1, Set the window to floating mode and move by dragging
     [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
 
     -- mod-button2, Raise the window to the top of the stack
-    , ((modm, button2), \w -> focus w >> windows W.shiftMaster)
+    -- , ((modm, button2), \w -> focus w >> windows W.shiftMaster)
+
+    -- mod-button2 (middle-mouse), Float window and store xprop info
+    , ((modm, button2), \w -> spawn "/home/wamaral/bin/xmonadpropclick" >> focus w >> float w)
 
     -- mod-button3, Set the window to floating mode and resize by dragging
     , ((modm, button3), \w -> focus w >> Flex.mouseResizeWindow w)
@@ -240,26 +248,26 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 -- Custom config options:
 --
 
-myStatusBar = "dzen2 -x '0' -y '0' -h '20' -w '950' -ta 'l' -fg '" ++ myNormalFGColor ++ "' -bg '" ++ myNormalBGColor ++ "' -fn '" ++ myFont ++ "'"
+myStatusBar = "dzen2 -x '0' -y '0' -h '20' -w '950' -ta 'l' -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
 
-myXPConfig = defaultXPConfig
-    { font = "" ++ myFont ++ ""
-    , bgColor = "" ++ myNormalBGColor ++ ""
-    , fgColor = "" ++ myNormalFGColor ++ ""
-    , fgHLight = "" ++ myNormalFGColor ++ ""
-    , bgHLight = "" ++ myUrgentBGColor ++ ""
-    , borderColor = "" ++ myFocusedBorderColor ++ ""
+myXPConfig = def
+    { font = myFont
+    , bgColor = black
+    , fgColor = white
+    , fgHLight = amber
+    , bgHLight = red
+    , borderColor = red
     , promptBorderWidth = 1
     , position = Bottom
     , height = 20
     , historySize = 100
     }
 
-myGSConfig = defaultGSConfig
+myGSConfig = def
     { gs_cellheight = 50
     , gs_cellwidth = 250
     , gs_cellpadding = 10
-    , gs_font = "" ++ myFont ++ ""
+    , gs_font = myFont
     }
 
 
@@ -288,14 +296,14 @@ myLayout = avoidStruts $ layoutHints $ smartBorders
 
     myMiddleTile = ResizableTall nmaster delta 0.5 []
     myMirrorMiddleTile = Mirror myMiddleTile
-    rMidTile = renamed [Replace "MiddleTile"] $ myMiddleTile
-    rMirMidTile = renamed [Replace "MirrorMiddleTile"] $ myMirrorMiddleTile
+    rMidTile = renamed [Replace "MiddleTile"] myMiddleTile
+    rMirMidTile = renamed [Replace "MirrorMiddleTile"] myMirrorMiddleTile
 
     -- resizable version
     myResizableTile = ResizableTall nmaster delta ratio []
     myMirrorResizableTile = Mirror myResizableTile
-    rTile = renamed [Replace "RTile"] $ myResizableTile
-    rMirTile = renamed [Replace "MirrorRTile"] $ myMirrorResizableTile
+    rTile = renamed [Replace "RTile"] myResizableTile
+    rMirTile = renamed [Replace "MirrorRTile"] myMirrorResizableTile
 
     -- The default number of windows in the master pane
     nmaster = 1
@@ -387,89 +395,39 @@ myStartupHook = startupHook xfceConfig >> setWMName "LG3D"
 ------------------------------------------------------------------------
 -- dynamicLog pretty printer for dzen:
 --
-myDzenPP h = defaultPP
-    { ppCurrent = currentFmt . \wsId -> dropIx wsId -- xinerama current screen
-    , ppVisible = visibleFmt . \wsId -> dropIx wsId -- xinerama other screen
-    , ppHidden = hiddenFmt . \wsId -> dropIx wsId
-    , ppHiddenNoWindows = \wsId -> if wsId `notElem` staticWs
-                                   then ""
-                                   else hiddenNoWinFmt . dropIx $ wsId
-    , ppUrgent = urgentFmt . \wsId -> dropIx wsId
-    , ppSep = " " -- sections other than workspaces
+myDzenPP h = def
+    { ppCurrent = template white bluegrey -- xinerama current screen
+    , ppVisible = template white grey -- xinerama other screen
+    , ppHidden = template white darkgrey
+    , ppHiddenNoWindows = \wsId -> if wsId `elem` staticWs
+                                   then template grey darkgrey wsId
+                                   else ""
+    , ppUrgent = template amber darkred
+    , ppSep = "  "
     , ppWsSep = ""
-    , ppTitle = dzenColor ("" ++ myNormalFGColor ++ "") "" . titleFmt
-    , ppLayout = dzenColor ("" ++ myNormalFGColor ++ "") "" .
+    , ppTitle = wrap "λ" ""
+    , ppLayout = dzenColor white black .
         (\x -> case x of
-        "Hinted Full" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_full.xbm)"
-        "Hinted RTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_tall.xbm)"
-        "Hinted MirrorRTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_mirror_tall.xbm)"
-        "Hinted MiddleTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_tall.xbm)"
-        "Hinted MirrorMiddleTile" -> "^fg(" ++ myIconFGColor ++ ")^i(" ++ myIconDir ++ "/layout_mirror_tall.xbm)"
+        "Hinted Full" -> icon "/layout_full.xbm"
+        "Hinted RTile" -> icon "/layout_tall.xbm"
+        "Hinted MirrorRTile" -> icon "/layout_mirror_tall.xbm"
+        "Hinted MiddleTile" -> icon "/layout_tall.xbm"
+        "Hinted MirrorMiddleTile" -> icon "/layout_mirror_tall.xbm"
         _ -> x
         )
-    -- , ppExtras = []
     , ppOutput = hPutStrLn h
     }
     where
-      currentFmt = wrap
-                   ("^p(2)^ib(1)^fg(" ++ myFocusedBGColor
-                    ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)"
-                    ++ "^r(1300x12)^p(-1300)^fg(" ++ myFocusedFGColor
-                    ++ ")^bg(" ++ myFocusedBGColor
-                    ++ ")^p()``^fg(" ++ myNormalFGColor
-                    ++ ")^p(2)")
-                   ("^p(2)^fg(" ++ myFocusedBGColor
-                    ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)"
-                    ++ "^fg(" ++ myNormalBGColor
-                    ++ ")^r(1300x12)^p(-1300)^ib(0)^fg()^bg()^p()")
-      visibleFmt = wrap
-                  ("^p(2)^ib(1)^fg(" ++ myPatternColor
-                   ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)"
-                   ++ "^r(1300x12)^p(-1300)^fg(" ++ myNormalFGColor
-                   ++ ")^bg(" ++ myFocusedBGColor
-                   ++ ")^p()``^fg(" ++ myNormalFGColor ++ ")^p(2)")
-                  ("^p(2)^fg(" ++ myPatternColor
-                   ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)"
-                   ++ "^fg(" ++ myNormalBGColor
-                   ++ ")^r(1300x12)^p(-1300)^ib(0)^fg()^bg()^p()")
-      hiddenFmt = wrap
-                  ("^p(2)^ib(1)^fg(" ++ myPatternColor
-                   ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)"
-                   ++ "^r(1300x12)^p(-1300)^fg()^bg()^p()``^p(2)")
-                  ("^p(2)^fg(" ++ myPatternColor
-                   ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)"
-                   ++ "^fg(" ++ myNormalBGColor
-                   ++ ")^r(1300x12)^p(-1300)^p()^ib(0)^fg()^bg()^p()")
-      hiddenNoWinFmt = wrap
-                       ("^p(2)^ib(1)^fg(" ++ myPatternColor
-                        ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)"
-                        ++ "^r(1300x12)^p(-1300)^fg(" ++ myDzenFGColor
-                        ++ ")^bg()^p()``^p(2)")
-                       ("^p(2)^fg(" ++ myPatternColor
-                        ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)"
-                        ++ "^fg(" ++ myNormalBGColor
-                        ++ ")^r(1300x12)^p(-1300)^ib(0)^fg()^bg()^p()")
-      urgentFmt = wrap
-                  ("^p(2)^ib(1)^fg(" ++ myPatternColor
-                   ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)"
-                   ++ "^r(1300x12)^p(-1300)^fg(" ++ myUrgentFGColor
-                   ++ ")^bg(" ++ myUrgentBGColor
-                   ++ ")^p()``^fg(" ++ myUrgentFGColor ++ ")^p(2)")
-                  ("^p(2)^fg(" ++ myPatternColor
-                   ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)"
-                   ++ "^fg(" ++ myNormalBGColor
-                   ++ ")^r(1300x12)^p(-1300)^ib(0)^fg()^bg()^p()")
-      titleFmt = wrap
-                 ("^ib(1)^fg(" ++ myPatternColor
-                  ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)"
-                  ++ "^r(1300x12)^p(-1300)^p(2)^fg()< ")
-                 (" >^p(2)^fg(" ++ myPatternColor
-                  ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)"
-                  ++ "^fg(" ++ myNormalBGColor
-                  ++ ")^r(1300x12)^p(-1300)^ib(0)^fg()")
-      dropIx wsId = wsId -- if ':' `elem` wsId then drop 2 wsId else wsId
       staticWs = take 5 myWorkspaces
-
+      icon path = "^fg(" ++ grey ++ ")^i(" ++ myIconDir ++ path ++ ")^fg()"
+      template fg bg = wrap
+        ("^ib(1)" -- ignore bg
+         ++ "^fg(" ++ bg ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)" -- left corner
+         ++ "^r(60x12)^p(-60)" -- rectangle
+         ++ "^fg(" ++ fg ++ ")^bg(" ++ bg ++ ")" -- color
+         ++ "^p(2)λ") -- chevron
+        ("^fg(" ++ bg ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)" -- right corner
+         ++ "^ib(0)^fg()^bg()^p()") -- reset
 
 ------------------------------------------------------------------------
 -- UrgencyHook via libnotify
@@ -491,6 +449,7 @@ instance UrgencyHook LibNotifyUrgencyHook where
 main = do
   replace
   myDzen <- spawnPipe myStatusBar
+  --xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh xfceConfig {
   xmonad $ withUrgencyHook NoUrgencyHook $ ewmh xfceConfig {
       -- simple stuff
         terminal           = myTerminal,
@@ -499,8 +458,8 @@ main = do
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
         workspaces         = myWorkspaces,
-        normalBorderColor  = myNormalBorderColor,
-        focusedBorderColor = myFocusedBorderColor,
+        normalBorderColor  = black,
+        focusedBorderColor = red,
 
       -- key bindings
         keys               = myKeys,
