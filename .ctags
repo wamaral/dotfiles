@@ -96,3 +96,4 @@
 --exclude=\*.tar.\*
 --exclude=coverage
 --exclude=node_modules
+--exclude=.sass-cache
