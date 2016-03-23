@@ -55,6 +55,8 @@ import XMonad.Util.NamedWindows
 import XMonad.Util.Replace
 import XMonad.Util.Run
 
+import Graphics.X11.ExtraTypes.XF86
+
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
@@ -120,6 +122,11 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
       -- Runners
     , ((modm, xK_space), runOrRaisePrompt myXPConfig) -- app runner
     , ((modm .|. shiftMask, xK_space), xmonadPrompt myXPConfig) -- xmonad actions runner
+
+      -- Media keys
+    , ((0, xF86XK_AudioMute), spawn "pamixer -t")
+    , ((0, xF86XK_AudioLowerVolume), spawn "pamixer --allow-boost -d 10")
+    , ((0, xF86XK_AudioRaiseVolume), spawn "pamixer --allow-boost -i 10")
 
       -- Printscreen
     , ((modm, xK_Print), spawn "scrot screen_%Y-%m-%d.png -d 1")
