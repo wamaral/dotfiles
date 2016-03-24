@@ -259,10 +259,10 @@ myStatusBar = "dzen2 -x '0' -y '0' -h '20' -w '950' -ta 'l' -fg '" ++ white ++ "
 
 myXPConfig = def
     { font = myFont
-    , bgColor = black
     , fgColor = white
-    , fgHLight = amber
-    , bgHLight = red
+    , bgColor = black
+    , fgHLight = white
+    , bgHLight = darkred
     , borderColor = red
     , promptBorderWidth = 1
     , position = Bottom
@@ -407,7 +407,7 @@ myDzenPP h = def
     , ppVisible = template white grey -- xinerama other screen
     , ppHidden = template white darkgrey
     , ppHiddenNoWindows = \wsId -> if wsId `elem` staticWs
-                                   then template grey darkgrey wsId
+                                   then template black darkgrey wsId
                                    else ""
     , ppUrgent = template amber darkred
     , ppSep = "  "
