@@ -1,7 +1,10 @@
+;;; Spacemacs --- Spacemacs config
+;;; Commentary:
 ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+;;; Code:
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
@@ -34,12 +37,12 @@ values."
      colors
      command-log
      common-lisp
-     dash
+     ;; dash
      dockerfile
-     elixir
-     elm
+     ;; elixir
+     ;; elm
      emacs-lisp
-     erlang
+     ;; erlang
      evil-cleverparens
      evil-commentary
      extra-langs
@@ -59,14 +62,14 @@ values."
      markdown
      (org :variables
           org-enable-github-support t)
-     racket
+     ;; racket
      react
      restclient
      ruby
      ruby-on-rails
-     scala
-     scheme
-     search-engine
+     ;; scala
+     ;; scheme
+     ;; search-engine
      semantic
      (shell :variables
             shell-default-term-shell "/bin/bash"
@@ -93,11 +96,19 @@ values."
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages '(4clojure
                                       clojure-cheatsheet
+                                      fzf
                                       inf-clojure
                                       rbenv
                                       tern-auto-complete
                                       editorconfig
-                                      evil-smartparens)
+                                      evil-smartparens
+                                      projectile-direnv
+                                      (parinfer-mode :location (recipe
+                                                                :fetcher github
+                                                                :repo "edpaget/parinfer-mode"))
+                                      (evil-ruby-block-object :location (recipe
+                                                                         :fetcher github
+                                                                         :repo "XuHaoJun/evil-ruby-block-object")))
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(php-extras)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -146,7 +157,7 @@ values."
    dotspacemacs-startup-lists '(recents projects)
    ;; Number of recent files to show in the startup buffer. Ignored if
    ;; `dotspacemacs-startup-lists' doesn't include `recents'. (default 5)
-   dotspacemacs-startup-recent-list-size 5
+   dotspacemacs-startup-recent-list-size 10
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
@@ -183,7 +194,7 @@ values."
    ;; and TAB or <C-m> and RET.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
    ;; (Not implemented) dotspacemacs-distinguish-gui-ret nil
    ;; The command key used for Evil commands (ex-commands) and
    ;; Emacs commands (M-x).
@@ -210,7 +221,7 @@ values."
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
    ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
    ;; `find-contrib-file' (SPC f e c) are replaced. (default nil)
-   dotspacemacs-use-ido nil
+   dotspacemacs-use-ido t
    ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
    ;; if non nil, the helm header is hidden when there is only one source.
@@ -314,6 +325,17 @@ layers configuration. You are free to put any user code."
         engine/browser-function 'browse-url-generic
         browse-url-generic-program "google-chrome")
 
+  (with-eval-after-load 'flycheck
+    (flycheck-define-checker javascript-flow
+      "A JavaScript syntax and style checker using Flow.
+       See URL `http://flowtype.org/'."
+      :command ("flow" source-original)
+      :error-patterns
+      ((error line-start (1+ nonl) ":" line ":" column ":" (message) line-end))
+      :modes (js2-mode web-mode react-mode))
+    (flycheck-add-next-checker 'javascript-eslint 'javascript-flow)
+    (add-to-list 'flycheck-checkers 'javascript-flow 'append))
+
   ;; aggressive indent
   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
@@ -343,10 +365,12 @@ layers configuration. You are free to put any user code."
 
   ;; magit
   (setq magit-repository-directories '("~/dev/"))
-  (evil-leader/set-key "gB" 'magit-blame-quit)
+  ;; (evil-leader/set-key "gB" 'magit-blame-quit)
 
   ;; tags
-  (setq projectile-tags-command "ctags -e '--options=/home/wamaral/.ctags'")
+  (global-set-key (kbd "C-]") 'helm-gtags-dwim)
+  ;; (global-set-key (kbd "g C-]") 'helm-gtags-dwim)
+  ;; (setq projectile-tags-command "ctags -e '--options=/home/wamaral/.ctags'")
   (defun ao/expand-completion-table (orig-fun &rest args)
     "Extract all symbols from COMPLETION-TABLE before calling projectile--tags."
     (let ((completion-table (all-completions "" (car args))))
@@ -366,6 +390,9 @@ layers configuration. You are free to put any user code."
                 web-mode-css-indent-offset 2
                 web-mode-code-indent-offset 2
                 web-mode-attr-indent-offset 2)
+
+  ;; projectile
+  ;; (add-hook 'projectile-mode-hook 'projectile-direnv-export-variables)
 
   (with-eval-after-load 'web-mode
     (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
@@ -389,7 +416,7 @@ layers configuration. You are free to put any user code."
        (require 'tern-auto-complete)
        (tern-ac-setup)))
 
-  (setq-default ruby-version-manager 'rbenv)
+  ;; (setq-default ruby-version-manager 'rbenv)
   (setq ruby-insert-encoding-magic-comment nil)
   (setq enh-ruby-add-encoding-comment-on-save nil)
 
@@ -414,3 +441,46 @@ layers configuration. You are free to put any user code."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-backends
+   (quote
+    (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                  (company-dabbrev-code company-gtags company-etags company-keywords)
+                  company-oddmuse company-dabbrev)))
+ '(company-idle-delay 0.4)
+ '(company-show-numbers t)
+ '(ggtags-find-tag-hook (quote (recenter reposition-window)))
+ '(ggtags-global-output-format (quote ctags))
+ '(ggtags-navigation-mode nil)
+ '(ggtags-sort-by-nearness t)
+ '(ggtags-update-on-save t)
+ '(ggtags-use-idutils t)
+ '(global-highlight-parentheses-mode t)
+ '(helm-etags-tag-file-name "GTAGS")
+ '(helm-gtags-auto-update t t)
+ '(helm-gtags-direct-helm-completing t)
+ '(helm-gtags-display-style (quote detail) t)
+ '(helm-gtags-fuzzy-match t)
+ '(helm-gtags-ignore-case t t)
+ '(helm-gtags-maximum-candidates 9999)
+ '(helm-gtags-use-input-at-cursor t t)
+ '(js-enabled-frameworks (quote (javascript extjs)))
+ '(js2-include-node-externs t)
+ '(js2-mode-show-parse-errors nil)
+ '(linum-delay t)
+ '(projectile-tags-command "gtags -i --gtagslabel=pygments")
+ '(projectile-tags-file-name "GTAGS")
+ '(show-paren-mode nil)
+ '(tags-case-fold-search t)
+ '(tags-revert-without-query t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
