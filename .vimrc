@@ -103,16 +103,9 @@ endif
 if executable('ag')
   set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
   set grepformat=%f:%l:%c:%m
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden --ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-  let g:unite_source_grep_recursive_opt = ''
 elseif executable('ack')
   set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
   set grepformat=%f:%l:%c:%m
-  let g:unite_source_grep_command = 'ack'
-  let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
-  let g:unite_source_grep_recursive_opt = ''
 endif
 " }}}
 " }}}
@@ -148,103 +141,30 @@ else
   "}}}
 endif
 
-" Unite and create user interfaces
-Plug 'Shougo/unite.vim'
-" Unite {{{
-Plug 'Shougo/unite-outline' " outline source for unite.vim
-Plug 'Shougo/unite-help' " help source for unite.vim
-Plug 'Shougo/unite-session' " unite.vim session source
-Plug 'Shougo/neomru.vim' " MRU plugin includes unite.vim MRU sources
-
-" Unite buffers mappings {{{
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-  let unite = unite#get_current_unite()
-  nmap <buffer> <ESC> <Plug>(unite_exit)
-  imap <buffer> <ESC> <Plug>(unite_insert_leave)
-  imap <buffer> <C-j> <Plug>(unite_select_next_line)
-  imap <buffer> <C-k> <Plug>(unite_select_previous_line)
-  imap <buffer> <Down> <Plug>(unite_select_next_line)
-  imap <buffer> <Up> <Plug>(unite_select_previous_line)
-  nmap <buffer> p <Plug>(unite_toggle_auto_preview)
-  imap <buffer> <C-p> <Plug>(unite_toggle_auto_preview)
-  nmap <buffer> > <Plug>(unite_rotate_next_source)
-  nnoremap <silent><buffer><expr> <C-i> unite#do_action('split')
-  inoremap <silent><buffer><expr> <C-i> unite#do_action('split')
-  nnoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-  inoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-  " sorter
-  " from: https://github.com/LeafCage/dotfiles/blob/master/unite_setting.vim
-  nnoremap <buffer><expr>sa unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_selecta'] : [])
-  nnoremap <buffer><expr>sk unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_rank'] : [])
-  nnoremap <buffer><expr>sr unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
-  nnoremap <buffer><expr>sw unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_word'] : [])
-  nnoremap <buffer><expr>sl unite#mappings#set_current_filters(empty(unite#mappings#get_current_filters()) ? ['sorter_length'] : [])
-endfunction
-" }}}
-
-" Global mappings {{{
-" Map the prefix for Unite
-nnoremap [unite] <Nop>
-nmap <Leader>u [unite]
-vnoremap [unite] <Nop>
-vmap <Leader>u [unite]
-
-" General fuzzy search
-nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files buffer file_rec/async:! file_mru bookmark<CR>
-" sources
-nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
-" buffers and mru
-nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
-" commands
-nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
-" switch lcd
-nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async:! directory/new<CR>
-" file search
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async:! file/new<CR>
-" grep from cwd
-nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
-" help
-nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
-" bookmarks
-nnoremap <silent> [unite]k :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
-" line
-nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
-" MRU search
-nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
-" find
-nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
-" outline
-nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
-" sessions (projects)
-nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session session/new<CR>
-" registers
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
-" mru and buffers
-nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers file_mru buffer<CR>
-" git ls-files
-nnoremap <silent> [unite]v :<C-u>Unite -buffer-name=git file_rec/git:--cached:--others:--exclude-standard<CR>
-" grep word under cursor
-nnoremap <silent> [unite]w :<C-u>Unite -buffer-name=grep grep:.::<C-R><C-w><CR>
-vnoremap <silent> [unite]w "uy:let @u=substitute(@u, ':', '\\:', 'g')<CR>:<C-u>Unite -buffer-name=grep grep:.::<C-R>u<CR>
-" commands
-nnoremap <silent> [unite]: :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
-" resume
-nnoremap <silent> [unite]. :<C-u>UniteResume<CR>
-" Command list
-nmap [unite]? :echo "[ ]main [A]sources [B]uf/mru [C]md c[D] [F]ile [G]rep [H]elp boo[K]mark [L]ine [M]ru fi[N]d [O]utline [P]session [R]egister mru/b[U]f [V]git [W]ord [:]quick-cmd [.]resume"<cr>
-" }}}
-" }}}
-
 " A command-line fuzzy finder written in Go
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" fzf :heart: vim
+Plug 'junegunn/fzf.vim'
+" fzf.vim {{{
+nnoremap <leader>ff :Files<cr>
+nnoremap <leader>fp :GitFiles<cr>
+nnoremap <leader>bb :Buffers<cr>
+nnoremap <leader>s  :Ag<space><c-r><c-w>
+xnoremap <leader>s  <esc>:Ag<space><c-r><c-w><cr>
+nnoremap <leader>t  :Tags<space><c-r><c-w>
+xnoremap <leader>t  <esc>:Tags<space><c-r><c-w><cr>
+
+let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_buffers_jump = 1
+" }}}
 
 " commentary.vim: comment stuff out
 Plug 'tpope/vim-commentary'
 
 " netrw {{{
-nnoremap <silent><f1> :Vexplore<cr>
-nnoremap <silent><leader>f :Explore<cr>
+nnoremap <silent><leader>fv :Vexplore<cr>
+nnoremap <silent><leader>fx :Explore<cr>
 let g:netrw_preview   = 1
 let g:netrw_winsize   = 25
 
@@ -276,9 +196,9 @@ let g:syntastic_javascript_checkers = ['eslint']
 " A Vim plugin which shows a git diff in the gutter (sign column) and stages/reverts hunks.
 Plug 'airblade/vim-gitgutter'
 " Gitgutter {{{
-nmap <Leader>ga <Plug>GitGutterStageHunk
-nmap <Leader>gr <Plug>GitGutterRevertHunk
-nmap <Leader>gv <Plug>GitGutterPreviewHunk
+nmap <leader>ga <Plug>GitGutterStageHunk
+nmap <leader>gr <Plug>GitGutterRevertHunk
+nmap <leader>gv <Plug>GitGutterPreviewHunk
 let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_max_signs = 5000
 " }}}
@@ -286,11 +206,11 @@ let g:gitgutter_max_signs = 5000
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
 " Fugitive {{{
-nmap <Leader>g? :echo "[b]lame [d]iff [s]tatus [p]ush :: st[a]ge-hunk pre[v]iew-hunk [r]evert-hunk :: [c = prev change :: ]c = next change"<cr>
-nmap <Leader>gd :Gdiff<cr>
-nmap <Leader>gb :Gblame<cr>
-nmap <Leader>gs :Gstatus<cr>
-nmap <Leader>gp :Gpush<cr>
+nmap <leader>g? :echo "[b]lame [d]iff [s]tatus [p]ush :: st[a]ge-hunk pre[v]iew-hunk [r]evert-hunk :: [c = prev change :: ]c = next change"<cr>
+nmap <leader>gd :Gdiff<cr>
+nmap <leader>gb :Gblame<cr>
+nmap <leader>gs :Gstatus<cr>
+nmap <leader>gp :Gpush<cr>
 " Delete fugitive buffers when we leave them
 " http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
 autocmd BufReadPost fugitive://* set bufhidden=delete
@@ -298,7 +218,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " add a mapping on .. to view parent tree
 autocmd User fugitive
       \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-      \   nnoremap <buffer> .. :edit %:h<CR> |
+      \   nnoremap <buffer> .. :edit %:h<cr> |
       \ endif
 " }}}
 
@@ -349,7 +269,6 @@ let g:lightline = {
       \ }
       \ }
 
-let g:unite_force_overwrite_statusline = 0
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 " }}}
@@ -360,7 +279,7 @@ Plug 'mhinz/vim-janah'
 " A Vim plugin for visually displaying indent levels in code
 Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 " Indent Guides {{{
-nnoremap <silent> <F10> :IndentGuidesToggle<cr>
+nnoremap <silent> <f10> :IndentGuidesToggle<cr>
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
 let g:indent_guides_enable_on_vim_startup=0
@@ -473,36 +392,20 @@ autocmd ColorScheme * highlight Normal guibg=NONE ctermbg=NONE
 colorscheme janah
 " }}}
 
-" Unite settings {{{
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_selecta'])
-call unite#custom#profile('default', 'context', { 'marked_icon':'✓'})
-let g:unite_enable_start_insert = 1
-let g:unite_source_session_path = $HOME . "/.vim_sessions"
-let g:unite_source_session_enable_auto_save = 1
-let g:unite_cursor_line_highlight = 'TabLineSel'
-
-" Set up some custom ignores
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-      \ 'ignore_pattern', join([
-      \ '\.git/', 'git5/.*/review/', 'google/obj/', 'tmp/', '.sass-cache', 'node_modules/', 'bower_components/', 'dist/', '.git5_specs/', '.pyc', 'log/',
-      \ ], '\|'))
-" }}}
-
 " Mappings {{{
-nnoremap <Leader>? :echo "[F1] Filer : [F2] Tagbar : [F9] Rainbow : [F10] Indent Guides"<cr>
+nnoremap <leader>? :echo "[L-ff] Files : [L-fp] GitFiles : [L-bb] Buffers : [L-s] Ag : [L-t] Tags : [F9] Rainbow : [F10] Indent Guides"<cr>
 
-nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+nnoremap <silent> <C-l> :nohlsearch<cr><C-l>
 
 " swap backticks (` works for columns aswell, while ' goes to start of line)
 nnoremap ' `
 nnoremap ` '
 
 " tag navigation
-nnoremap <Leader>] g<C-]>
-vnoremap <Leader>] g<C-]>
-nnoremap <Leader>[ <C-t>
-nnoremap <Leader>= <C-w>}
+nnoremap <leader>] g<C-]>
+vnoremap <leader>] g<C-]>
+nnoremap <leader>[ <C-t>
+nnoremap <leader>= <C-w>}
 
 " buffer management
 nnoremap <C-j> :bnext<cr>
@@ -510,8 +413,8 @@ nnoremap <C-k> :bprevious<cr>
 nnoremap <C-Right> :bnext<cr>
 nnoremap <C-Left>  :bprevious<cr>
 " Leader-Tab to switch current/last buffers
-nnoremap <silent> <Leader><C-I> :b#<cr>
-nnoremap <Leader>b :ls<cr>:b<space>
+nnoremap <silent> <leader><C-i> :b#<cr>
+nnoremap <leader>b :ls<cr>:b<space>
 
 " reselect pasted text
 nnoremap <leader>v V`]
@@ -526,12 +429,12 @@ nnoremap <leader>fs :update<cr>
 nnoremap <leader>W :wa<cr>
 
 " system clipboard
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
+vmap <leader>y "+y
+vmap <leader>d "+d
+nmap <leader>p "+p
+nmap <leader>P "+P
+vmap <leader>p "+p
+vmap <leader>P "+P
 
 " C-c closes all plugin windows plus quickfix and preview window
 nnoremap <silent> <C-c> :pclose<cr>:cclose<cr>:TagbarClose<cr>
@@ -571,4 +474,3 @@ function! SetCursorPosition()
   end
 endfunction
 " }}}
-
