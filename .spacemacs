@@ -35,6 +35,7 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     vimscript
      spacemacs-helm
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -495,16 +496,17 @@ layers configuration. You are free to put any user code."
  '(ggtags-use-idutils t)
  '(global-highlight-parentheses-mode t)
  '(helm-etags-tag-file-name "GTAGS")
- '(helm-gtags-auto-update t t)
+ '(helm-gtags-auto-update t)
  '(helm-gtags-direct-helm-completing t)
- '(helm-gtags-display-style (quote detail) t)
+ '(helm-gtags-display-style (quote detail))
  '(helm-gtags-fuzzy-match t)
- '(helm-gtags-ignore-case t t)
+ '(helm-gtags-ignore-case t)
  '(helm-gtags-maximum-candidates 9999)
- '(helm-gtags-use-input-at-cursor t t)
+ '(helm-gtags-use-input-at-cursor t)
  '(js-enabled-frameworks (quote (javascript extjs)))
  '(js2-include-node-externs t)
  '(js2-mode-show-parse-errors nil)
+ '(js2-mode-show-strict-warnings nil)
  '(linum-delay t)
  '(projectile-tags-command "gtags -i --gtagslabel=pygments")
  '(projectile-tags-file-name "GTAGS")
