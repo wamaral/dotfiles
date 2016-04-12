@@ -106,8 +106,7 @@ myModMask = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
---myWorkspaces = ["1:chat", "2:web", "3:dev", "4:dev", "5:servers", "6:misc", "7:misc", "8:misc", "9:misc", "0:scratch"]
-myWorkspaces = clickable ["1.chat", "2.web", "3.dev", "4.dev", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.scratch"]
+myWorkspaces = clickable ["1.system", "2.web", "3.dev", "4.dev", "5.servers", "6.misc", "7.misc", "8.misc", "9.chat", "0.scratch"]
   where clickable ws = [ "^ca(1,xdotool key super+" ++ show idx ++ ")" ++ name ++ "^ca()" |
                          (idx,name) <- zip [1..] ws]
 
