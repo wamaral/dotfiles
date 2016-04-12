@@ -115,8 +115,8 @@ myWorkspaces = clickable ["1.system", "2.web", "3.dev", "4.dev", "5.servers", "6
 --
 myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     [ ((modm, xK_c), spawn $ XMonad.terminal conf) -- launch term
-    , ((mod1Mask, xK_F4), kill) -- kill window
-    , ((mod1Mask, xK_F5), kill1) -- close or kill window
+    , ((mod1Mask, xK_F5), kill) -- kill window
+    , ((mod1Mask, xK_F4), kill1) -- close or kill window
 
       -- Runners
     , ((modm, xK_space), runOrRaisePrompt myXPConfig) -- app runner
