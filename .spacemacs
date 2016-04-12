@@ -35,7 +35,6 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
-     vimscript
      spacemacs-helm
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -103,6 +102,7 @@ values."
      unimpaired
      version-control
      ;; vim-empty-lines
+     vimscript
      xkcd
      yaml
      )
