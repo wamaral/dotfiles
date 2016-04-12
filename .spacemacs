@@ -112,6 +112,7 @@ values."
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages '(4clojure
                                       clojure-cheatsheet
+                                      dired+
                                       fzf
                                       inf-clojure
                                       rbenv
@@ -428,6 +429,11 @@ layers configuration. You are free to put any user code."
 
   ;; projectile
   ;; (add-hook 'projectile-mode-hook 'projectile-direnv-export-variables)
+
+  ;; dired
+  (require 'dired-x)
+  (require 'dired+)
+  (setq dired-recursive-deletes 'top)
 
   (with-eval-after-load 'web-mode
     (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
