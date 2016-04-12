@@ -127,7 +127,7 @@ values."
                                                                          :fetcher github
                                                                          :repo "XuHaoJun/evil-ruby-block-object")))
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(php-extras)
+   dotspacemacs-excluded-packages '(php-extras evil-jumper)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
@@ -478,6 +478,10 @@ layers configuration. You are free to put any user code."
           ))
 
   (global-linum-mode)
+
+  ;; bugs?
+  (setq smooth-scroll-margin 5)
+  (setq scroll-margin 5)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
