@@ -106,7 +106,7 @@ myModMask = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces = clickable ["1.system", "2.web", "3.dev", "4.dev", "5.servers", "6.misc", "7.misc", "8.misc", "9.chat", "0.scratch"]
+myWorkspaces = clickable ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.scratch"]
   where clickable ws = [ "^ca(1,xdotool key super+" ++ show idx ++ ")" ++ name ++ "^ca()" |
                          (idx,name) <- zip [1..] ws]
 
@@ -146,8 +146,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm .|. shiftMask, xK_m), windows W.swapMaster) -- swap the focused window and the master window
 
       -- Switching workspaces
-    , ((modm, xK_Left), prevWS) -- switch to previous workspace
-    , ((modm, xK_Right), nextWS) -- switch to next workspace
+    -- , ((modm, xK_Left), prevWS) -- switch to previous workspace
+    -- , ((modm, xK_Right), nextWS) -- switch to next workspace
       -- Grid select
     , ((modm .|. shiftMask, xK_g), gridselectWorkspace myGSConfig W.view)
 
@@ -157,14 +157,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm, xK_F1), sendMessage $ JumpToLayout "Full")
     , ((modm, xK_F2), sendMessage $ JumpToLayout "RTile")
     , ((modm, xK_F3), sendMessage $ JumpToLayout "MirrorRTile")
-    , ((modm, xK_F4), sendMessage $ JumpToLayout "MiddleTile")
-    , ((modm, xK_F5), sendMessage $ JumpToLayout "MirrorMiddleTile")
 
       -- Resizing layouts
-    , ((modm .|. shiftMask, xK_j), sendMessage Shrink) -- shrink the master area
-    , ((modm .|. shiftMask, xK_k), sendMessage Expand) -- expand the master area
-    , ((modm .|. controlMask, xK_j), sendMessage MirrorShrink) -- shrink the height/width
-    , ((modm .|. controlMask, xK_k), sendMessage MirrorExpand) -- expand the height/width
+    , ((modm, xK_Left), sendMessage Shrink) -- shrink the master area
+    , ((modm, xK_Right), sendMessage Expand) -- expand the master area
+    , ((modm, xK_Down), sendMessage MirrorShrink) -- shrink the height/width
+    , ((modm, xK_Up), sendMessage MirrorExpand) -- expand the height/width
       -- Number of windows in master area
     , ((modm, xK_comma), sendMessage (IncMasterN 1)) -- increment
     , ((modm, xK_period), sendMessage (IncMasterN (-1))) -- decrement
@@ -254,7 +252,7 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 -- Custom config options:
 --
 
-myStatusBar = "dzen2 -x '0' -y '0' -h '20' -w '950' -ta 'l' -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
+myStatusBar = "dzen2 -x '1280' -y '0' -h '20' -w '950' -ta 'l' -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
 
 myXPConfig = def
     { font = myFont
@@ -295,15 +293,15 @@ myGSConfig = def
 -- which denotes layout choice.
 --
 myLayout = avoidStruts $ layoutHints $ smartBorders
-     (rTile ||| rMirTile ||| Full ||| rMidTile ||| rMirMidTile)
+     (rTile ||| rMirTile ||| Full)
   where
     -- default tiling algorithm partitions the screen into two panes
     -- tiled = ResizableTall nmaster delta 1/2
 
-    myMiddleTile = ResizableTall nmaster delta 0.5 []
-    myMirrorMiddleTile = Mirror myMiddleTile
-    rMidTile = renamed [Replace "MiddleTile"] myMiddleTile
-    rMirMidTile = renamed [Replace "MirrorMiddleTile"] myMirrorMiddleTile
+    -- myMiddleTile = ResizableTall nmaster delta 0.5 []
+    -- myMirrorMiddleTile = Mirror myMiddleTile
+    -- rMidTile = renamed [Replace "MiddleTile"] myMiddleTile
+    -- rMirMidTile = renamed [Replace "MirrorMiddleTile"] myMirrorMiddleTile
 
     -- resizable version
     myResizableTile = ResizableTall nmaster delta ratio []
@@ -417,8 +415,8 @@ myDzenPP h = def
         "Hinted Full" -> icon "/layout_full.xbm"
         "Hinted RTile" -> icon "/layout_tall.xbm"
         "Hinted MirrorRTile" -> icon "/layout_mirror_tall.xbm"
-        "Hinted MiddleTile" -> icon "/layout_tall.xbm"
-        "Hinted MirrorMiddleTile" -> icon "/layout_mirror_tall.xbm"
+        -- "Hinted MiddleTile" -> icon "/layout_tall.xbm"
+        -- "Hinted MirrorMiddleTile" -> icon "/layout_mirror_tall.xbm"
         _ -> x
         )
     , ppOutput = hPutStrLn h

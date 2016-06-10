@@ -82,7 +82,7 @@ set updatetime=500
 " always show status line
 set laststatus=2
 if !has('nvim')
-set ttymouse=xterm2
+  set ttymouse=xterm2
 endif
 
 if has('path_extra')
@@ -124,6 +124,11 @@ let g:plug_window = 'above new'
 call plug#begin('~/.vim/bundle')
 
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
+
+if has('nvim')
+  " Node.js plugin host
+  Plug 'neovim/node-host', {'do': 'npm install'}
+endif
 
 if has('nvim')
   " Dark powered asynchronous completion framework for neovim
@@ -360,6 +365,10 @@ Plug 'guns/vim-slamhound', {'for': 'clojure'}
 Plug 'Deraen/vim-cider', {'for': 'clojure'}
 " A Vim plugin for Clojure's Eastwood linter
 Plug 'venantius/vim-eastwood', {'for': 'clojure'}
+if has('nvim')
+  " neovim plugin for parinfer
+  Plug 'snoe/nvim-parinfer.js', {'for': 'clojure'}
+endif
 
 " lisps
 " Precision Editing for S-expressions
