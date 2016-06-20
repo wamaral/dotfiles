@@ -60,7 +60,7 @@ import Graphics.X11.ExtraTypes.XF86
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal = "/usr/bin/sakura"
+myTerminal = "/usr/sbin/terminator"
 
 -- Fonts and colors
 myFont = "-*-calibri-normal-r-normal-*-12-*-*-*-c-*-*-*"
