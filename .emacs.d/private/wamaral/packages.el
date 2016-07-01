@@ -40,6 +40,7 @@
     editorconfig
     evil-smartparens
     projectile-direnv
+    groovy-mode
     ;; lispy
     ;; evil-lispy
     (parinfer-mode :location (recipe
@@ -129,6 +130,9 @@ Each entry is either:
 (defun wamaral/init-evil-ruby-block-object ()
   (add-hook 'ruby-mode
             (lambda () (require 'evil-ruby-block-object))))
+
+(defun wamaral/init-groovy-mode ()
+  (add-to-list 'auto-mode-alist '("\\Jenkinsfile\\'" . groovy-mode)))
 
 (defun wamaral/init-wamaral ()
   )
