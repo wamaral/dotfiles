@@ -70,8 +70,9 @@ values."
          go-tab-width 2)
      ;; gtags
      (haskell :variables
-              haskell-enable-ghc-mod-support t
-              haskell-enable-ghci-ng-support t)
+              haskell-enable-hindent-style "gibiansky"
+              haskell-completion-backend 'ghci
+              haskell-enable-ghc-mod-support t)
      html
      java
      (javascript :variables
@@ -115,7 +116,7 @@ values."
      xkcd
      yaml
      ;; custom
-     intero
+     ;; intero
      wamaral
      )
    ;; List of additional packages that will be installed without being
@@ -563,6 +564,10 @@ layers configuration. You are free to put any user code."
  '(ggtags-sort-by-nearness t)
  '(ggtags-use-idutils t)
  '(global-highlight-parentheses-mode t)
+ '(haskell-check-command "stack hlint")
+ '(haskell-hasktags-path "stack hasktags")
+ '(haskell-mode-stylish-haskell-path "stack stylish-haskell")
+ '(hindent-process-path "stack hindent")
  '(js-enabled-frameworks (quote (javascript extjs)))
  '(js2-include-node-externs t)
  '(js2-mode-show-parse-errors nil)
