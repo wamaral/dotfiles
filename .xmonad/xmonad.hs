@@ -115,8 +115,8 @@ myWorkspaces = clickable ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "
 --
 myKeys conf = mkKeymap conf $
     [ ("M4-c", spawn $ XMonad.terminal conf) -- launch term
-    , ("M-<F5>", kill) -- kill window
-    , ("M-<F4>", kill1) -- close or kill window
+    , ("M1-<F5>", kill) -- kill window
+    , ("M1-<F4>", kill1) -- close or kill window
 
       -- Runners
     , ("M4-<Space>", runOrRaisePrompt myXPConfig) -- app runner
