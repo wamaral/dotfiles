@@ -50,12 +50,12 @@ import XMonad.Prompt.RunOrRaise
 import XMonad.Prompt.XMonad
 
 -- import XMonad.Util.Dzen hiding (font)
--- import XMonad.Util.EZConfig
+import XMonad.Util.EZConfig
 import XMonad.Util.NamedWindows
 import XMonad.Util.Replace
 import XMonad.Util.Run
 
-import Graphics.X11.ExtraTypes.XF86
+-- import Graphics.X11.ExtraTypes.XF86
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -106,123 +106,127 @@ myModMask = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces = clickable ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.scratch"]
+myWorkspaces = clickable ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.misc"]
   where clickable ws = [ "^ca(1,xdotool key super+" ++ show idx ++ ")" ++ name ++ "^ca()" |
-                         (idx,name) <- zip [1..] ws]
+                         (idx, name) <- zip [1..] ws]
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
-myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
-    [ ((modm, xK_c), spawn $ XMonad.terminal conf) -- launch term
-    , ((mod1Mask, xK_F5), kill) -- kill window
-    , ((mod1Mask, xK_F4), kill1) -- close or kill window
+myKeys conf = mkKeymap conf $
+    [ ("M4-c", spawn $ XMonad.terminal conf) -- launch term
+    , ("M-<F5>", kill) -- kill window
+    , ("M-<F4>", kill1) -- close or kill window
 
       -- Runners
-    , ((modm, xK_space), runOrRaisePrompt myXPConfig) -- app runner
-    , ((modm .|. shiftMask, xK_space), xmonadPrompt myXPConfig) -- xmonad actions runner
+    , ("M4-<Space>", runOrRaisePrompt myXPConfig) -- app runner
+    , ("M4-S-<Space>", xmonadPrompt myXPConfig) -- xmonad actions runner
 
       -- Media keys
-    , ((0, xF86XK_AudioMute), spawn "pamixer -t")
-    , ((0, xF86XK_AudioLowerVolume), spawn "pamixer --allow-boost -d 10")
-    , ((0, xF86XK_AudioRaiseVolume), spawn "pamixer --allow-boost -i 10")
+    , ("<XF86AudioMute>", spawn "pamixer -t")
+    , ("<XF86AudioLowerVolume>", spawn "pamixer --allow-boost -d 10")
+    , ("<XF86AudioRaiseVolume>", spawn "pamixer --allow-boost -i 10")
 
       -- Printscreen
-    , ((modm, xK_Print), spawn "scrot screen_%Y-%m-%d.png -d 1")
-    , ((modm .|. shiftMask, xK_Print), spawn "bash -l -c select-screenshot")
-    , ((modm .|. controlMask, xK_Print), spawn "imgur")
+    , ("M4-<Print>", spawn "scrot screen_%Y-%m-%d.png -d 1")
+    , ("M4-S-<Print>", spawn "bash -l -c select-screenshot")
+    , ("M4-C-<Print>", spawn "imgur")
 
       -- Selecting windows
-    , ((modm, xK_h), windows W.focusUp) -- move focus to the previous window
-    , ((modm, xK_l), windows W.focusDown) -- move focus to the next window
-    , ((modm, xK_m), dwmpromote) -- swap focused with master
-    , ((modm, xK_Return), focusUrgent) -- move focus to urgent window
+    , ("M4-h", windows W.focusUp) -- move focus to the previous window
+    , ("M4-l", windows W.focusDown) -- move focus to the next window
+    , ("M4-m", dwmpromote) -- swap focused with master
+    , ("M4-<Return>", focusUrgent) -- move focus to urgent window
       -- Grid select
-    , ((modm, xK_g), goToSelected myGSConfig)
+    , ("M4-g", goToSelected myGSConfig)
 
       -- Swapping windows
-    , ((modm .|. shiftMask, xK_h), windows W.swapUp) -- swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_l), windows W.swapDown)  -- swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_m), windows W.swapMaster) -- swap the focused window and the master window
+    , ("M4-S-h", windows W.swapUp) -- swap the focused window with the previous window
+    , ("M4-S-l", windows W.swapDown)  -- swap the focused window with the next window
+    , ("M4-S-m", windows W.swapMaster) -- swap the focused window and the master window
 
       -- Switching workspaces
-    -- , ((modm, xK_Left), prevWS) -- switch to previous workspace
-    -- , ((modm, xK_Right), nextWS) -- switch to next workspace
+    -- , ("M4-<Left>", prevWS) -- switch to previous workspace
+    -- , ("M4-<Right>", nextWS) -- switch to next workspace
       -- Grid select
-    , ((modm .|. shiftMask, xK_g), gridselectWorkspace myGSConfig W.view)
+    , ("M4-S-g", gridselectWorkspace myGSConfig W.view)
 
       -- Switching layouts
-    , ((modm, xK_f), sendMessage NextLayout)
-    , ((modm .|. shiftMask, xK_f), setLayout $ XMonad.layoutHook conf) -- Default workspace layout
-    , ((modm, xK_F1), sendMessage $ JumpToLayout "Full")
-    , ((modm, xK_F2), sendMessage $ JumpToLayout "RTile")
-    , ((modm, xK_F3), sendMessage $ JumpToLayout "MirrorRTile")
+    , ("M4-f", sendMessage NextLayout)
+    , ("M4-S-f", setLayout $ XMonad.layoutHook conf) -- Default workspace layout
+    , ("M4-<F1>", sendMessage $ JumpToLayout "Full")
+    , ("M4-<F2>", sendMessage $ JumpToLayout "RTile")
+    , ("M4-<F3>", sendMessage $ JumpToLayout "MirrorRTile")
 
       -- Resizing layouts
-    , ((modm, xK_Left), sendMessage Shrink) -- shrink the master area
-    , ((modm, xK_Right), sendMessage Expand) -- expand the master area
-    , ((modm, xK_Down), sendMessage MirrorShrink) -- shrink the height/width
-    , ((modm, xK_Up), sendMessage MirrorExpand) -- expand the height/width
+    , ("M4-<Left>", sendMessage Shrink) -- shrink the master area
+    , ("M4-<Right>", sendMessage Expand) -- expand the master area
+    , ("M4-<Down>", sendMessage MirrorShrink) -- shrink the height/width
+    , ("M4-<Up>", sendMessage MirrorExpand) -- expand the height/width
       -- Number of windows in master area
-    , ((modm, xK_comma), sendMessage (IncMasterN 1)) -- increment
-    , ((modm, xK_period), sendMessage (IncMasterN (-1))) -- decrement
+    , ("M4-,", sendMessage (IncMasterN 1)) -- increment
+    , ("M4-.", sendMessage (IncMasterN (-1))) -- decrement
     -- Resize viewed windows to the correct size
-    , ((modm, xK_n), refresh)
+    , ("M4-n", refresh)
       -- toggle the statusbar gap
-    , ((modm, xK_b), sendMessage ToggleStruts)
+    , ("M4-b", sendMessage ToggleStruts)
       -- restart xfce panel
-    , ((modm .|. shiftMask, xK_b), spawn "xfce4-panel -r")
+    , ("M4-S-b", spawn "xfce4-panel -r")
+    , ("M4-C-b", spawn "xfce4-panel -r")
 
       -- Floating
-    , ((modm .|. controlMask, xK_Left), withFocused (keysMoveWindow (-30,0)))
-    , ((modm .|. controlMask, xK_Right), withFocused (keysMoveWindow (30,0)))
-    , ((modm .|. controlMask, xK_Up), withFocused (keysMoveWindow (0,-30)))
-    , ((modm .|. controlMask, xK_Down), withFocused (keysMoveWindow (0,30)))
+    , ("M4-S-<Left>", withFocused (keysMoveWindow (-30,0)))
+    , ("M4-S-<Right>", withFocused (keysMoveWindow (30,0)))
+    , ("M4-S-<Up>", withFocused (keysMoveWindow (0,-30)))
+    , ("M4-S-<Down>", withFocused (keysMoveWindow (0,30)))
     -- Push window back into tiling
-    , ((modm, xK_BackSpace), withFocused $ windows . W.sink)
+    , ("M4-<Backspace>", withFocused $ windows . W.sink)
 
       -- Xinerama screens
-    , ((modm, xK_Tab), nextScreen) -- switch xinerama screens
-    , ((modm .|. shiftMask, xK_Tab), shiftNextScreen >> nextScreen) -- window to next xinerama screen
-    , ((modm .|. controlMask, xK_Tab), swapNextScreen >> nextScreen) -- swap xinerama screens
+    , ("M4-<Tab>", nextScreen) -- switch xinerama screens
+    , ("M4-S-<Tab>", shiftNextScreen >> nextScreen) -- window to next xinerama screen
+    , ("M4-C-<Tab>", swapNextScreen >> nextScreen) -- swap xinerama screens
 
     -- Quit xmonad
-    , ((modm .|. controlMask, xK_q), io exitSuccess)
+    , ("M4-C-q", io exitSuccess)
 
     -- Restart xmonad
-    , ((modm .|. shiftMask, xK_r), spawn "xmonad --restart")
-    , ((modm .|. controlMask, xK_r), spawn "xmonad --recompile && xmonad --restart")
+    , ("M4-S-r", spawn "xmonad --restart")
+    , ("M4-C-r", spawn "xmonad --recompile && xmonad --restart")
+
+    -- Screens
+    , ("M4-a", toggleOrView $ last $ XMonad.workspaces conf)
     ]
     ++
 
     --
     -- mod-[1..0], Switch to workspace N
     --
-    [((modm, k), toggleOrView i)
-        | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])]
+    [("M4-" ++ show k, toggleOrView i)
+        | (i, k) <- zip (XMonad.workspaces conf) ([1 .. 9] ++ [0])]
     ++
 
     --
     -- mod-shift-[1..0], Move client to workspace N
     --
-    [((modm .|. shiftMask, k), windows $ W.shift i)
-        | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])]
+    [("M4-S-" ++ show k, windows $ W.shift i)
+        | (i, k) <- zip (XMonad.workspaces conf) ([1 .. 9] ++ [0])]
     ++
 
     --
     -- mod-ctrl-[1..0], Copy client to workspace N
     --
-    [((modm .|. controlMask, k), windows $ copy i)
-        | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])]
+    [("M4-C-" ++ show k, windows $ copy i)
+        | (i, k) <- zip (XMonad.workspaces conf) ([1 .. 9] ++ [0])]
     ++
 
     --
     -- mod-{F10-11-12}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{F10-11-12}, Move client to screen 1, 2, or 3
     --
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_F10, xK_F11, xK_F12] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+    [(m ++ key, screenWorkspace sc >>= flip whenJust (windows . f))
+        | (key, sc) <- zip ["<F10>", "<F11>", "<F12>"] [0..]
+        , (f, m) <- [(W.view, "M4-"), (W.shift, "M4-S-")]]
 
 
 ------------------------------------------------------------------------
