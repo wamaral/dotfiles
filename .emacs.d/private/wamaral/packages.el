@@ -41,6 +41,7 @@
     evil-smartparens
     projectile-direnv
     groovy-mode
+    highlight-chars
     ;; lispy
     ;; evil-lispy
     (parinfer-mode :location (recipe
@@ -133,6 +134,11 @@ Each entry is either:
 
 (defun wamaral/init-groovy-mode ()
   (add-to-list 'auto-mode-alist '("\\Jenkinsfile\\'" . groovy-mode)))
+
+(defun wamaral/highlight-chars ()
+  (require 'highlight-chars)
+  (add-hook 'font-lock-mode-hook 'hc-highlight-tabs)
+  (add-hook 'font-lock-mode-hook 'hc-highlight-trailing-whitespace))
 
 (defun wamaral/init-wamaral ()
   )
