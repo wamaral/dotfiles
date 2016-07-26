@@ -29,7 +29,7 @@ import XMonad.Config.Xfce
 
 import XMonad.Hooks.DynamicHooks
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops
+-- import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
@@ -454,7 +454,7 @@ main = do
   replace
   myDzen <- spawnPipe myStatusBar
   --xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh xfceConfig {
-  xmonad $ withUrgencyHook NoUrgencyHook $ ewmh xfceConfig {
+  xmonad $ withUrgencyHook NoUrgencyHook $ xfceConfig {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
