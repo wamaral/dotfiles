@@ -452,6 +452,10 @@ layers configuration. You are free to put any user code."
   (setq json-reformat:indent-width 2)
   (setq json-reformat:pretty-string t)
 
+  ;; eclim
+  (setq eclim-eclipse-dirs "/usr/lib/eclipse"
+        eclim-executable "/usr/lib/eclipse/eclim")
+
   ;; (setq-default ruby-version-manager 'rbenv)
   (setq ruby-insert-encoding-magic-comment nil)
   (setq enh-ruby-add-encoding-comment-on-save nil)
