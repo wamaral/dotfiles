@@ -5,7 +5,7 @@ function vim
   env SHELL=/bin/bash vim $argv
 end
 
-set -gx PATH /home/wamaral/bin /home/wamaral/.fzf/bin $PATH
+set -gx PATH /home/wamaral/bin /home/wamaral/.fzf/bin /home/wamaral/.local/bin /home/wamaral/.cabal/bin /home/wamaral/.xmonad /home/wamaral/.go/bin (ruby -e 'print Gem.user_dir')/bin /usr/local/sbin /usr/sbin /sbin $PATH
 
 # Fish git prompt
 set __fish_git_prompt_show_informative_status 'yes'
@@ -34,13 +34,25 @@ set -gx COLORTERM 1
 # aliases
 #alias node='env NODE_NO_READLINE=1 rlwrap babel-node ~/.node_start.js'
 
+alias rake='bundle exec rake'
+alias rails='bundle exec rails'
+alias rspec='bundle exec rspec'
+
 # rbenv
 #rbenv init - | source
 
 # direnv
 eval (direnv hook fish)
 
-#
+# go and oracle
+set -gx GOPATH /home/wamaral/.go
+set -gx ORACLE_HOME /opt/oracle/instantclient_12_1
+set -gx CGO_ENABLED 1
+set -gx CGO_CFLAGS -I{$ORACLE_HOME}/sdk/include
+set -gx CGO_LDFLAGS -L{$ORACLE_HOME}
+set -gx GO15VENDOREXPERIMENT 1
+
+# vim and pager
 set -gx EDITOR vim
 set -gx GROFF_NO_SGR 1
 set -gx MANPAGER 'bash -c "vim -MRn -c \"set ft=man nomod nolist nospell nonu norelativenumber\" -c \"nm q :qa!<CR>\" -c \"nm <end> G\" -c \"nm <home> gg\"</dev/tty <(col -b)"'
