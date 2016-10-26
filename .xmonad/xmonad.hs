@@ -1,16 +1,13 @@
------------------------------------------------------------------------------
--- ~/.xmonad/xmonad.hs
--- validate syntax: xmonad --recompile
 {-# OPTIONS -fno-warn-missing-signatures #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE FlexibleContexts #-}
-------------------------------------------------------------------------
 
 import XMonad hiding ( (|||) )
 
 -- import Control.Applicative
 -- import Data.Monoid
 import System.Exit
+import Data.Maybe (fromMaybe)
 
 import qualified XMonad.Actions.FlexibleResize as Flex
 import qualified XMonad.StackSet as W
@@ -29,7 +26,7 @@ import XMonad.Config.Xfce
 
 import XMonad.Hooks.DynamicHooks
 import XMonad.Hooks.DynamicLog
--- import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
@@ -57,14 +54,18 @@ import XMonad.Util.Run
 
 -- import Graphics.X11.ExtraTypes.XF86
 
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
---
+-- import DBus.Client
+import System.Taffybar.Hooks.PagerHints (pagerHints)
+-- import System.Taffybar.XMonadLog (dbusLog)
+import Codec.Binary.UTF8.String (encode)
+import Foreign.C.Types (CChar)
+import Foreign.C.String (castCCharToChar, castCharToCChar)
+
+-- Default terminal emulator
 myTerminal = "/usr/sbin/sakura"
 
 -- Fonts and colors
 myFont = "-*-calibri-normal-r-normal-*-12-*-*-*-c-*-*-*"
-myIconDir = "/home/wamaral/.xmonad/dzen2"
 
 -- Material color palette
 -- https://www.google.com/design/spec/style/color.html#
@@ -87,31 +88,18 @@ myFocusFollowsMouse = False
 myClickJustFocuses = False
 
 -- Width of the window border in pixels.
---
 myBorderWidth = 2
 
--- modMask lets you specify which modkey you want to use. The default
--- is mod1Mask ("left alt").  You may also consider using mod3Mask
--- ("right alt"), which does not conflict with emacs keybindings. The
--- "windows key" is usually mod4Mask.
---
+-- mod1Mask = left alt
+-- mod2Mask = right alt
+-- mod4Mask = win key
 myModMask = mod4Mask
 
--- The default number of workspaces (virtual screens) and their names.
--- By default we use numeric strings, but any string may be used as a
--- workspace name. The number of workspaces is determined by the length
--- of this list.
---
--- A tagging example:
---
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
-myWorkspaces = clickable ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.misc"]
-  where clickable ws = [ "^ca(1,xdotool key super+" ++ show idx ++ ")" ++ name ++ "^ca()" |
-                         (idx, name) <- zip [1..] ws]
+-- workspace names
+myWorkspaces = ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.chat"]
 
 ------------------------------------------------------------------------
--- Key bindings. Add, modify or remove key bindings here.
+-- Key bindings
 --
 myKeys conf = mkKeymap conf $
     [ ("M4-c", spawn $ XMonad.terminal conf) -- launch term
@@ -123,6 +111,7 @@ myKeys conf = mkKeymap conf $
     , ("M4-S-<Space>", xmonadPrompt myXPConfig) -- xmonad actions runner
 
       -- Media keys
+    , ("<XF86AudioPlay>", spawn "playerctl play-pause")
     , ("<XF86AudioMute>", spawn "pamixer -t")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --allow-boost -d 10")
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --allow-boost -i 10")
@@ -194,6 +183,9 @@ myKeys conf = mkKeymap conf $
     , ("M4-S-r", spawn "xmonad --restart")
     , ("M4-C-r", spawn "xmonad --recompile && xmonad --restart")
 
+    -- Screensaver
+    , ("M4-<Esc>", spawn "xscreensaver-command -lock")
+
     -- Screens
     , ("M4-a", toggleOrView $ last $ XMonad.workspaces conf)
     ]
@@ -230,7 +222,7 @@ myKeys conf = mkKeymap conf $
 
 
 ------------------------------------------------------------------------
--- Mouse bindings: default actions bound to mouse events
+-- Mouse bindings
 --
 myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 
@@ -253,10 +245,12 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 
 
 ------------------------------------------------------------------------
--- Custom config options:
+-- Custom config options
 --
+dzenStatus = " -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
 
-myStatusBar = "dzen2 -x '1280' -y '0' -h '20' -w '950' -ta 'l' -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
+myStatusBar = "dzen2 -x '1280' -y '0' -h '20' -w '950' -ta 'l'" ++ dzenStatus
+-- myConky = "conky -c ~/.xmonad/conkybarrc"
 
 myXPConfig = def
     { font = myFont
@@ -348,8 +342,8 @@ myManageHook = composeAll . concat $
     , [ stringProperty "WM_WINDOW_ROLE" =? x --> doIgnore | x <- ignoreByResource ]
     , [ stringProperty "WM_NAME" =? x --> doFloat | x <- floatByTitle ]
     ] where
-    floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts", "mplayer2", "File-roller", "Gcalctool", "Exo-helper-1", "Gksu", "XClock", "Main", "wrapper-1.0", "Tiemu", "Xfce4-panel"]
-    floatByTitle    = ["Downloads", "Iceweasel Preferences", "Save As...", "Choose a file", "Open Image", "File Operation Progress", "Firefox Preferences", "Preferences", "Search Engines", "Set up sync", "Passwords and Exceptions", "Autofill Options", "Rename File", "Copying files", "Moving files", "File Properties", "Replace", "Quit GIMP", "Change Foreground Color", "Change Background Color", ""]
+    floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts", "mplayer2", "File-roller", "Gcalctool", "Exo-helper-1", "Gksu", "XClock", "Main", "wrapper-1.0", "Tiemu", "Xfce4-panel", "Evolution", "Claws-mail"]
+    floatByTitle    = ["Downloads", "Iceweasel Preferences", "Save As...", "Choose a file", "Open Image", "File Operation Progress", "Firefox Preferences", "Preferences", "Search Engines", "Set up sync", "Passwords and Exceptions", "Autofill Options", "Rename File", "Copying files", "Moving files", "File Properties", "Replace", "Quit GIMP", "Change Foreground Color", "Change Background Color", "chrome://pourbico - Tracker :: PourBico - Firefox Developer Edition", ""]
     floatByResource = ["pop-up", "presentationWidget"]
     ignoreByClass    = ["Xfce4-notifyd", "desktop_window"]
     ignoreByTitle    = []
@@ -401,43 +395,6 @@ myStartupHook = startupHook xfceConfig >> setWMName "LG3D"
 
 
 ------------------------------------------------------------------------
--- dynamicLog pretty printer for dzen:
---
-myDzenPP h = def
-    { ppCurrent = template white bluegrey -- xinerama current screen
-    , ppVisible = template white grey -- xinerama other screen
-    , ppHidden = template white darkgrey
-    , ppHiddenNoWindows = \wsId -> if wsId `elem` staticWs
-                                   then template black darkgrey wsId
-                                   else ""
-    , ppUrgent = template amber darkred
-    , ppSep = "  "
-    , ppWsSep = ""
-    , ppTitle = wrap "λ" ""
-    , ppLayout = dzenColor white black .
-        (\x -> case x of
-        "Hinted Full" -> icon "/layout_full.xbm"
-        "Hinted RTile" -> icon "/layout_tall.xbm"
-        "Hinted MirrorRTile" -> icon "/layout_mirror_tall.xbm"
-        -- "Hinted MiddleTile" -> icon "/layout_tall.xbm"
-        -- "Hinted MirrorMiddleTile" -> icon "/layout_mirror_tall.xbm"
-        _ -> x
-        )
-    , ppOutput = hPutStrLn h
-    }
-    where
-      staticWs = take 5 myWorkspaces
-      icon path = "^fg(" ++ grey ++ ")^i(" ++ myIconDir ++ path ++ ")^fg()"
-      template fg bg = wrap
-        ("^ib(1)" -- ignore bg
-         ++ "^fg(" ++ bg ++ ")^i(" ++ myIconDir ++ "/corner_left.xbm)" -- left corner
-         ++ "^r(60x12)^p(-60)" -- rectangle
-         ++ "^fg(" ++ fg ++ ")^bg(" ++ bg ++ ")" -- color
-         ++ "^p(2)λ") -- chevron
-        ("^fg(" ++ bg ++ ")^i(" ++ myIconDir ++ "/corner_right.xbm)" -- right corner
-         ++ "^ib(0)^fg()^bg()^p()") -- reset
-
-------------------------------------------------------------------------
 -- UrgencyHook via libnotify
 --
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
@@ -448,18 +405,22 @@ instance UrgencyHook LibNotifyUrgencyHook where
     Just idx <- W.findTag w <$> gets windowset
     safeSpawn "notify-send" [show name, "workspace " ++ idx]
 
+setDesktopNames :: [String] -> X ()
+setDesktopNames names = withDisplay $ \dpy -> do
+    -- Names thereof
+    r <- asks theRoot
+    a <- getAtom "_NET_DESKTOP_NAMES"
+    c <- getAtom "UTF8_STRING"
+    let names' = map fromIntegral $ concatMap ((++[0]) . encode) names
+    io $ changeProperty8 dpy r a c propModeReplace names'
 
-------------------------------------------------------------------------
--- Now run xmonad with all the defaults we set up.
-
--- Run xmonad with the settings you specify. No need to modify this.
---
 main = do
   replace
-  myDzen <- spawnPipe myStatusBar
-  --xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh xfceConfig {
-  xmonad $ withUrgencyHook NoUrgencyHook $ xfceConfig {
-      -- simple stuff
+  -- myDzen <- spawnPipe myStatusBar
+  -- conky  <- spawnPipe myConky
+  -- xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh xfceConfig {
+  xmonad $ withUrgencyHook NoUrgencyHook $ pagerHints $ xfceConfig {
+  -- xmonad $ withUrgencyHook NoUrgencyHook $ xfceConfig {
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         clickJustFocuses   = myClickJustFocuses,
@@ -469,14 +430,13 @@ main = do
         normalBorderColor  = black,
         focusedBorderColor = red,
 
-      -- key bindings
         keys               = myKeys,
         mouseBindings      = myMouseBindings,
 
-      -- hooks, layouts
         layoutHook         = myLayout,
         manageHook         = myManageHook <+> manageDocks <+> dynamicMasterHook,
         handleEventHook    = myEventHook <+> docksEventHook,
-        logHook            = dynamicLogWithPP $ myDzenPP myDzen,
+        -- logHook            = dynamicLogWithPP $ myDzenPP myDzen,
+        -- logHook            = dbusLog client $ defaultPP,
         startupHook        = myStartupHook
     }
