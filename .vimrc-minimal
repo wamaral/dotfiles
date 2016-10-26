@@ -218,28 +218,6 @@ let g:gitgutter_max_signs = 5000
 let g:gitgutter_sh = '/bin/bash'
 " }}}
 
-" A Git wrapper so awesome, it should be illegal
-Plug 'tpope/vim-fugitive'
-" Fugitive {{{
-nmap <leader>g? :echo "[b]lame [d]iff [s]tatus [p]ush :: st[a]ge-hunk pre[v]iew-hunk [r]evert-hunk :: [c = prev change :: ]c = next change"<cr>
-nmap <leader>gd :Gdiff<cr>
-nmap <leader>gb :Gblame<cr>
-nmap <leader>gs :Gstatus<cr>
-nmap <leader>gp :Gpush<cr>
-" Delete fugitive buffers when we leave them
-" http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
-autocmd BufReadPost fugitive://* set bufhidden=delete
-
-" add a mapping on .. to view parent tree
-autocmd User fugitive
-      \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-      \   nnoremap <buffer> .. :edit %:h<cr> |
-      \ endif
-" }}}
-
-" asynchronous build and test dispatcher
-Plug 'tpope/vim-dispatch', {'on':['Make','Dispatch','Focus','Start']}
-
 " surround.vim: quoting/parenthesizing made simple
 Plug 'tpope/vim-surround'
 
@@ -249,17 +227,8 @@ Plug 'Raimondi/delimitMate'
 " repeat.vim: enable repeating supported plugin maps with .
 Plug 'tpope/vim-repeat'
 
-" Vim plugin: Create your own text objects
-Plug 'kana/vim-textobj-user'
-
-" A custom text object for selecting ruby blocks. - ar/ir
-Plug 'nelstrom/vim-textobj-rubyblock'
-
 " Vim plugin that provides additional text objects
 Plug 'wellle/targets.vim'
-
-" Speed up Vim by updating folds only when just.
-Plug 'Konfekt/FastFold'
 
 " A light and configurable statusline/tabline for Vim
 Plug 'itchyny/lightline.vim'
@@ -291,39 +260,6 @@ let g:vimshell_force_overwrite_statusline = 0
 " A dark colorscheme for Vim.
 Plug 'mhinz/vim-janah'
 
-" A Vim plugin for visually displaying indent levels in code
-Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
-" Indent Guides {{{
-nnoremap <silent> <f10> :IndentGuidesToggle<cr>
-let g:indent_guides_start_level=2
-let g:indent_guides_guide_size=1
-let g:indent_guides_enable_on_vim_startup=0
-let g:indent_guides_color_change_percent=3
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'vimfiler', 'startify']
-if !has('gui_running')
-  let g:indent_guides_auto_colors=0
-  function! s:indent_set_console_colors()
-    hi IndentGuidesOdd ctermbg=235
-    hi IndentGuidesEven ctermbg=236
-  endfunction
-  autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
-endif
-" }}}
-
-" A Vim plugin for looking up documentation
-Plug 'Keithbsmiley/investigate.vim'
-" Investigate {{{
-nnoremap <silent> <leader>hh :call investigate#Investigate()<CR>
-" }}}
-
-" Sane buffer/window deletion.
-Plug 'mhinz/vim-sayonara'
-" Sayonara {{{
-nnoremap <leader>q :Sayonara!<cr>
-nnoremap <leader>Q :Sayonara<cr>
-let g:sayonara_confirm_quit = 1
-" }}}
-
 " EditorConfig plugin for Vim http://editorconfig.org
 Plug 'editorconfig/editorconfig-vim'
 " EditorConfig {{{
@@ -339,12 +275,8 @@ Plug 'hallison/vim-markdown'
 Plug 'vim-ruby/vim-ruby'
 " rails.vim: Ruby on Rails power tools
 Plug 'tpope/vim-rails'
-" bundler.vim: Lightweight support for Ruby's Bundler
-Plug 'tpope/vim-bundler'
 " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plug 'tpope/vim-endwise'
-" Treat RABL files as ruby files, with a little extra sugar for RABL-specific DSL methods.
-Plug 'yaymukund/vim-rabl'
 
 "javascript
 " Tools and environment to make Vim superb for developing with Node.js. Like Rails.vim for Node.
@@ -385,21 +317,6 @@ endif
 Plug 'guns/vim-sexp'
 " vim-sexp mappings for regular people
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
-
-" Vastly improved Javascript indentation and syntax support in Vim
-" Plug 'pangloss/vim-javascript'
-" Pangloss Javascript {{{
-"let javascript_enable_domhtmlcss = 1
-" }}}
-
-" CoffeeScript support for vim
-Plug 'kchmck/vim-coffee-script'
-" CoffeeScript {{{
-let coffee_compile_vert = 1
-let coffee_watch_vert = 1
-let coffee_run_vert = 1
-autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
-" }}}
 " }}}
 
 call plug#end()
@@ -412,7 +329,7 @@ colorscheme janah
 " }}}
 
 " Mappings {{{
-nnoremap <leader>? :echo "[L-ff] Files : [L-fp] GitFiles : [L-bb] Buffers : [L-s] Ag : [L-t] Tags : [F9] Rainbow : [F10] Indent Guides"<cr>
+nnoremap <leader>? :echo "[L-ff] Files : [L-fp] GitFiles : [L-bb] Buffers : [L-s] Ag : [L-t] Tags : [F9] Rainbow"<cr>
 
 nnoremap <silent> <C-l> :nohlsearch<cr><C-l>
 

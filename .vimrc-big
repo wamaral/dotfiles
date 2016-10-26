@@ -98,6 +98,12 @@ if &t_Co == 8 && $TERM !~# '^linux'
   set t_Co=16
 endif
 
+" Disable Background Color Erase (BCE) so that color schemes
+" " render properly when inside 256-color tmux and GNU screen.
+if &term =~ '256color'
+  set t_ut=
+endif
+
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
