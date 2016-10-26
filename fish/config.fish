@@ -53,7 +53,9 @@ set -gx CGO_LDFLAGS -L{$ORACLE_HOME}
 set -gx GO15VENDOREXPERIMENT 1
 
 # vim and pager
-set -gx EDITOR vim
+set -gx EDITOR /usr/bin/vim
 set -gx GROFF_NO_SGR 1
 set -gx MANPAGER 'bash -c "vim -MRn -c \"set ft=man nomod nolist nospell nonu norelativenumber\" -c \"nm q :qa!<CR>\" -c \"nm <end> G\" -c \"nm <home> gg\"</dev/tty <(col -b)"'
 
+# OPAM configuration
+#. /home/wamaral/.opam/opam-init/init.fish > /dev/null 2> /dev/null or true
