@@ -35,7 +35,7 @@
     helm-cider
     slamhound
     dired+
-    dumb-jump
+    ;; dumb-jump
     tern-auto-complete
     editorconfig
     evil-smartparens
@@ -81,6 +81,10 @@ Each entry is either:
   (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
     "hc" 'clojure-cheatsheet))
 
+(defun wamaral/init-clojure-cheatsheet ())
+(defun wamaral/init-slamhound ())
+(defun wamaral/init-highlight-chars ())
+
 (defun wamaral/init-helm-cider ()
   (require 'helm-cider)
   (helm-cider-mode 1))
@@ -90,13 +94,13 @@ Each entry is either:
   (require 'dired+)
   (setq dired-recursive-deletes 'top))
 
-(defun wamaral/init-dumb-jump ()
-  (require 'dumb-jump)
-  (setq dumb-jump-default-project "~/dev")
-  ;; (setq dumb-jump-quiet t)
-  (define-key evil-normal-state-map (kbd "C-]") 'dumb-jump-go)
-  (define-key evil-normal-state-map (kbd "C-[") 'dumb-jump-back)
-  (define-key evil-motion-state-map (kbd "g C-]") 'dumb-jump-quick-look))
+; (defun wamaral/init-dumb-jump ()
+;   (require 'dumb-jump)
+;   (setq dumb-jump-default-project "~/dev")
+;   ;; (setq dumb-jump-quiet t)
+;   (define-key evil-normal-state-map (kbd "C-]") 'dumb-jump-go)
+;   (define-key evil-normal-state-map (kbd "C-[") 'dumb-jump-back)
+;   (define-key evil-motion-state-map (kbd "g C-]") 'dumb-jump-quick-look))
 
 (defun wamaral/init-tern-auto-complete ()
   (eval-after-load 'tern
