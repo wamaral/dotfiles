@@ -257,6 +257,9 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 " }}}
 
+" Tame the quickfix window
+Plug 'romainl/vim-qf'
+
 " A dark colorscheme for Vim.
 Plug 'mhinz/vim-janah'
 

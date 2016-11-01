@@ -450,6 +450,9 @@ let g:airline_section_b = '%{airline#util#wrap(airline#extensions#hunks#get_hunk
   \ ' %{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
 " }}}
 
+" Tame the quickfix window
+Plug 'romainl/vim-qf'
+
 " Make gvim-only colorschemes work transparently in terminal vim
 Plug 'godlygeek/csapprox'
 
