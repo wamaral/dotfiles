@@ -5,7 +5,7 @@ function vim
   env SHELL=/bin/bash vim $argv
 end
 
-set -gx PATH /home/wamaral/bin /home/wamaral/.fzf/bin /home/wamaral/.local/bin /home/wamaral/.cabal/bin /home/wamaral/.xmonad /home/wamaral/.go/bin (ruby -e 'print Gem.user_dir')/bin /usr/local/sbin /usr/sbin /sbin $PATH
+set -gx PATH /home/wamaral/bin /home/wamaral/.fzf/bin /home/wamaral/.local/bin /home/wamaral/.cabal/bin (/usr/local/bin/stack path 2>/dev/null | grep compiler-bin | awk '{print $2}') /home/wamaral/.xmonad /home/wamaral/.go/bin /home/wamaral/.npm/bin (ruby -e 'print Gem.user_dir')/bin /usr/local/sbin /usr/sbin /sbin $PATH
 
 # Fish git prompt
 set __fish_git_prompt_show_informative_status 'yes'
@@ -30,6 +30,8 @@ set __fish_git_prompt_char_upstream_behind '-'
 set -gx TERM xterm-256color
 set -gx NVIM_TUI_ENABLE_TRUE_COLOR 1
 set -gx COLORTERM 1
+
+set -gx NPM_PACKAGES /home/wamaral/.npm
 
 # aliases
 #alias node='env NODE_NO_READLINE=1 rlwrap babel-node ~/.node_start.js'
