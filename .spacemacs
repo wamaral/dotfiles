@@ -149,7 +149,7 @@ values."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
-   ;; If non nil ELPA repositories are contacted via HTTPS whenever it's
+   ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
    ;; environment, otherwise it is strongly recommended to let it set to t.
    ;; This variable has no effect if Emacs is launched with the parameter
@@ -174,7 +174,7 @@ values."
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
    dotspacemacs-editing-style 'vim
-   ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
+   ;; If non-nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
@@ -243,17 +243,17 @@ values."
    ;; If non-nil, J and K move lines up and down when in visual mode.
    ;; (default nil)
    dotspacemacs-visual-line-move-text nil
-   ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
+   ;; If non-nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
-   ;; If non nil the default layout name is displayed in the mode-line.
+   ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
    dotspacemacs-display-default-layout nil
-   ;; If non nil then the last auto saved layouts are resume automatically upon
+   ;; If non-nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -265,9 +265,9 @@ values."
    dotspacemacs-auto-save-file-location 'cache
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
-   ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
+   ;; If non-nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
-   ;; if non nil, the helm header is hidden when there is only one source.
+   ;; if non-nil, the helm header is hidden when there is only one source.
    ;; (default nil)
    dotspacemacs-helm-no-header nil
    ;; define the position to display `helm', options are `bottom', `top',
@@ -278,7 +278,7 @@ values."
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
    dotspacemacs-helm-use-fuzzy 'always
-   ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
+   ;; If non-nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
    dotspacemacs-enable-paste-transient-state nil
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
@@ -291,21 +291,21 @@ values."
    dotspacemacs-which-key-position 'bottom
    ;; Control where `switch-to-buffer' displays the buffer. If nil,
    ;; `switch-to-buffer' displays the buffer in the current window even if
-   ;; another same-purpose window is available. If non nil, `switch-to-buffer'
+   ;; another same-purpose window is available. If non-nil, `switch-to-buffer'
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
-   ;; If non nil a progress bar is displayed when spacemacs is loading. This
+   ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
    dotspacemacs-loading-progress-bar t
-   ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
+   ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
    dotspacemacs-fullscreen-at-startup nil
-   ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
+   ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native nil
-   ;; If non nil the frame is maximized when Emacs starts up.
+   ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
    dotspacemacs-maximized-at-startup nil
@@ -317,18 +317,28 @@ values."
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
-   ;; If non nil show the titles of transient states. (default t)
+   ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
-   ;; If non nil show the color guide hint for transient state keys. (default t)
+   ;; If non-nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
-   ;; If non nil unicode symbols are displayed in the mode line. (default t)
+   ;; If non-nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
-   ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
+   ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
-   ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; Control line numbers activation.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
@@ -347,11 +357,11 @@ values."
    dotspacemacs-highlight-delimiters 'current
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server t
+   dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
-   ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
-   ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+   ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
+   ;; (default '("rg" "ag" "pt" "ack" "grep"))
+   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -369,7 +379,7 @@ values."
 It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
  This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try setting them in
+before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   ;; Persistend undo history
   (setq undo-tree-auto-save-history t
@@ -458,24 +468,24 @@ you should place your code here."
   (setq ranger-dont-show-binary t)
 
   ;; tags
-  ;; (add-hook 'prog-mode-hook 'ggtags-mode)
-  ;; ;; (define-key evil-normal-state-map (kbd "C-]") 'ggtags-find-tag-dwim)
-  ;; ;; (define-key evil-motion-state-map (kbd "g C-]") 'ggtags-grep)
-  ;; ;; (global-unset-key (kbd "C-]"))
-  ;; ;; (global-set-key (kbd "C-]") 'ggtags-find-tag-dwim)
-  ;; ;; (global-set-key (kbd "g C-]") 'helm-gtags-dwim))
-  ;; ;; (setq projectile-tags-command "ctags -e '--options=/home/wamaral/.ctags'")
+  (add-hook 'prog-mode-hook 'ggtags-mode)
+  ;; (define-key evil-normal-state-map (kbd "C-]") 'ggtags-find-tag-dwim)
+  (define-key evil-normal-state-map (kbd "C-]") 'spacemacs/jump-to-definition)
+  ;; (define-key evil-motion-state-map (kbd "g C-]") 'ggtags-grep)
+  (define-key evil-motion-state-map (kbd "g C-]") 'helm-gtags-find-tag-from-here)
+  ;; (setq projectile-tags-command "ctags -e '--options=/home/wamaral/.ctags'")
+  ;; (setq projectile-tags-command "gtags")
   ;; (defun ao/expand-completion-table (orig-fun &rest args)
   ;;   "Extract all symbols from COMPLETION-TABLE before calling projectile--tags."
   ;;   (let ((completion-table (all-completions "" (car args))))
   ;;     (funcall orig-fun completion-table)))
   ;; (advice-add 'projectile--tags :around #'ao/expand-completion-table)
-  ;; (setq helm-gtags-display-style 'detail)
-  ;; (setq helm-gtags-auto-update t)
-  ;; (setq helm-gtags-ignore-case t)
-  ;; (setq tags-revert-without-query t)
-  ;; (setq tags-case-fold-search t) ; t=case-insensitive, nil=case-sensitive
-  ;; (setq large-file-warning-threshold (* 50 1024 1024)) ; 50MB
+  (setq helm-gtags-display-style 'detail)
+  (setq helm-gtags-auto-update t)
+  (setq helm-gtags-ignore-case t)
+  (setq tags-revert-without-query t)
+  (setq tags-case-fold-search t) ; t=case-insensitive, nil=case-sensitive
+  (setq large-file-warning-threshold (* 50 1024 1024)) ; 50MB
   (setq dumb-jump-default-project "~/dev")
 
   ;; js indent
@@ -507,7 +517,7 @@ you should place your code here."
   (setq eclim-eclipse-dirs "/usr/lib/eclipse"
         eclim-executable "/usr/lib/eclipse/eclim")
 
-  ;; (setq-default ruby-version-manager 'rbenv)
+  (setq-default ruby-version-manager 'chruby)
   (setq ruby-insert-encoding-magic-comment nil)
   (setq enh-ruby-add-encoding-comment-on-save nil)
 
@@ -521,8 +531,8 @@ you should place your code here."
 
   (global-flycheck-mode)
 
-  (set-face-background 'highlight-indentation-face "#e3e3d3")
-  (set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
+  ;; (set-face-background 'highlight-indentation-face "#e3e3d3")
+  ;; (set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
   ;; (add-hook 'font-lock-mode-hook 'highlight-indentation-current-column-mode)
 
   (spacemacs/toggle-whitespace-globally-on)
@@ -540,44 +550,13 @@ you should place your code here."
 
   (global-linum-mode)
 
-  ;; ;; Fira code ligatures
-  ;; ;; https://github.com/tonsky/FiraCode/wiki/Setting-up-Emacs
-  ;; (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-  ;;                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-  ;;                (36 . ".\\(?:>\\)")
-  ;;                (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-  ;;                (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-  ;;                (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-  ;;                (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-  ;;                (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-  ;;                ;; (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-  ;;                (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-  ;;                (48 . ".\\(?:x[a-zA-Z]\\)")
-  ;;                (58 . ".\\(?:::\\|[:=]\\)")
-  ;;                (59 . ".\\(?:;;\\|;\\)")
-  ;;                (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-  ;;                (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-  ;;                (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-  ;;                (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-  ;;                (91 . ".\\(?:]\\)")
-  ;;                (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-  ;;                (94 . ".\\(?:=\\)")
-  ;;                (119 . ".\\(?:ww\\)")
-  ;;                (123 . ".\\(?:-\\)")
-  ;;                (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-  ;;                (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-  ;;                )
-  ;;              ))
-  ;;   (dolist (char-regexp alist)
-  ;;     (set-char-table-range composition-function-table (car char-regexp)
-  ;;                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
-
   ;; goodbye!
   (global-unset-key (kbd "C-h h"))
 
-  ;; bugs?
-  (setq smooth-scroll-margin 5)
-  (setq scroll-margin 5)
+  ;; smooth scroll
+  (setq scroll-conservatively 101
+        scroll-margin 5
+        scroll-preserve-screen-position 't)
 
   ;; custom fns
   (defun untabify-buffer ()
@@ -599,7 +578,8 @@ you should place your code here."
       (delete-trailing-whitespace)
       (indent-region (point-min) (point-max))
       (untabify (point-min) (point-max))))
-  (evil-leader/set-key "bc" 'cleanup-buffer)
+  ;; (evil-leader/set-key "bc" 'cleanup-buffer)
+  (spacemacs/set-leader-keys-for-major-mode 'prog-mode "bc" 'cleanup-buffer)
 
   (defun file-reopen-as-root ()
     "Reopens current file as root."
@@ -612,69 +592,96 @@ you should place your code here."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-backends
-   (quote
-    (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
-                  (company-dabbrev-code company-keywords)
-                  company-oddmuse company-dabbrev)))
- '(company-idle-delay 0.4)
- '(company-show-numbers t)
- '(diff-hl-margin-mode t)
- '(diff-hl-side (quote right))
- '(evil-want-Y-yank-to-eol t)
- '(exec-path
-   (quote
-    ("/home/wamaral/bin" "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/usr/lib/emacs/25.1.50/x86_64-unknown-linux-gnu")))
- '(ggtags-find-tag-hook (quote (recenter reposition-window)))
- '(ggtags-global-output-format (quote ctags))
- '(ggtags-navigation-mode nil)
- '(ggtags-sort-by-nearness t)
- '(ggtags-use-idutils t)
- '(global-diff-hl-mode t)
- '(global-highlight-parentheses-mode t)
- '(haskell-check-command "hlint")
- '(haskell-compile-cabal-build-alt-command
-   "/bin/bash -c cd %s && cabal clean -s && cabal build --ghc-option=-ferror-spans")
- '(haskell-compile-cabal-build-command
-   "/bin/bash -c cd %s && cabal build --ghc-option=-ferror-spans")
- '(haskell-hasktags-path "hasktags")
- '(haskell-mode-stylish-haskell-path "stylish-haskell")
- '(haskell-stylish-on-save t)
- '(helm-ag-use-agignore t)
- '(hindent-process-path "hindent")
- '(js-enabled-frameworks (quote (javascript extjs)))
- '(js2-include-node-externs t)
- '(js2-mode-show-parse-errors nil)
- '(js2-mode-show-strict-warnings nil)
- '(linum-relative-current-symbol "")
- '(linum-relative-format "%3s")
- '(menu-bar-mode t)
- '(package-selected-packages
-   (quote
-    (sourcerer-theme go-guru slime-company minitest imenu-list pug-mode dired+ alchemist helm-gtags ggtags company-emacs-eclim ranger erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks eclim org marshal evil-unimpaired caml ob-http auto-complete org-projectile github-search groovy-mode erlang editorconfig request pcache mwim ghc utop tuareg systemd rebox2 psci deferred purescript-mode psc-ide ocp-indent nginx-mode merlin flycheck-purescript flycheck-gometalinter docker tablist docker-tramp csv-mode company-auctex auctex-latexmk auctex company-ghci helm-cider paredit highlight gh inf-ruby typescript-mode slime racket-mode helm-dash geiser flycheck-elm anzu restclient ensime sbt-mode elixir-mode hlint-refactor flyspell-correct-helm flycheck-mix zeal-at-point xkcd vimrc-mode typit mmt tide dash-functional tern color-identifiers-mode ox-gfm darkokai-theme dumb-jump popup packed git-gutter linum-relative git-commit nlinum iedit hydra flyspell-correct swiper ivy zenburn-theme which-key web-mode ujelly-theme spacemacs-theme spaceline powerline sass-mode ruby-test-mode rainbow-delimiters projectile-rails organic-green-theme org-plus-contrib open-junk-file move-text monokai-theme material-theme magit-gitflow leuven-theme js2-refactor ido-vertical-mode helm-projectile helm-ag gruvbox-theme gotham-theme google-translate fish-mode evil-surround evil-mc emmet-mode dracula-theme company-web color-theme-sanityinc-solarized clj-refactor multiple-cursors badwolf-theme anti-zenburn-theme aggressive-indent ace-link cider clojure-mode smartparens bind-map evil flycheck haskell-mode go-mode yasnippet company helm helm-core avy markdown-mode alert magit async projectile js2-mode dash s color-theme-sanityinc-tomorrow zonokai-theme zen-and-art-theme yaml-mode xterm-color ws-butler wolfram-mode window-numbering web-completion-data web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org thrift tern-auto-complete tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme stan-mode srefactor sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle slim-mode shm shell-pop seti-theme scss-mode scad-mode rvm ruby-tools rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-mode rainbow-identifiers railscasts-theme queue quelpa qml-mode purple-haze-theme professional-theme popwin planet-theme pkg-info phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox page-break-lines orgit org-repo-todo org-present org-pomodoro org-download org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme matlab-mode markdown-toc majapahit-theme magit-popup magit-gh-pulls macrostep lush-theme lorem-ipsum log4e livid-mode nlinum-relative link-hint light-soap-theme less-css-mode julia-mode json-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ inflections indent-guide hungry-delete htmlize hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flyspell helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet hc-zenburn-theme haskell-snippets haml-mode gruber-darker-theme grandshell-theme goto-chg golden-ratio go-eldoc gnuplot gntp github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-search-highlight-persist evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emacs-eclim elisp-slime-nav edn dockerfile-mode django-theme diff-hl define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-tern company-statistics company-shell company-quickhelp company-go company-ghc company-cabal command-log-mode column-enforce-mode colorsarenice-theme coffee-mode cmm-mode clues-theme clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler buffer-move bubbleberry-theme birds-of-paradise-plus-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile arduino-mode apropospriate-theme ample-zen-theme ample-theme alect-themes afternoon-theme adaptive-wrap ace-window ace-jump-helm-line ac-ispell 4clojure)))
- '(psc-ide-add-import-on-completion t t)
- '(psc-ide-rebuild-on-save nil t)
- '(safe-local-variable-values
-   (quote
-    ((haskell-process-use-ghci . t)
-     (haskell-indent-spaces . 4)
-     (elixir-enable-compilation-checking . t)
-     (elixir-enable-compilation-checking))))
- '(show-paren-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:background nil))))
- '(highlight-indentation-current-column-face ((t (:background "dark gray"))))
- '(highlight-indentation-face ((t (:inherit fringe :background "dim gray"))))
- '(linum-relative-current-face ((t (:inherit linum :foreground "#CAE682" :weight bold))))
- '(variable-pitch ((t (:family "Droid Sans"))))
- '(whitespace-tab ((t (:background "dark slate gray" :foreground "#969896"))))
- '(whitespace-trailing ((t (:background "dark orange")))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(Info-fontify-angle-bracketed-flag nil)
+   '(blink-cursor-mode nil)
+   '(column-number-mode t)
+   '(company-backends
+     (quote
+      (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                    (company-dabbrev-code company-keywords)
+                    company-oddmuse company-dabbrev)))
+   '(company-idle-delay 0.4)
+   '(company-show-numbers t)
+   '(diff-hl-margin-mode t)
+   '(diff-hl-side (quote right))
+   '(evil-want-Y-yank-to-eol t)
+   '(exec-path
+     (quote
+      ("/home/wamaral/bin" "/home/wamaral/.fzf/bin" "/home/wamaral/.local/bin" "/home/wamaral/.cabal/bin" "/home/wamaral/.xmonad" "/home/wamaral/.go/bin" "/home/wamaral/.npm/bin" "/usr/local/sbin" "/usr/sbin" "/sbin" "/home/wamaral/.fzf/bin" "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin")))
+   '(face-font-family-alternatives
+     (quote
+      (("Fira Mono" "Monospace" "courier" "fixed")
+       ("courier" "CMU Typewriter Text" "fixed")
+       ("Sans Serif" "helv" "helvetica" "arial" "fixed")
+       ("helv" "helvetica" "arial" "fixed"))))
+   '(fci-rule-color "#D0BF8F" t)
+   '(flycheck-haskell-hlint-executable "stack hlint")
+   '(font-use-system-font nil)
+   '(ggtags-find-tag-hook (quote (recenter)))
+   '(ggtags-global-output-format (quote ctags))
+   '(ggtags-navigation-mode nil)
+   '(ggtags-sort-by-nearness t)
+   '(ggtags-use-idutils t)
+   '(global-diff-hl-mode t)
+   '(global-highlight-parentheses-mode t)
+   '(haskell-check-command "/home/wamaral/.local/bin/hlint")
+   '(haskell-compile-cabal-build-alt-command
+     "/bin/bash -c cd %s && cabal clean -s && cabal build --ghc-option=-ferror-spans")
+   '(haskell-compile-cabal-build-command
+     "/bin/bash -c cd %s && cabal build --ghc-option=-ferror-spans")
+   '(haskell-hasktags-path "/home/wamaral/.local/bin/hasktags")
+   '(haskell-mode-stylish-haskell-path "/home/wamaral/.local/bin/stylish-haskell")
+   '(haskell-process-path-ghci "/home/wamaral/bin/stack exec -- ghci")
+   '(haskell-process-path-stack "/home/wamaral/bin/stack")
+   '(haskell-process-suggest-haskell-docs-imports t)
+   '(haskell-stylish-on-save t t)
+   '(helm-ag-use-agignore t)
+   '(hindent-process-path "stack hindent")
+   '(js-enabled-frameworks (quote (javascript extjs)))
+   '(js2-include-node-externs t)
+   '(js2-mode-show-parse-errors nil)
+   '(js2-mode-show-strict-warnings nil)
+   '(linum-relative-current-symbol "")
+   '(linum-relative-format "%3s")
+   '(menu-bar-mode t)
+   '(org-agenda-files (quote ("~/org/calendars/work.org")))
+   '(package-selected-packages
+     (quote
+      (magithub solarized-theme faceup madhat2r-theme intero winum unfill sudoku sourcerer-theme go-guru slime-company minitest imenu-list pug-mode dired+ alchemist helm-gtags ggtags company-emacs-eclim ranger erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks eclim org marshal evil-unimpaired caml ob-http auto-complete org-projectile github-search groovy-mode erlang editorconfig request pcache mwim ghc utop tuareg systemd rebox2 psci deferred purescript-mode psc-ide ocp-indent nginx-mode merlin flycheck-purescript flycheck-gometalinter docker tablist docker-tramp csv-mode company-auctex auctex-latexmk auctex company-ghci helm-cider paredit highlight gh inf-ruby typescript-mode slime racket-mode helm-dash geiser flycheck-elm anzu restclient ensime sbt-mode elixir-mode hlint-refactor flyspell-correct-helm flycheck-mix zeal-at-point xkcd vimrc-mode typit mmt tide dash-functional tern color-identifiers-mode ox-gfm darkokai-theme dumb-jump popup packed git-gutter linum-relative git-commit nlinum iedit hydra flyspell-correct swiper ivy zenburn-theme which-key web-mode ujelly-theme spacemacs-theme spaceline powerline sass-mode ruby-test-mode rainbow-delimiters projectile-rails organic-green-theme org-plus-contrib open-junk-file move-text monokai-theme material-theme magit-gitflow leuven-theme js2-refactor ido-vertical-mode helm-projectile helm-ag gruvbox-theme gotham-theme google-translate fish-mode evil-surround evil-mc emmet-mode dracula-theme company-web color-theme-sanityinc-solarized clj-refactor multiple-cursors badwolf-theme anti-zenburn-theme aggressive-indent ace-link cider clojure-mode smartparens bind-map evil flycheck haskell-mode go-mode yasnippet company helm helm-core avy markdown-mode alert magit async projectile js2-mode dash s color-theme-sanityinc-tomorrow zonokai-theme zen-and-art-theme yaml-mode xterm-color ws-butler wolfram-mode window-numbering web-completion-data web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org thrift tern-auto-complete tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme stan-mode srefactor sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle slim-mode shm shell-pop seti-theme scss-mode scad-mode rvm ruby-tools rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-mode rainbow-identifiers railscasts-theme queue quelpa qml-mode purple-haze-theme professional-theme popwin planet-theme pkg-info phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox page-break-lines orgit org-repo-todo org-present org-pomodoro org-download org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme matlab-mode markdown-toc majapahit-theme magit-popup magit-gh-pulls macrostep lush-theme lorem-ipsum log4e livid-mode nlinum-relative link-hint light-soap-theme less-css-mode julia-mode json-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ inflections indent-guide hungry-delete htmlize hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flyspell helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet hc-zenburn-theme haskell-snippets haml-mode gruber-darker-theme grandshell-theme goto-chg golden-ratio go-eldoc gnuplot gntp github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-search-highlight-persist evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emacs-eclim elisp-slime-nav edn dockerfile-mode django-theme diff-hl define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-tern company-statistics company-shell company-quickhelp company-go company-ghc company-cabal command-log-mode column-enforce-mode colorsarenice-theme coffee-mode cmm-mode clues-theme clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler buffer-move bubbleberry-theme birds-of-paradise-plus-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile arduino-mode apropospriate-theme ample-zen-theme ample-theme alect-themes afternoon-theme adaptive-wrap ace-window ace-jump-helm-line ac-ispell 4clojure)))
+   '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "tags")))
+   '(projectile-tags-backend (quote ggtags))
+   '(projectile-tags-command "gtags")
+   '(projectile-tags-file-name "GTAGS")
+   '(projectile-use-git-grep t)
+   '(projectile-verbose nil)
+   '(psc-ide-add-import-on-completion t t)
+   '(psc-ide-rebuild-on-save nil t)
+   '(safe-local-variable-values
+     (quote
+      ((haskell-process-use-ghci . t)
+       (haskell-indent-spaces . 4)
+       (elixir-enable-compilation-checking . t)
+       (elixir-enable-compilation-checking))))
+   '(tool-bar-mode nil))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(highlight-indentation-current-column-face ((t (:background "dark gray"))))
+   '(highlight-indentation-face ((t (:inherit fringe :background "dim gray"))))
+   '(linum-relative-current-face ((t (:inherit linum :foreground "#CAE682" :weight bold))))
+   '(variable-pitch ((t (:family "Droid Sans"))))
+   '(whitespace-tab ((t (:background "dark slate gray" :foreground "#969896"))))
+   '(whitespace-trailing ((t (:background "dark orange")))))
+  )

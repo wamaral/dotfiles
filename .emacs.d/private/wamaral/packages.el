@@ -40,7 +40,7 @@
     editorconfig
     evil-smartparens
     projectile-direnv
-    groovy-mode
+    ;; groovy-mode
     highlight-chars
     ;; lispy
     ;; evil-lispy
@@ -136,8 +136,8 @@ Each entry is either:
   (add-hook 'ruby-mode
             (lambda () (require 'evil-ruby-block-object))))
 
-(defun wamaral/init-groovy-mode ()
-  (add-to-list 'auto-mode-alist '("\\Jenkinsfile\\'" . groovy-mode)))
+;; (defun wamaral/init-groovy-mode ()
+;;   (add-to-list 'auto-mode-alist '("\\Jenkinsfile\\'" . groovy-mode)))
 
 (defun wamaral/highlight-chars ()
   (require 'highlight-chars)
@@ -145,6 +145,6 @@ Each entry is either:
   (add-hook 'font-lock-mode-hook 'hc-highlight-trailing-whitespace))
 
 (defun wamaral/init-wamaral ()
-  )
+  (add-to-list 'auto-mode-alist '("\\Jenkinsfile\\'" . groovy-mode)))
 
 ;;; packages.el ends here
