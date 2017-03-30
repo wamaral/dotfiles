@@ -84,7 +84,9 @@ values."
      nginx
      ocaml
      (org :variables
+          org-enable-reveal-js-support t
           org-enable-github-support t)
+     plantuml
      purescript
      racket
      ranger
@@ -468,18 +470,11 @@ you should place your code here."
   (setq ranger-dont-show-binary t)
 
   ;; tags
-  (add-hook 'prog-mode-hook 'ggtags-mode)
+  ;; (add-hook 'prog-mode-hook 'ggtags-mode)
   ;; (define-key evil-normal-state-map (kbd "C-]") 'ggtags-find-tag-dwim)
-  (define-key evil-normal-state-map (kbd "C-]") 'spacemacs/jump-to-definition)
   ;; (define-key evil-motion-state-map (kbd "g C-]") 'ggtags-grep)
+  (define-key evil-normal-state-map (kbd "C-]") 'spacemacs/jump-to-definition)
   (define-key evil-motion-state-map (kbd "g C-]") 'helm-gtags-find-tag-from-here)
-  ;; (setq projectile-tags-command "ctags -e '--options=/home/wamaral/.ctags'")
-  ;; (setq projectile-tags-command "gtags")
-  ;; (defun ao/expand-completion-table (orig-fun &rest args)
-  ;;   "Extract all symbols from COMPLETION-TABLE before calling projectile--tags."
-  ;;   (let ((completion-table (all-completions "" (car args))))
-  ;;     (funcall orig-fun completion-table)))
-  ;; (advice-add 'projectile--tags :around #'ao/expand-completion-table)
   (setq helm-gtags-display-style 'detail)
   (setq helm-gtags-auto-update t)
   (setq helm-gtags-ignore-case t)
@@ -558,6 +553,55 @@ you should place your code here."
         scroll-margin 5
         scroll-preserve-screen-position 't)
 
+  ;; orgmode
+  (with-eval-after-load 'org
+    (setq org-plantuml-jar-path "/opt/plantuml/plantuml.jar")
+    (setq org-confirm-babel-evaluate nil
+          org-src-fontify-natively t
+          org-src-tab-acts-natively t)
+
+    (require 'ob-python)
+    (require 'ob-clojure)
+    (require 'ob-perl)
+    (require 'ob-dot)
+    (require 'ob-R)
+    (require 'ob-gnuplot)
+    (require 'ob-lisp)
+    (require 'ob-org)
+    (require 'ob-calc)
+    (require 'ob-js)
+    (require 'ob-latex)
+    (require 'ob-plantuml)
+    (require 'ob-sh)
+    (require 'ob-ditaa)
+    (require 'ob-octave)
+    (require 'ob-sed)
+    (require 'ob-sql)
+
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((http       . t)
+       (sh         . t)
+       (sed        . t)
+       (sqlite     . t)
+       (js         . t)
+       (emacs-lisp . t)
+       (clojure    . t)
+       (perl       . t)
+       (python     . t)
+       (ruby       . t)
+       (R          . t)
+       (octave     . t)
+       (gnuplot    . t)
+       (lisp       . t)
+       (org        . t)
+       (calc       . t)
+       (latex      . t)
+       (plantuml   . t)
+       (ditaa      . t)
+       (dot        . t)))
+    )
+
   ;; custom fns
   (defun untabify-buffer ()
     "Remove tabs from whole buffer."
@@ -615,9 +659,9 @@ This function is called at the very end of Spacemacs initialization."
    '(diff-hl-margin-mode t)
    '(diff-hl-side (quote right))
    '(evil-want-Y-yank-to-eol t)
-   '(exec-path
-     (quote
-      ("/home/wamaral/bin" "/home/wamaral/.fzf/bin" "/home/wamaral/.local/bin" "/home/wamaral/.cabal/bin" "/home/wamaral/.xmonad" "/home/wamaral/.go/bin" "/home/wamaral/.npm/bin" "/usr/local/sbin" "/usr/sbin" "/sbin" "/home/wamaral/.fzf/bin" "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin")))
+   ;; '(exec-path
+   ;;   (quote
+   ;;    ("/home/wamaral/bin" "/home/wamaral/.fzf/bin" "/home/wamaral/.local/bin" "/home/wamaral/.cabal/bin" "/home/wamaral/.xmonad" "/home/wamaral/.go/bin" "/home/wamaral/.npm/bin" "/usr/local/sbin" "/usr/sbin" "/sbin" "/home/wamaral/.fzf/bin" "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin")))
    '(face-font-family-alternatives
      (quote
       (("Fira Mono" "Monospace" "courier" "fixed")
@@ -644,7 +688,7 @@ This function is called at the very end of Spacemacs initialization."
    '(haskell-process-path-ghci "/home/wamaral/bin/stack exec -- ghci")
    '(haskell-process-path-stack "/home/wamaral/bin/stack")
    '(haskell-process-suggest-haskell-docs-imports t)
-   '(haskell-stylish-on-save t t)
+   '(haskell-stylish-on-save t)
    '(helm-ag-use-agignore t)
    '(hindent-process-path "stack hindent")
    '(js-enabled-frameworks (quote (javascript extjs)))
@@ -655,13 +699,21 @@ This function is called at the very end of Spacemacs initialization."
    '(linum-relative-format "%3s")
    '(menu-bar-mode t)
    '(org-agenda-files (quote ("~/org/calendars/work.org")))
+   '(org-export-async-init-file
+     "/home/wamaral/.emacs.d/layers/+emacs/org/local/org-async-init.el" t)
+   '(org-export-backends
+     (quote
+      (ascii html icalendar latex md odt confluence freemind)))
    '(package-selected-packages
      (quote
-      (magithub solarized-theme faceup madhat2r-theme intero winum unfill sudoku sourcerer-theme go-guru slime-company minitest imenu-list pug-mode dired+ alchemist helm-gtags ggtags company-emacs-eclim ranger erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks eclim org marshal evil-unimpaired caml ob-http auto-complete org-projectile github-search groovy-mode erlang editorconfig request pcache mwim ghc utop tuareg systemd rebox2 psci deferred purescript-mode psc-ide ocp-indent nginx-mode merlin flycheck-purescript flycheck-gometalinter docker tablist docker-tramp csv-mode company-auctex auctex-latexmk auctex company-ghci helm-cider paredit highlight gh inf-ruby typescript-mode slime racket-mode helm-dash geiser flycheck-elm anzu restclient ensime sbt-mode elixir-mode hlint-refactor flyspell-correct-helm flycheck-mix zeal-at-point xkcd vimrc-mode typit mmt tide dash-functional tern color-identifiers-mode ox-gfm darkokai-theme dumb-jump popup packed git-gutter linum-relative git-commit nlinum iedit hydra flyspell-correct swiper ivy zenburn-theme which-key web-mode ujelly-theme spacemacs-theme spaceline powerline sass-mode ruby-test-mode rainbow-delimiters projectile-rails organic-green-theme org-plus-contrib open-junk-file move-text monokai-theme material-theme magit-gitflow leuven-theme js2-refactor ido-vertical-mode helm-projectile helm-ag gruvbox-theme gotham-theme google-translate fish-mode evil-surround evil-mc emmet-mode dracula-theme company-web color-theme-sanityinc-solarized clj-refactor multiple-cursors badwolf-theme anti-zenburn-theme aggressive-indent ace-link cider clojure-mode smartparens bind-map evil flycheck haskell-mode go-mode yasnippet company helm helm-core avy markdown-mode alert magit async projectile js2-mode dash s color-theme-sanityinc-tomorrow zonokai-theme zen-and-art-theme yaml-mode xterm-color ws-butler wolfram-mode window-numbering web-completion-data web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org thrift tern-auto-complete tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme stan-mode srefactor sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle slim-mode shm shell-pop seti-theme scss-mode scad-mode rvm ruby-tools rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-mode rainbow-identifiers railscasts-theme queue quelpa qml-mode purple-haze-theme professional-theme popwin planet-theme pkg-info phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox page-break-lines orgit org-repo-todo org-present org-pomodoro org-download org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme matlab-mode markdown-toc majapahit-theme magit-popup magit-gh-pulls macrostep lush-theme lorem-ipsum log4e livid-mode nlinum-relative link-hint light-soap-theme less-css-mode julia-mode json-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ inflections indent-guide hungry-delete htmlize hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flyspell helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet hc-zenburn-theme haskell-snippets haml-mode gruber-darker-theme grandshell-theme goto-chg golden-ratio go-eldoc gnuplot gntp github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-search-highlight-persist evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emacs-eclim elisp-slime-nav edn dockerfile-mode django-theme diff-hl define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-tern company-statistics company-shell company-quickhelp company-go company-ghc company-cabal command-log-mode column-enforce-mode colorsarenice-theme coffee-mode cmm-mode clues-theme clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler buffer-move bubbleberry-theme birds-of-paradise-plus-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile arduino-mode apropospriate-theme ample-zen-theme ample-theme alect-themes afternoon-theme adaptive-wrap ace-window ace-jump-helm-line ac-ispell 4clojure)))
+      (meghanada scala-mode elm-mode magithub solarized-theme faceup madhat2r-theme intero winum unfill sudoku sourcerer-theme go-guru slime-company minitest imenu-list pug-mode dired+ alchemist helm-gtags ggtags company-emacs-eclim ranger erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks eclim org marshal evil-unimpaired caml ob-http auto-complete org-projectile github-search groovy-mode erlang editorconfig request pcache mwim ghc utop tuareg systemd rebox2 psci deferred purescript-mode psc-ide ocp-indent nginx-mode merlin flycheck-purescript flycheck-gometalinter docker tablist docker-tramp csv-mode company-auctex auctex-latexmk auctex company-ghci helm-cider paredit highlight gh inf-ruby typescript-mode slime racket-mode helm-dash geiser flycheck-elm anzu restclient ensime sbt-mode elixir-mode hlint-refactor flyspell-correct-helm flycheck-mix zeal-at-point xkcd vimrc-mode typit mmt tide dash-functional tern color-identifiers-mode ox-gfm darkokai-theme dumb-jump popup packed git-gutter linum-relative git-commit nlinum iedit hydra flyspell-correct swiper ivy zenburn-theme which-key web-mode ujelly-theme spacemacs-theme spaceline powerline sass-mode ruby-test-mode rainbow-delimiters projectile-rails organic-green-theme org-plus-contrib open-junk-file move-text monokai-theme material-theme magit-gitflow leuven-theme js2-refactor ido-vertical-mode helm-projectile helm-ag gruvbox-theme gotham-theme google-translate fish-mode evil-surround evil-mc emmet-mode dracula-theme company-web color-theme-sanityinc-solarized clj-refactor multiple-cursors badwolf-theme anti-zenburn-theme aggressive-indent ace-link cider clojure-mode smartparens bind-map evil flycheck haskell-mode go-mode yasnippet company helm helm-core avy markdown-mode alert magit async projectile js2-mode dash s color-theme-sanityinc-tomorrow zonokai-theme zen-and-art-theme yaml-mode xterm-color ws-butler wolfram-mode window-numbering web-completion-data web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org thrift tern-auto-complete tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme stan-mode srefactor sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle slim-mode shm shell-pop seti-theme scss-mode scad-mode rvm ruby-tools rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-mode rainbow-identifiers railscasts-theme queue quelpa qml-mode purple-haze-theme professional-theme popwin planet-theme pkg-info phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox page-break-lines orgit org-repo-todo org-present org-pomodoro org-download org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme matlab-mode markdown-toc majapahit-theme magit-popup magit-gh-pulls macrostep lush-theme lorem-ipsum log4e livid-mode nlinum-relative link-hint light-soap-theme less-css-mode julia-mode json-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ inflections indent-guide hungry-delete htmlize hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flyspell helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet hc-zenburn-theme haskell-snippets haml-mode gruber-darker-theme grandshell-theme goto-chg golden-ratio go-eldoc gnuplot gntp github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-search-highlight-persist evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emacs-eclim elisp-slime-nav edn dockerfile-mode django-theme diff-hl define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-tern company-statistics company-shell company-quickhelp company-go company-ghc company-cabal command-log-mode column-enforce-mode colorsarenice-theme coffee-mode cmm-mode clues-theme clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler buffer-move bubbleberry-theme birds-of-paradise-plus-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile arduino-mode apropospriate-theme ample-zen-theme ample-theme alect-themes afternoon-theme adaptive-wrap ace-window ace-jump-helm-line ac-ispell 4clojure)))
+   '(plantuml-jar-path "/opt/plantuml/plantuml.jar")
+   '(projectile-enable-idle-timer nil)
    '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "tags")))
-   '(projectile-tags-backend (quote ggtags))
-   '(projectile-tags-command "gtags")
-   '(projectile-tags-file-name "GTAGS")
+   '(projectile-idle-timer-hook (quote (helm-gtags-update-tags)))
+   ;; '(projectile-mode t nil (projectile))
+   '(projectile-rails-global-mode t)
+   '(projectile-switch-project-action (quote helm-projectile))
    '(projectile-use-git-grep t)
    '(projectile-verbose nil)
    '(psc-ide-add-import-on-completion t t)
