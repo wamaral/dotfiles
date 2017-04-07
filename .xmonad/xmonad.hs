@@ -1,65 +1,70 @@
 {-# OPTIONS -fno-warn-missing-signatures #-}
+{-# LANGUAGE FlexibleContexts          #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
-{-# LANGUAGE FlexibleContexts #-}
 
-import XMonad hiding ( (|||) )
+import           XMonad                           hiding ((|||))
 
 -- import Control.Applicative
 -- import Data.Monoid
-import System.Exit
-import Data.Maybe (fromMaybe)
+import           Data.Maybe                       (fromMaybe)
+import           System.Exit
+import qualified Text.Fuzzy                       as FZ
 
-import qualified XMonad.Actions.FlexibleResize as Flex
-import qualified XMonad.StackSet as W
-import qualified Data.Map as M
+import qualified Data.Map                         as M
+import qualified XMonad.Actions.FlexibleResize    as Flex
+import qualified XMonad.StackSet                  as W
 
-import XMonad.Actions.CopyWindow
-import XMonad.Actions.CycleWS
-import XMonad.Actions.DwmPromote
-import XMonad.Actions.FloatKeys
-import XMonad.Actions.GridSelect
+import           XMonad.Actions.CopyWindow
+import           XMonad.Actions.CycleWS
+import           XMonad.Actions.DwmPromote
+import           XMonad.Actions.FloatKeys
+import           XMonad.Actions.GridSelect
 -- import XMonad.Actions.Submap
 
-import XMonad.Config.Xfce
--- import XMonad.Config.Desktop
--- import XMonad.Config.Gnome
+-- import           XMonad.Config.Desktop
+-- import           XMonad.Config.Gnome
+import           XMonad.Config.Mate
+-- import           XMonad.Config.Xfce
 
-import XMonad.Hooks.DynamicHooks
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.SetWMName
-import XMonad.Hooks.UrgencyHook
+import           XMonad.Hooks.DynamicHooks
+import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.EwmhDesktops
+import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.SetWMName
+import           XMonad.Hooks.UrgencyHook
 
 -- import XMonad.Layout.Drawer
 -- import XMonad.Layout.HintedGrid
-import XMonad.Layout.LayoutCombinators
-import XMonad.Layout.LayoutHints
-import XMonad.Layout.Renamed
-import XMonad.Layout.NoBorders
-import XMonad.Layout.ResizableTile
+import           XMonad.Layout.LayoutCombinators
+import           XMonad.Layout.LayoutHints
+import           XMonad.Layout.NoBorders
+import           XMonad.Layout.Renamed
+import           XMonad.Layout.ResizableTile
 -- import XMonad.Layout.TwoPane
 
-import XMonad.Prompt
-import XMonad.Prompt.RunOrRaise
+import           XMonad.Prompt
+import           XMonad.Prompt.Pass
+import           XMonad.Prompt.RunOrRaise
 -- import XMonad.Prompt.Shell
-import XMonad.Prompt.XMonad
+import           XMonad.Prompt.XMonad
 
 -- import XMonad.Util.Dzen hiding (font)
-import XMonad.Util.EZConfig
-import XMonad.Util.NamedWindows
-import XMonad.Util.Replace
-import XMonad.Util.Run
+import           XMonad.Util.EZConfig
+import           XMonad.Util.NamedWindows
+import           XMonad.Util.Paste                (sendKey)
+import           XMonad.Util.Replace
+import           XMonad.Util.Run
 
 -- import Graphics.X11.ExtraTypes.XF86
 
 -- import DBus.Client
-import System.Taffybar.Hooks.PagerHints (pagerHints)
+import           System.Taffybar.Hooks.PagerHints (pagerHints)
 -- import System.Taffybar.XMonadLog (dbusLog)
-import Codec.Binary.UTF8.String (encode)
-import Foreign.C.Types (CChar)
-import Foreign.C.String (castCCharToChar, castCharToCChar)
+import           Codec.Binary.UTF8.String         (encode)
+import           Foreign.C.String                 (castCCharToChar,
+                                                   castCharToCChar)
+import           Foreign.C.Types                  (CChar)
 
 -- Default terminal emulator
 myTerminal = "/usr/sbin/sakura"
@@ -96,11 +101,13 @@ myBorderWidth = 2
 myModMask = mod4Mask
 
 -- workspace names
-myWorkspaces = ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.chat"]
+-- myWorkspaces = ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.chat"]
+myWorkspaces = [1..8]
 
 ------------------------------------------------------------------------
 -- Key bindings
 --
+fKeys = [xK_F1 .. xK_F12]
 myKeys conf = mkKeymap conf $
     [ ("M4-c", spawn $ XMonad.terminal conf) -- launch term
     , ("M1-<F5>", kill) -- kill window
@@ -109,12 +116,13 @@ myKeys conf = mkKeymap conf $
       -- Runners
     , ("M4-<Space>", runOrRaisePrompt myXPConfig) -- app runner
     , ("M4-S-<Space>", xmonadPrompt myXPConfig) -- xmonad actions runner
+    , ("M4-w", passPrompt fuzzyXPConfig) -- retrieve pass entries
 
       -- Media keys
     , ("<XF86AudioPlay>", spawn "playerctl play-pause")
     , ("<XF86AudioMute>", spawn "pamixer -t")
-    , ("<XF86AudioLowerVolume>", spawn "pamixer --allow-boost -d 10")
-    , ("<XF86AudioRaiseVolume>", spawn "pamixer --allow-boost -i 10")
+    , ("<XF86AudioLowerVolume>", spawn "pamixer --allow-boost -d 5")
+    , ("<XF86AudioRaiseVolume>", spawn "pamixer --allow-boost -i 5")
 
       -- Printscreen
     , ("M4-<Print>", spawn "scrot screen_%Y-%m-%d.png -d 1")
@@ -143,9 +151,12 @@ myKeys conf = mkKeymap conf $
       -- Switching layouts
     , ("M4-f", sendMessage NextLayout)
     , ("M4-S-f", setLayout $ XMonad.layoutHook conf) -- Default workspace layout
-    , ("M4-<F1>", sendMessage $ JumpToLayout "Full")
-    , ("M4-<F2>", sendMessage $ JumpToLayout "RTile")
-    , ("M4-<F3>", sendMessage $ JumpToLayout "MirrorRTile")
+    -- , ("M4-<F1>", sendMessage $ JumpToLayout "Full")
+    -- , ("M4-<F2>", sendMessage $ JumpToLayout "RTile")
+    -- , ("M4-<F3>", sendMessage $ JumpToLayout "MirrorRTile")
+    , ("<F9>", sendMessage $ JumpToLayout "Full")
+    , ("<F10>", sendMessage $ JumpToLayout "RTile")
+    , ("<F11>", sendMessage $ JumpToLayout "MirrorRTile")
 
       -- Resizing layouts
     , ("M4-<Left>", sendMessage Shrink) -- shrink the master area
@@ -159,9 +170,9 @@ myKeys conf = mkKeymap conf $
     , ("M4-n", refresh)
       -- toggle the statusbar gap
     , ("M4-b", sendMessage ToggleStruts)
-      -- restart xfce panel
-    , ("M4-S-b", spawn "xfce4-panel -r")
-    , ("M4-C-b", spawn "xfce4-panel -r")
+      -- restart mate panel
+    , ("M4-S-b", spawn "mate-panel --replace")
+    , ("M4-C-b", spawn "mate-panel --replace")
 
       -- Floating
     , ("M4-S-<Left>", withFocused (keysMoveWindow (-30,0)))
@@ -184,7 +195,7 @@ myKeys conf = mkKeymap conf $
     , ("M4-C-r", spawn "xmonad --recompile && xmonad --restart")
 
     -- Screensaver
-    , ("M4-<Esc>", spawn "xscreensaver-command -lock")
+    -- , ("M4-<Esc>", spawn "xscreensaver-command -lock")
 
     -- Screens
     , ("M4-a", toggleOrView $ last $ XMonad.workspaces conf)
@@ -192,33 +203,42 @@ myKeys conf = mkKeymap conf $
     ++
 
     --
-    -- mod-[1..0], Switch to workspace N
+    -- F[1..8], Switch to workspace N
     --
-    [("M4-" ++ show k, toggleOrView i)
-        | (i, k) <- zip (XMonad.workspaces conf) ([1 .. 9] ++ [0])]
+    [("M4-<F" ++ show n ++ ">", sendKey noModMask fk)
+    | (n, fk) <- zip [1..12] fKeys]
+    ++
+    [("<F" ++ show k ++ ">", toggleOrView i)
+    | (i, k) <- zip (XMonad.workspaces conf) myWorkspaces]
     ++
 
     --
-    -- mod-shift-[1..0], Move client to workspace N
+    -- shift-[1..8], Move client to workspace N
     --
-    [("M4-S-" ++ show k, windows $ W.shift i)
-        | (i, k) <- zip (XMonad.workspaces conf) ([1 .. 9] ++ [0])]
+    -- [("M4-S-<F" ++ show n ++ ">", sendKey shiftMask fk)
+    -- | (n, fk) <- zip [1..12] fKeys]
+    -- ++
+    [("S-<F" ++ show k ++ ">", windows $ W.shift i)
+        | (i, k) <- zip (XMonad.workspaces conf) myWorkspaces]
     ++
 
     --
-    -- mod-ctrl-[1..0], Copy client to workspace N
+    -- ctrl-[1..8], Copy client to workspace N
     --
-    [("M4-C-" ++ show k, windows $ copy i)
-        | (i, k) <- zip (XMonad.workspaces conf) ([1 .. 9] ++ [0])]
-    ++
+    -- [("M4-C-<F" ++ show n ++ ">", sendKey controlMask fk)
+    -- | (n, fk) <- zip [1..12] fKeys]
+    -- ++
+    [("C-<F" ++ show k ++ ">", windows $ copy i)
+        | (i, k) <- zip (XMonad.workspaces conf) myWorkspaces]
+    -- ++
 
-    --
-    -- mod-{F10-11-12}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{F10-11-12}, Move client to screen 1, 2, or 3
-    --
-    [(m ++ key, screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip ["<F10>", "<F11>", "<F12>"] [0..]
-        , (f, m) <- [(W.view, "M4-"), (W.shift, "M4-S-")]]
+    -- --
+    -- -- mod-{F10-11-12}, Switch to physical/Xinerama screens 1, 2, or 3
+    -- -- mod-shift-{F10-11-12}, Move client to screen 1, 2, or 3
+    -- --
+    -- [(m ++ key, screenWorkspace sc >>= flip whenJust (windows . f))
+    --     | (key, sc) <- zip ["<F10>", "<F11>", "<F12>"] [0..]
+    --     , (f, m) <- [(W.view, "M4-"), (W.shift, "M4-S-")]]
 
 
 ------------------------------------------------------------------------
@@ -264,6 +284,8 @@ myXPConfig = def
     , height = 20
     , historySize = 100
     }
+
+fuzzyXPConfig = myXPConfig { searchPredicate = FZ.test }
 
 myGSConfig = def
     { gs_cellheight = 50
@@ -342,7 +364,7 @@ myManageHook = composeAll . concat $
     , [ stringProperty "WM_WINDOW_ROLE" =? x --> doIgnore | x <- ignoreByResource ]
     , [ stringProperty "WM_NAME" =? x --> doFloat | x <- floatByTitle ]
     ] where
-    floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts", "mplayer2", "File-roller", "Gcalctool", "Exo-helper-1", "Gksu", "XClock", "Main", "wrapper-1.0", "Tiemu", "Xfce4-panel", "Evolution", "Claws-mail"]
+    floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts", "mplayer2", "File-roller", "Gcalctool", "Exo-helper-1", "Gksu", "XClock", "Main", "wrapper-1.0", "Tiemu", "Xfce4-panel", "Evolution", "Claws-mail", "Orage"]
     floatByTitle    = ["Downloads", "Iceweasel Preferences", "Save As...", "Choose a file", "Open Image", "File Operation Progress", "Firefox Preferences", "Preferences", "Search Engines", "Set up sync", "Passwords and Exceptions", "Autofill Options", "Rename File", "Copying files", "Moving files", "File Properties", "Replace", "Quit GIMP", "Change Foreground Color", "Change Background Color", "chrome://pourbico - Tracker :: PourBico - Firefox Developer Edition", ""]
     floatByResource = ["pop-up", "presentationWidget"]
     ignoreByClass    = ["Xfce4-notifyd", "desktop_window"]
@@ -391,7 +413,7 @@ myEventHook = mempty
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 --
-myStartupHook = startupHook xfceConfig >> setWMName "LG3D"
+myStartupHook = startupHook mateConfig >> setWMName "LG3D"
 
 
 ------------------------------------------------------------------------
@@ -418,15 +440,14 @@ main = do
   replace
   -- myDzen <- spawnPipe myStatusBar
   -- conky  <- spawnPipe myConky
-  -- xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh xfceConfig {
-  xmonad $ withUrgencyHook NoUrgencyHook $ pagerHints $ xfceConfig {
-  -- xmonad $ withUrgencyHook NoUrgencyHook $ xfceConfig {
+  -- xmonad $ withUrgencyHook NoUrgencyHook $ pagerHints $ mateConfig {
+  xmonad $ withUrgencyHook LibNotifyUrgencyHook $ pagerHints $ mateConfig {
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         clickJustFocuses   = myClickJustFocuses,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        workspaces         = myWorkspaces,
+        workspaces         = map show myWorkspaces,
         normalBorderColor  = black,
         focusedBorderColor = red,
 
