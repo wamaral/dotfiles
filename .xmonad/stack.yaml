@@ -10,4 +10,4 @@ extra-deps:
 - dbus-0.10.12
 - libxml-sax-0.7.5
 - fuzzy-0.1.0.0
-resolver: lts-8.5
+resolver: lts-8.6

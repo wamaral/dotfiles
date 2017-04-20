@@ -1,8 +1,7 @@
-name:                wamaral-xmonad
-version:             0.1.0.0
-synopsis:            Initial project template from stack
-description:         Please see README.md
-homepage:            https://github.com/wamaral/xmonad-run#readme
+name:                xmonad-wamaral
+version:             0.13
+synopsis:            Custom XMonad build
+homepage:            https://github.com/wamaral/dotfiles
 license:             BSD3
 license-file:        LICENSE
 author:              Wagner Amaral
@@ -13,10 +12,10 @@ build-type:          Simple
 -- extra-source-files:
 cabal-version:       >=1.10
 
-executable wamaral-xmonad
+executable xmonad-wamaral
   hs-source-dirs:      .
   main-is:             xmonad.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , xmonad >= 0.13
                      , xmonad-contrib >= 0.13
@@ -28,4 +27,4 @@ executable wamaral-xmonad
 
 source-repository head
   type:     git
-  location: https://github.com/wamaral/wamaral-xmonad
+  location: https://github.com/wamaral/dotfiles

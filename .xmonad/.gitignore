@@ -1,0 +1,8 @@
+.stack-work
+history
+prompt-history
+xmonad-x86_64-linux
+*.errors
+*.hi
+*.o
+*.state

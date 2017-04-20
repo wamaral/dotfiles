@@ -6,7 +6,6 @@ import           XMonad                           hiding ((|||))
 
 -- import Control.Applicative
 -- import Data.Monoid
-import           Data.Maybe                       (fromMaybe)
 import           System.Exit
 import qualified Text.Fuzzy                       as FZ
 
@@ -27,8 +26,8 @@ import           XMonad.Config.Mate
 -- import           XMonad.Config.Xfce
 
 import           XMonad.Hooks.DynamicHooks
-import           XMonad.Hooks.DynamicLog
-import           XMonad.Hooks.EwmhDesktops
+-- import           XMonad.Hooks.DynamicLog
+-- import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
@@ -44,7 +43,7 @@ import           XMonad.Layout.ResizableTile
 -- import XMonad.Layout.TwoPane
 
 import           XMonad.Prompt
-import           XMonad.Prompt.Pass
+-- import           XMonad.Prompt.Pass
 import           XMonad.Prompt.RunOrRaise
 -- import XMonad.Prompt.Shell
 import           XMonad.Prompt.XMonad
@@ -61,10 +60,7 @@ import           XMonad.Util.Run
 -- import DBus.Client
 import           System.Taffybar.Hooks.PagerHints (pagerHints)
 -- import System.Taffybar.XMonadLog (dbusLog)
-import           Codec.Binary.UTF8.String         (encode)
-import           Foreign.C.String                 (castCCharToChar,
-                                                   castCharToCChar)
-import           Foreign.C.Types                  (CChar)
+-- import           Codec.Binary.UTF8.String         (encode)
 
 -- Default terminal emulator
 myTerminal = "/usr/sbin/sakura"
@@ -76,15 +72,15 @@ myFont = "-*-calibri-normal-r-normal-*-12-*-*-*-c-*-*-*"
 -- https://www.google.com/design/spec/style/color.html#
 black = "#000000"
 white = "#FFFFFF"
-grey = "#9E9E9E"
-darkgrey = "#424242"
-bluegrey = "#607D8B"
+-- grey = "#9E9E9E"
+-- darkgrey = "#424242"
+-- bluegrey = "#607D8B"
 red = "#F44336"
 darkred = "#B71C1C"
-amber = "#FFC107"
-green = "#4CAF50"
-teal = "#009688"
-indigo = "#3F51B5"
+-- amber = "#FFC107"
+-- green = "#4CAF50"
+-- teal = "#009688"
+-- indigo = "#3F51B5"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse = False
@@ -102,6 +98,7 @@ myModMask = mod4Mask
 
 -- workspace names
 -- myWorkspaces = ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.chat"]
+myWorkspaces :: [Integer]
 myWorkspaces = [1..8]
 
 ------------------------------------------------------------------------
@@ -115,8 +112,8 @@ myKeys conf = mkKeymap conf $
 
       -- Runners
     , ("M4-<Space>", runOrRaisePrompt myXPConfig) -- app runner
-    , ("M4-S-<Space>", xmonadPrompt myXPConfig) -- xmonad actions runner
-    , ("M4-w", passPrompt fuzzyXPConfig) -- retrieve pass entries
+    , ("M4-S-<Space>", xmonadPrompt fuzzyXPConfig) -- xmonad actions runner
+    -- , ("M4-w", passPrompt fuzzyXPConfig) -- retrieve pass entries
 
       -- Media keys
     , ("<XF86AudioPlay>", spawn "playerctl play-pause")
@@ -206,7 +203,7 @@ myKeys conf = mkKeymap conf $
     -- F[1..8], Switch to workspace N
     --
     [("M4-<F" ++ show n ++ ">", sendKey noModMask fk)
-    | (n, fk) <- zip [1..12] fKeys]
+    | (n, fk) <- zip ([1..12] :: [Integer]) fKeys]
     ++
     [("<F" ++ show k ++ ">", toggleOrView i)
     | (i, k) <- zip (XMonad.workspaces conf) myWorkspaces]
@@ -267,9 +264,9 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 ------------------------------------------------------------------------
 -- Custom config options
 --
-dzenStatus = " -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
+-- dzenStatus = " -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
 
-myStatusBar = "dzen2 -x '1280' -y '0' -h '20' -w '950' -ta 'l'" ++ dzenStatus
+-- myStatusBar = "dzen2 -x '1280' -y '0' -h '20' -w '950' -ta 'l'" ++ dzenStatus
 -- myConky = "conky -c ~/.xmonad/conkybarrc"
 
 myXPConfig = def
@@ -426,15 +423,6 @@ instance UrgencyHook LibNotifyUrgencyHook where
     name <- getName w
     Just idx <- W.findTag w <$> gets windowset
     safeSpawn "notify-send" [show name, "workspace " ++ idx]
-
-setDesktopNames :: [String] -> X ()
-setDesktopNames names = withDisplay $ \dpy -> do
-    -- Names thereof
-    r <- asks theRoot
-    a <- getAtom "_NET_DESKTOP_NAMES"
-    c <- getAtom "UTF8_STRING"
-    let names' = map fromIntegral $ concatMap ((++[0]) . encode) names
-    io $ changeProperty8 dpy r a c propModeReplace names'
 
 main = do
   replace
