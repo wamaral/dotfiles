@@ -33,7 +33,7 @@
   '(4clojure
     clojure-cheatsheet
     helm-cider
-    slamhound
+    ;; slamhound
     dired+
     ;; dumb-jump
     tern-auto-complete
@@ -82,7 +82,7 @@ Each entry is either:
     "hc" 'clojure-cheatsheet))
 
 (defun wamaral/init-clojure-cheatsheet ())
-(defun wamaral/init-slamhound ())
+;; (defun wamaral/init-slamhound ())
 (defun wamaral/init-highlight-chars ())
 
 (defun wamaral/init-helm-cider ()
