@@ -114,6 +114,7 @@ myKeys conf = mkKeymap conf $
     , ("M4-<Space>", runOrRaisePrompt myXPConfig) -- app runner
     , ("M4-S-<Space>", xmonadPrompt fuzzyXPConfig) -- xmonad actions runner
     -- , ("M4-w", passPrompt fuzzyXPConfig) -- retrieve pass entries
+    , ("M4-w", spawn "keepass --auto-type") -- retrieve pass entries
 
       -- Media keys
     , ("<XF86AudioPlay>", spawn "playerctl play-pause")
