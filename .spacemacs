@@ -50,7 +50,7 @@ values."
      clojure
      colors
      command-log
-     common-lisp
+     ;; common-lisp
      csv
      docker
      elixir
@@ -61,7 +61,7 @@ values."
      erlang
      evil-cleverparens
      evil-commentary
-     extra-langs
+     ;; extra-langs
      ;; eyebrowse
      games
      git
@@ -82,7 +82,7 @@ values."
             latex-enable-auto-fill t)
      markdown
      nginx
-     ocaml
+     ;; ocaml
      (org :variables
           org-enable-reveal-js-support t
           org-enable-github-support t)
@@ -120,8 +120,6 @@ values."
      vimscript
      xkcd
      yaml
-     ;; custom
-     ;; intero
      wamaral
      )
    ;; List of additional packages that will be installed without being
