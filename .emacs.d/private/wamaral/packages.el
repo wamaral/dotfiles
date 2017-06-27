@@ -37,7 +37,7 @@
     dired+
     ;; dumb-jump
     tern-auto-complete
-    editorconfig
+    ;; editorconfig
     evil-smartparens
     projectile-direnv
     ;; groovy-mode
@@ -108,10 +108,10 @@ Each entry is either:
        (require 'tern-auto-complete)
        (tern-ac-setup))))
 
-(defun wamaral/init-editorconfig ()
-  (require 'editorconfig)
-  (editorconfig-mode 1)
-  (add-hook 'after-change-major-mode-hook 'editorconfig-apply 'append))
+;; (defun wamaral/init-editorconfig ()
+;;   (require 'editorconfig)
+;;   (editorconfig-mode 1)
+;;   (add-hook 'after-change-major-mode-hook 'editorconfig-apply 'append))
 
 (defun wamaral/init-evil-smartparens ()
   (require 'evil-smartparens))
