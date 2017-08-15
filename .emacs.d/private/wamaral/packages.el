@@ -32,18 +32,26 @@
 (defconst wamaral-packages
   '(4clojure
     clojure-cheatsheet
+    flycheck-clojure
+    ;; flycheck-pos-tip
     helm-cider
+    helm-flycheck
     ;; slamhound
     dired+
     ;; dumb-jump
     tern-auto-complete
     ;; editorconfig
     evil-smartparens
+    evil-embrace
     projectile-direnv
     ;; groovy-mode
     highlight-chars
     ;; lispy
     ;; evil-lispy
+    (evil-little-word :location (recipe
+                                 :fetcher github
+                                 :repo "tarao/evil-plugins"
+                                 :files ("evil-little-word.el")))
     (parinfer-mode :location (recipe
                               :fetcher github
                               :repo "joodie/parinfer-mode"))
@@ -77,17 +85,32 @@ Each entry is either:
       - A list beginning with the symbol `recipe' is a melpa
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
-(defun wamaral/init-4clojure ()
+(defun wamaral/init-4clojure ())
+
+(defun wamaral/init-clojure-cheatsheet ()
   (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
     "hc" 'clojure-cheatsheet))
 
-(defun wamaral/init-clojure-cheatsheet ())
+(defun wamaral/init-flycheck-clojure ()
+  (eval-after-load 'flycheck '(flycheck-clojure-setup))
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (add-hook 'clojure-mode-hook #'flycheck-mode))
+
+;; (defun wamaral/init-flycheck-pos-tip ()
+;;   (eval-after-load 'flycheck
+;;     '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+
 ;; (defun wamaral/init-slamhound ())
+
 (defun wamaral/init-highlight-chars ())
 
 (defun wamaral/init-helm-cider ()
   (require 'helm-cider)
   (helm-cider-mode 1))
+
+(defun wamaral/init-helm-flycheck ()
+  (require 'helm-flycheck)
+  (spacemacs/set-leader-keys "ee" 'helm-flycheck))
 
 (defun wamaral/init-dired+ ()
   (require 'dired-x)
@@ -116,15 +139,36 @@ Each entry is either:
 (defun wamaral/init-evil-smartparens ()
   (require 'evil-smartparens))
 
+(defun wamaral/init-evil-embrace ()
+  (require 'evil-embrace)
+  (evil-embrace-enable-evil-surround-integration))
+
 (defun wamaral/init-projectile-direnv ()
   ;; (add-hook 'projectile-mode-hook 'projectile-direnv-export-variables)
   (require 'projectile-direnv)
-  (spacemacs/set-leader-keys-for-minor-mode 'projectile-mode
+  (spacemacs/set-leader-keys ;;'projectile-mode
     "p." 'projectile-direnv-export-variables))
 
 ;; (defun wamaral/init-evil-lispy ()
 ;;   (add-hook 'emacs-lisp-mode-hook #'evil-lispy-mode)
 ;;   (add-hook 'clojure-mode-hook #'evil-lispy-mode))
+
+(defun wamaral/init-evil-little-word ()
+  (use-package evil-little-word
+    :commands (evil-forward-little-word-begin
+               evil-backward-little-word-begin
+               evil-forward-little-word-end
+               evil-backward-little-word-end
+               evil-a-little-word
+               evil-inner-little-word)
+    :init
+    (progn
+      (define-key evil-motion-state-map (kbd "glw") 'evil-forward-little-word-begin)
+      (define-key evil-motion-state-map (kbd "glb") 'evil-backward-little-word-begin)
+      (define-key evil-motion-state-map (kbd "glW") 'evil-forward-little-word-end)
+      (define-key evil-motion-state-map (kbd "glB") 'evil-backward-little-word-end)
+      (define-key evil-outer-text-objects-map (kbd "lw") 'evil-a-little-word)
+      (define-key evil-inner-text-objects-map (kbd "lw") 'evil-inner-little-word))))
 
 (defun wamaral/init-parinfer-mode ()
   ;; (require 'parinfer-mode)

@@ -52,10 +52,12 @@ This function should only modify configuration layer settings."
      ;; common-lisp
      csv
      docker
+     elfeed
      elixir
      (elm :variables
           elm-sort-imports-on-save t)
      emacs-lisp
+     emoji
      ;; erc
      ;; erlang
      evil-cleverparens
@@ -107,7 +109,7 @@ This function should only modify configuration layer settings."
      semantic
      (shell :variables
             shell-default-shell 'ansi-term
-            shell-default-term-shell "/bin/bash"
+            shell-default-term-shell "/bin/zsh"
             shell-default-height 30
             shell-default-position 'bottom)
      shell-scripts
@@ -136,7 +138,7 @@ This function should only modify configuration layer settings."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(php-extras linum linum-relative eyebrowse)
+   dotspacemacs-excluded-packages '(php-extras linum linum-relative eyebrowse neotree)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and deletes any unused
@@ -434,7 +436,7 @@ before packages are loaded."
 
   (setq browse-url-browser-function 'browse-url-generic
         engine/browser-function 'browse-url-generic
-        browse-url-generic-program "firefox-developer-edition")
+        browse-url-generic-program "google-chrome-unstable")
 
   ;; (with-eval-after-load 'flycheck
   ;;   (flycheck-define-checker javascript-flow
@@ -482,10 +484,38 @@ before packages are loaded."
   (add-hook 'cider-repl-mode-hook #'subword-mode)
   (cider-auto-test-mode 1)
   (setq cider-auto-mode t)
-  (setq cider-repl-pop-to-buffer-on-connect t)
+  (setq cider-repl-pop-to-buffer-on-connect nil)
   (setq cider-stacktrace-default-filters '(tooling dup java))
   (setq cider-pprint-fn 'puget)
   (setq cider-repl-use-pretty-printing t)
+
+  (with-eval-after-load 'clojure-mode
+    (lambda ()
+      (define-clojure-indent
+        (alet 'defun)
+        (mlet 'defun))))
+
+  (defun midje-load-facts ()
+    "Load current namespace (or their test namespace) facts"
+    (interactive)
+    (cider-ensure-connected)
+    (when buffer-file-name
+      (let* ((ns (cider-current-ns))
+             (test-ns (if (projectile-test-file-p (buffer-file-name)) ns (format "%s-test" ns)))
+             (cmd (format "(do (midje.repl/forget-facts *ns* '%s) (midje.repl/load-facts '%s))" test-ns test-ns)))
+        (cider-interactive-eval cmd))))
+
+  (defun midje-load-facts-current-buffer ()
+    "Load current buffer facts"
+    (interactive)
+    (cider-ensure-connected)
+    (when buffer-file-name
+      (let* ((ns (cider-current-ns))
+             (cmd (format "(do (midje.repl/forget-facts *ns* '%s) (midje.repl/load-facts '%s))" ns ns)))
+        (cider-interactive-eval cmd))))
+
+  (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "tm" 'midje-load-facts)
+  (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "tM" 'midje-load-facts-current-buffer)
 
   ;; Enable hlint
   (with-eval-after-load 'intero
@@ -588,6 +618,13 @@ before packages are loaded."
 
   ;; (global-linum-mode)
 
+  (setq-default elfeed-feeds
+                '("https://www.reddit.com/r/haskell/.rss"
+                  "http://xkcd.com/rss.xml"))
+
+  (with-eval-after-load 'evil
+    (defalias #'forward-evil-word #'forward-evil-symbol))
+
   ;; goodbye!
   (global-unset-key (kbd "C-h h"))
 
@@ -599,6 +636,26 @@ before packages are loaded."
   ;; orgmode
   (with-eval-after-load 'org
     (lambda ()
+      (org-projectile:prompt)
+      (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+      (setq org-projectile:per-repo-filename "TODO.org")
+      (setq-default org-capture-templates
+                    '(("t" "Tasks")
+                      ("tg" "General" entry (file+headline "" "Tasks")
+                       "* TODO %?\n%i\n%U"
+                       :empty-lines 1)
+                      ("tl" "Location" entry (file+headline "" "Tasks")
+                       "* TODO %?\n%i\n%U\n%a"
+                       :empty-lines 1)
+                      ("n" "Notes")
+                      ("ng" "General" entry (file+headline "" "Notes")
+                       "* %?\n%i\n%U"
+                       :empty-lines 1)
+                      ("nl" "Location" entry (file+headline "" "Notes")
+                       "* %?\n%i\n%U\n%a"
+                       :empty-lines 1)))
+      ;; (add-to-list 'org-capture-templates (org-projectile:project-todo-entry))
+
       (setq org-plantuml-jar-path "/opt/plantuml/plantuml.jar")
       (setq org-confirm-babel-evaluate nil
             org-src-fontify-natively t
@@ -644,6 +701,13 @@ before packages are loaded."
          (dot        . t)))))
 
   ;; custom fns
+  (defun touch-current-file ()
+    "Updates mtime on the file for the current buffer"
+    (interactive)
+    (shell-command (concat "touch " (shell-quote-argument (buffer-file-name))))
+    (clear-visited-file-modtime))
+  (spacemacs/set-leader-keys "ft" 'touch-current-file)
+
   (defun untabify-buffer ()
     "Remove tabs from whole buffer."
     (interactive)
@@ -663,8 +727,7 @@ before packages are loaded."
       (delete-trailing-whitespace)
       (indent-region (point-min) (point-max))
       (untabify (point-min) (point-max))))
-  ;; (evil-leader/set-key "bc" 'cleanup-buffer)
-  (spacemacs/set-leader-keys-for-major-mode 'prog-mode "bc" 'cleanup-buffer)
+  (spacemacs/set-leader-keys "bc" 'cleanup-buffer)
 
   (defun file-reopen-as-root ()
     "Reopens current file as root."
@@ -682,90 +745,96 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(Info-fontify-angle-bracketed-flag nil)
-   '(blink-cursor-mode nil)
-   '(column-number-mode t)
-   '(company-backends
-     (quote
-      (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
-                    (company-dabbrev-code company-keywords)
-                    company-oddmuse company-dabbrev)))
-   '(company-idle-delay 0.4)
-   '(company-show-numbers t)
-   '(diff-hl-margin-mode t)
-   '(diff-hl-side (quote right))
-   '(evil-want-Y-yank-to-eol t)
-   '(face-font-family-alternatives
-     (quote
-      (("Fira Mono" "Monospace" "courier" "fixed")
-       ("courier" "CMU Typewriter Text" "fixed")
-       ("Sans Serif" "helv" "helvetica" "arial" "fixed")
-       ("helv" "helvetica" "arial" "fixed"))))
-   '(fci-rule-color "#D0BF8F")
-   '(flycheck-haskell-hlint-executable "stack hlint")
-   '(font-use-system-font nil)
-   '(ggtags-find-tag-hook (quote (recenter)))
-   '(ggtags-global-output-format (quote ctags))
-   '(ggtags-navigation-mode nil)
-   '(ggtags-sort-by-nearness t)
-   '(ggtags-use-idutils t)
-   '(global-diff-hl-mode t)
-   '(global-highlight-parentheses-mode t)
-   '(haskell-check-command "/home/wamaral/.local/bin/hlint")
-   '(haskell-compile-cabal-build-alt-command
-     "/bin/bash -c cd %s && cabal clean -s && cabal build --ghc-option=-ferror-spans")
-   '(haskell-compile-cabal-build-command
-     "/bin/bash -c cd %s && cabal build --ghc-option=-ferror-spans")
-   '(haskell-hasktags-path "/home/wamaral/.local/bin/hasktags")
-   '(haskell-mode-stylish-haskell-path "/home/wamaral/.local/bin/stylish-haskell")
-   '(haskell-process-path-ghci "/home/wamaral/bin/stack exec -- ghci")
-   '(haskell-process-path-stack "/home/wamaral/bin/stack")
-   '(haskell-process-suggest-haskell-docs-imports t)
-   '(haskell-stylish-on-save t t)
-   '(helm-ag-use-agignore t)
-   '(hindent-process-path "stack hindent")
-   '(js-enabled-frameworks (quote (javascript extjs)))
-   '(js2-include-node-externs t)
-   '(js2-mode-show-parse-errors nil)
-   '(js2-mode-show-strict-warnings nil)
-   '(linum-relative-current-symbol "")
-   '(linum-relative-format "%3s")
-   '(menu-bar-mode t)
-   '(org-agenda-files (quote ("~/org/calendars/work.org")))
-   '(org-export-async-init-file
-     "/home/wamaral/.emacs.d/layers/+emacs/org/local/org-async-init.el")
-   '(org-export-backends
-     (quote
-      (ascii html icalendar latex md odt confluence freemind)))
-   '(package-selected-packages
-     (quote
-      (pandoc-mode ox-twbs ox-pandoc org-journal ghub org-brain impatient-mode evil-org highlight-chars evil-smartparens evil-ruby-block-object ob-elixir string-inflection restclient-helm rebecca-theme projectile-direnv plantuml-mode parinfer-mode pacmacs ox-reveal symon f browse-at-remote meghanada scala-mode elm-mode magithub solarized-theme faceup madhat2r-theme intero winum unfill sudoku sourcerer-theme go-guru slime-company minitest imenu-list pug-mode dired+ alchemist helm-gtags ggtags company-emacs-eclim ranger erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks eclim marshal evil-unimpaired caml ob-http auto-complete org-projectile github-search groovy-mode erlang editorconfig request pcache mwim ghc utop tuareg systemd rebox2 psci deferred purescript-mode psc-ide ocp-indent nginx-mode merlin flycheck-purescript flycheck-gometalinter docker tablist docker-tramp csv-mode company-auctex auctex-latexmk auctex company-ghci helm-cider paredit highlight gh inf-ruby typescript-mode slime racket-mode helm-dash geiser flycheck-elm anzu restclient ensime sbt-mode elixir-mode hlint-refactor flyspell-correct-helm flycheck-mix zeal-at-point xkcd vimrc-mode typit mmt tide dash-functional tern color-identifiers-mode ox-gfm darkokai-theme dumb-jump popup packed git-gutter git-commit nlinum iedit hydra flyspell-correct swiper ivy zenburn-theme which-key web-mode ujelly-theme spacemacs-theme spaceline powerline sass-mode ruby-test-mode rainbow-delimiters projectile-rails organic-green-theme org-plus-contrib open-junk-file move-text monokai-theme material-theme magit-gitflow leuven-theme js2-refactor ido-vertical-mode helm-projectile helm-ag gruvbox-theme gotham-theme google-translate fish-mode evil-surround evil-mc emmet-mode dracula-theme company-web color-theme-sanityinc-solarized clj-refactor multiple-cursors badwolf-theme anti-zenburn-theme aggressive-indent ace-link cider clojure-mode smartparens bind-map evil flycheck haskell-mode go-mode yasnippet company helm helm-core avy markdown-mode alert magit async projectile js2-mode dash s color-theme-sanityinc-tomorrow zonokai-theme zen-and-art-theme yaml-mode xterm-color ws-butler wolfram-mode window-numbering web-completion-data web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org thrift tern-auto-complete tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme stan-mode srefactor sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle slim-mode shm shell-pop seti-theme scss-mode scad-mode rvm ruby-tools rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-mode rainbow-identifiers railscasts-theme queue quelpa qml-mode purple-haze-theme professional-theme popwin planet-theme pkg-info phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox page-break-lines orgit org-repo-todo org-present org-pomodoro org-download org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme matlab-mode markdown-toc majapahit-theme magit-popup magit-gh-pulls macrostep lush-theme lorem-ipsum log4e livid-mode nlinum-relative link-hint light-soap-theme less-css-mode julia-mode json-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ inflections indent-guide hungry-delete htmlize hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flyspell helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet hc-zenburn-theme haskell-snippets haml-mode gruber-darker-theme grandshell-theme goto-chg golden-ratio go-eldoc gnuplot gntp github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-search-highlight-persist evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emacs-eclim elisp-slime-nav edn dockerfile-mode django-theme diff-hl define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-tern company-statistics company-shell company-quickhelp company-go company-ghc company-cabal command-log-mode column-enforce-mode colorsarenice-theme coffee-mode cmm-mode clues-theme clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler buffer-move bubbleberry-theme birds-of-paradise-plus-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile arduino-mode apropospriate-theme ample-zen-theme ample-theme alect-themes afternoon-theme adaptive-wrap ace-window ace-jump-helm-line ac-ispell 4clojure)))
-   '(plantuml-jar-path "/opt/plantuml/plantuml.jar")
-   '(projectile-enable-idle-timer nil)
-   '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "tags")))
-   '(projectile-idle-timer-hook (quote (helm-gtags-update-tags)))
-   '(projectile-rails-global-mode t)
-   '(projectile-switch-project-action (quote helm-projectile))
-   '(projectile-use-git-grep t)
-   '(projectile-verbose nil)
-   '(psc-ide-add-import-on-completion t t)
-   '(psc-ide-rebuild-on-save nil t)
-   '(safe-local-variable-values
-     (quote
-      ((haskell-process-use-ghci . t)
-       (haskell-indent-spaces . 4)
-       (elixir-enable-compilation-checking . t)
-       (elixir-enable-compilation-checking))))
-   '(tool-bar-mode nil))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(linum-relative-current-face ((t (:inherit linum :foreground "#CAE682" :weight bold)))))
-  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(Info-fontify-angle-bracketed-flag nil)
+ '(blink-cursor-mode nil)
+ '(column-number-mode t)
+ '(company-backends
+   (quote
+    (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                  (company-dabbrev-code company-keywords)
+                  company-oddmuse company-dabbrev)))
+ '(company-idle-delay 0.4)
+ '(company-show-numbers t)
+ '(diff-hl-margin-mode t)
+ '(diff-hl-side (quote right))
+ '(evil-want-Y-yank-to-eol t)
+ '(face-font-family-alternatives
+   (quote
+    (("Fira Mono" "Monospace" "courier" "fixed")
+     ("courier" "CMU Typewriter Text" "fixed")
+     ("Sans Serif" "helv" "helvetica" "arial" "fixed")
+     ("helv" "helvetica" "arial" "fixed"))))
+ '(fci-rule-color "#D0BF8F" t)
+ '(flycheck-haskell-hlint-executable "stack hlint")
+ '(font-use-system-font nil)
+ '(ggtags-find-tag-hook (quote (recenter)))
+ '(ggtags-global-output-format (quote ctags))
+ '(ggtags-navigation-mode nil)
+ '(ggtags-sort-by-nearness t)
+ '(ggtags-use-idutils t)
+ '(global-diff-hl-mode t)
+ '(global-highlight-parentheses-mode t)
+ '(haskell-check-command "/home/wamaral/.local/bin/hlint")
+ '(haskell-compile-cabal-build-alt-command
+   "/bin/zsh -c cd %s && cabal clean -s && cabal build --ghc-option=-ferror-spans")
+ '(haskell-compile-cabal-build-command
+   "/bin/zsh -c cd %s && cabal build --ghc-option=-ferror-spans")
+ '(haskell-hasktags-path "/home/wamaral/.local/bin/hasktags")
+ '(haskell-mode-stylish-haskell-path "/home/wamaral/.local/bin/stylish-haskell")
+ '(haskell-process-path-ghci "/home/wamaral/bin/stack exec -- ghci")
+ '(haskell-process-path-stack "/home/wamaral/bin/stack")
+ '(haskell-process-suggest-haskell-docs-imports t)
+ '(haskell-stylish-on-save t)
+ '(helm-ag-use-agignore t)
+ '(hindent-process-path "stack hindent")
+ '(js-enabled-frameworks (quote (javascript extjs)))
+ '(js2-include-node-externs t)
+ '(js2-mode-show-parse-errors nil)
+ '(js2-mode-show-strict-warnings nil)
+ '(linum-relative-current-symbol "")
+ '(linum-relative-format "%3s")
+ '(menu-bar-mode t)
+ '(org-agenda-files
+   (quote
+    ("~/org/calendars/default.org" "~/org/calendars/work.org" "~/org/notes.org")))
+ '(org-default-notes-file "~/org/notes.org")
+ '(org-export-async-init-file
+   "/home/wamaral/.emacs.d/layers/+emacs/org/local/org-async-init.el" t)
+ '(org-export-backends
+   (quote
+    (ascii html icalendar latex md odt confluence freemind)))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-mouse org-rmail org-w3m)))
+ '(package-selected-packages
+   (quote
+    (apiwrap evil-lion org-category-capture ghub+ engine-mode window-purpose flycheck-clojure dante skewer-mode with-editor helm-flycheck evil-little-word evil-embrace embrace emojify emoji-cheat-sheet-plus elfeed-web elfeed-org elfeed-goodies ace-jump-mode elfeed company-emoji pandoc-mode ox-twbs ox-pandoc org-journal ghub org-brain impatient-mode evil-org highlight-chars evil-smartparens evil-ruby-block-object ob-elixir string-inflection restclient-helm rebecca-theme projectile-direnv plantuml-mode parinfer-mode pacmacs ox-reveal symon f browse-at-remote meghanada scala-mode elm-mode magithub solarized-theme faceup madhat2r-theme intero winum unfill sudoku sourcerer-theme go-guru slime-company minitest imenu-list pug-mode dired+ alchemist helm-gtags ggtags company-emacs-eclim ranger erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks eclim marshal evil-unimpaired caml ob-http auto-complete org-projectile github-search groovy-mode erlang editorconfig request pcache mwim ghc utop tuareg systemd rebox2 psci deferred purescript-mode psc-ide ocp-indent nginx-mode merlin flycheck-purescript flycheck-gometalinter docker tablist docker-tramp csv-mode company-auctex auctex-latexmk auctex company-ghci helm-cider paredit highlight gh inf-ruby typescript-mode slime racket-mode helm-dash geiser flycheck-elm anzu restclient ensime sbt-mode elixir-mode hlint-refactor flyspell-correct-helm flycheck-mix zeal-at-point xkcd vimrc-mode typit mmt tide dash-functional tern color-identifiers-mode ox-gfm darkokai-theme dumb-jump popup packed git-gutter git-commit nlinum iedit hydra flyspell-correct swiper ivy zenburn-theme which-key web-mode ujelly-theme spacemacs-theme spaceline powerline sass-mode ruby-test-mode rainbow-delimiters projectile-rails organic-green-theme org-plus-contrib open-junk-file move-text monokai-theme material-theme magit-gitflow leuven-theme js2-refactor ido-vertical-mode helm-projectile helm-ag gruvbox-theme gotham-theme google-translate fish-mode evil-surround evil-mc emmet-mode dracula-theme company-web color-theme-sanityinc-solarized clj-refactor multiple-cursors badwolf-theme anti-zenburn-theme aggressive-indent ace-link cider clojure-mode smartparens bind-map evil flycheck haskell-mode go-mode yasnippet company helm helm-core avy markdown-mode alert magit async projectile js2-mode dash s color-theme-sanityinc-tomorrow zonokai-theme zen-and-art-theme yaml-mode xterm-color ws-butler wolfram-mode window-numbering web-completion-data web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org thrift tern-auto-complete tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme stan-mode srefactor sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle slim-mode shm shell-pop seti-theme scss-mode scad-mode rvm ruby-tools rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-mode rainbow-identifiers railscasts-theme queue quelpa qml-mode purple-haze-theme professional-theme popwin planet-theme pkg-info phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox page-break-lines orgit org-repo-todo org-present org-pomodoro org-download org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme matlab-mode markdown-toc majapahit-theme magit-popup magit-gh-pulls macrostep lush-theme lorem-ipsum log4e livid-mode nlinum-relative link-hint light-soap-theme less-css-mode julia-mode json-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ inflections indent-guide hungry-delete htmlize hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flyspell helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet hc-zenburn-theme haskell-snippets haml-mode gruber-darker-theme grandshell-theme goto-chg golden-ratio go-eldoc gnuplot gntp github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-search-highlight-persist evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emacs-eclim elisp-slime-nav edn dockerfile-mode django-theme diff-hl define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-tern company-statistics company-shell company-quickhelp company-go company-ghc company-cabal command-log-mode column-enforce-mode colorsarenice-theme coffee-mode cmm-mode clues-theme clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler buffer-move bubbleberry-theme birds-of-paradise-plus-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile arduino-mode apropospriate-theme ample-zen-theme ample-theme alect-themes afternoon-theme adaptive-wrap ace-window ace-jump-helm-line ac-ispell 4clojure)))
+ '(plantuml-jar-path "/opt/plantuml/plantuml.jar")
+ '(projectile-enable-idle-timer nil)
+ '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "tags")))
+ '(projectile-idle-timer-hook (quote (helm-gtags-update-tags)))
+ '(projectile-rails-global-mode t)
+ '(projectile-switch-project-action (quote helm-projectile))
+ '(projectile-use-git-grep t)
+ '(projectile-verbose nil)
+ '(psc-ide-add-import-on-completion t t)
+ '(psc-ide-rebuild-on-save nil t)
+ '(safe-local-variable-values
+   (quote
+    ((haskell-process-use-ghci . t)
+     (haskell-indent-spaces . 4)
+     (elixir-enable-compilation-checking . t)
+     (elixir-enable-compilation-checking))))
+ '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(linum-relative-current-face ((t (:inherit linum :foreground "#CAE682" :weight bold)))))
+)
