@@ -331,7 +331,8 @@ myLayout = avoidStruts $ layoutHints $ smartBorders
     nmaster = 1
 
     -- Default proportion of screen occupied by master pane
-    ratio = toRational (2 / (1 + sqrt 5 :: Double))
+    -- ratio = toRational (2 / (1 + sqrt 5 :: Double))
+    ratio = 0.5
 
     -- Percent of screen to increment by when resizing panes
     delta = 0.03
