@@ -33,28 +33,19 @@
   '(4clojure
     clojure-cheatsheet
     flycheck-clojure
-    ;; flycheck-pos-tip
     helm-cider
     helm-flycheck
-    ;; slamhound
     dired+
-    ;; dumb-jump
     tern-auto-complete
-    ;; editorconfig
     evil-smartparens
     evil-embrace
     projectile-direnv
-    ;; groovy-mode
     highlight-chars
-    ;; lispy
-    ;; evil-lispy
+    magithub
     (evil-little-word :location (recipe
                                  :fetcher github
                                  :repo "tarao/evil-plugins"
                                  :files ("evil-little-word.el")))
-    (parinfer-mode :location (recipe
-                              :fetcher github
-                              :repo "joodie/parinfer-mode"))
     (evil-ruby-block-object :location (recipe
                                        :fetcher github
                                        :repo "XuHaoJun/evil-ruby-block-object")))
@@ -96,12 +87,6 @@ Each entry is either:
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (add-hook 'clojure-mode-hook #'flycheck-mode))
 
-;; (defun wamaral/init-flycheck-pos-tip ()
-;;   (eval-after-load 'flycheck
-;;     '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
-
-;; (defun wamaral/init-slamhound ())
-
 (defun wamaral/init-highlight-chars ())
 
 (defun wamaral/init-helm-cider ()
@@ -117,24 +102,11 @@ Each entry is either:
   (require 'dired+)
   (setq dired-recursive-deletes 'top))
 
-; (defun wamaral/init-dumb-jump ()
-;   (require 'dumb-jump)
-;   (setq dumb-jump-default-project "~/dev")
-;   ;; (setq dumb-jump-quiet t)
-;   (define-key evil-normal-state-map (kbd "C-]") 'dumb-jump-go)
-;   (define-key evil-normal-state-map (kbd "C-[") 'dumb-jump-back)
-;   (define-key evil-motion-state-map (kbd "g C-]") 'dumb-jump-quick-look))
-
 (defun wamaral/init-tern-auto-complete ()
   (eval-after-load 'tern
     '(progn
        (require 'tern-auto-complete)
        (tern-ac-setup))))
-
-;; (defun wamaral/init-editorconfig ()
-;;   (require 'editorconfig)
-;;   (editorconfig-mode 1)
-;;   (add-hook 'after-change-major-mode-hook 'editorconfig-apply 'append))
 
 (defun wamaral/init-evil-smartparens ()
   (require 'evil-smartparens))
@@ -149,39 +121,31 @@ Each entry is either:
   (spacemacs/set-leader-keys ;;'projectile-mode
     "p." 'projectile-direnv-export-variables))
 
-;; (defun wamaral/init-evil-lispy ()
-;;   (add-hook 'emacs-lisp-mode-hook #'evil-lispy-mode)
-;;   (add-hook 'clojure-mode-hook #'evil-lispy-mode))
-
 (defun wamaral/init-evil-little-word ()
   (use-package evil-little-word
-    :commands (evil-forward-little-word-begin
-               evil-backward-little-word-begin
-               evil-forward-little-word-end
-               evil-backward-little-word-end
-               evil-a-little-word
-               evil-inner-little-word)
-    :init
-    (progn
-      (define-key evil-motion-state-map (kbd "glw") 'evil-forward-little-word-begin)
-      (define-key evil-motion-state-map (kbd "glb") 'evil-backward-little-word-begin)
-      (define-key evil-motion-state-map (kbd "glW") 'evil-forward-little-word-end)
-      (define-key evil-motion-state-map (kbd "glB") 'evil-backward-little-word-end)
-      (define-key evil-outer-text-objects-map (kbd "lw") 'evil-a-little-word)
-      (define-key evil-inner-text-objects-map (kbd "lw") 'evil-inner-little-word))))
+               :commands (evil-forward-little-word-begin
+                           evil-backward-little-word-begin
+                           evil-forward-little-word-end
+                           evil-backward-little-word-end
+                           evil-a-little-word
+                           evil-inner-little-word)
+               :init (progn
+                       (define-key evil-motion-state-map (kbd "glw") 'evil-forward-little-word-begin)
+                       (define-key evil-motion-state-map (kbd "glb") 'evil-backward-little-word-begin)
+                       (define-key evil-motion-state-map (kbd "glW") 'evil-forward-little-word-end)
+                       (define-key evil-motion-state-map (kbd "glB") 'evil-backward-little-word-end)
+                       (define-key evil-outer-text-objects-map (kbd "lw") 'evil-a-little-word)
+                       (define-key evil-inner-text-objects-map (kbd "lw") 'evil-inner-little-word))))
 
-(defun wamaral/init-parinfer-mode ()
-  ;; (require 'parinfer-mode)
-  ;; (add-hook 'clojure-mode-hook #'parinfer-mode)
-  ;; (add-hook 'cider-mode-hook #'parinfer-mode)
-  )
+(defun wamaral/init-magithub ()
+  (use-package magithub
+               :after magit
+               :ensure t
+               :config (magithub-feature-autoinject t)))
 
 (defun wamaral/init-evil-ruby-block-object ()
   (add-hook 'ruby-mode
             (lambda () (require 'evil-ruby-block-object))))
-
-;; (defun wamaral/init-groovy-mode ()
-;;   (add-to-list 'auto-mode-alist '("\\Jenkinsfile\\'" . groovy-mode)))
 
 (defun wamaral/highlight-chars ()
   (require 'highlight-chars)
