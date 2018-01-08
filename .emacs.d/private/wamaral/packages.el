@@ -31,7 +31,6 @@
 
 (defconst wamaral-packages
   '(4clojure
-    clojure-cheatsheet
     flycheck-clojure
     helm-cider
     helm-flycheck
@@ -77,10 +76,6 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
 (defun wamaral/init-4clojure ())
-
-(defun wamaral/init-clojure-cheatsheet ()
-  (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
-    "hc" 'clojure-cheatsheet))
 
 (defun wamaral/init-flycheck-clojure ()
   (eval-after-load 'flycheck '(flycheck-clojure-setup))
