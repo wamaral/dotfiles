@@ -4,10 +4,8 @@
 
 import           XMonad                           hiding ((|||))
 
--- import Control.Applicative
--- import Data.Monoid
 import           System.Exit
-import qualified Text.Fuzzy                       as FZ
+import qualified Text.Fuzzy                       as Fuzzy
 
 import qualified Data.Map                         as M
 import qualified XMonad.Actions.FlexibleResize    as Flex
@@ -18,55 +16,47 @@ import           XMonad.Actions.CycleWS
 import           XMonad.Actions.DwmPromote
 import           XMonad.Actions.FloatKeys
 import           XMonad.Actions.GridSelect
--- import XMonad.Actions.Submap
 
 -- import           XMonad.Config.Desktop
 -- import           XMonad.Config.Gnome
-import           XMonad.Config.Mate
--- import           XMonad.Config.Xfce
+-- import           XMonad.Config.Kde
+-- import           XMonad.Config.Mate
+import           XMonad.Config.Xfce
 
 import           XMonad.Hooks.DynamicHooks
--- import           XMonad.Hooks.DynamicLog
--- import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.UrgencyHook
 
--- import XMonad.Layout.Drawer
--- import XMonad.Layout.HintedGrid
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Renamed
 import           XMonad.Layout.ResizableTile
--- import XMonad.Layout.TwoPane
 
 import           XMonad.Prompt
--- import           XMonad.Prompt.Pass
 import           XMonad.Prompt.RunOrRaise
--- import XMonad.Prompt.Shell
 import           XMonad.Prompt.XMonad
 
--- import XMonad.Util.Dzen hiding (font)
 import           XMonad.Util.EZConfig
 import           XMonad.Util.NamedWindows
 import           XMonad.Util.Paste                (sendKey)
 import           XMonad.Util.Replace
 import           XMonad.Util.Run
 
--- import Graphics.X11.ExtraTypes.XF86
-
--- import DBus.Client
 import           System.Taffybar.Hooks.PagerHints (pagerHints)
--- import System.Taffybar.XMonadLog (dbusLog)
--- import           Codec.Binary.UTF8.String         (encode)
 
--- Default terminal emulator
-myTerminal = "/usr/sbin/sakura"
+------------------------------------------------------------------------
+-- Custom config options
+--
+defaultFont :: String
+defaultFont = "-*-calibri-normal-r-normal-*-14-*-*-*-c-*-*-*"
 
--- Fonts and colors
-myFont = "-*-calibri-normal-r-normal-*-12-*-*-*-c-*-*-*"
+-- workspaceNames = ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.chat"]
+workspaceNames :: [Integer]
+workspaceNames = [1..8]
+
 
 -- Material color palette
 -- https://www.google.com/design/spec/style/color.html#
@@ -82,42 +72,51 @@ darkred = "#B71C1C"
 -- teal = "#009688"
 -- indigo = "#3F51B5"
 
--- Whether focus follows the mouse pointer.
-myFocusFollowsMouse = False
+-- dzenStatus = " -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ defaultFont ++ "'"
+-- statusBar = "dzen2 -x '1280' -y '0' -h '20' -w '950' -ta 'l'" ++ dzenStatus
+-- conky = "conky -c ~/.xmonad/conkybarrc"
 
--- Wether clicking a new desktop only focuses, or pass-through the click
-myClickJustFocuses = False
+xpConfig = def
+    { font = defaultFont
+    , fgColor = white
+    , bgColor = black
+    , fgHLight = white
+    , bgHLight = darkred
+    , borderColor = red
+    , promptBorderWidth = 1
+    , position = Bottom
+    , height = 20
+    , historySize = 100
+    }
 
--- Width of the window border in pixels.
-myBorderWidth = 2
+fuzzyXpConfig = xpConfig { searchPredicate = Fuzzy.test }
 
--- mod1Mask = left alt
--- mod2Mask = right alt
--- mod4Mask = win key
-myModMask = mod4Mask
-
--- workspace names
--- myWorkspaces = ["1.web", "2.dev", "3.dev", "4.servers", "5.servers", "6.misc", "7.misc", "8.misc", "9.misc", "0.chat"]
-myWorkspaces :: [Integer]
-myWorkspaces = [1..8]
+gsConfig = def
+    { gs_cellheight = 50
+    , gs_cellwidth = 250
+    , gs_cellpadding = 10
+    , gs_font = defaultFont
+    }
 
 ------------------------------------------------------------------------
 -- Key bindings
 --
+fKeys :: [KeySym]
 fKeys = [xK_F1 .. xK_F12]
-myKeys conf = mkKeymap conf $
+
+keymapConfig conf = mkKeymap conf $
     [ ("M4-c", spawn $ XMonad.terminal conf) -- launch term
     , ("M1-<F5>", kill) -- kill window
     , ("M1-<F4>", kill1) -- close or kill window
 
       -- Runners
-    , ("M4-<Space>", runOrRaisePrompt myXPConfig) -- app runner
-    , ("M4-S-<Space>", xmonadPrompt fuzzyXPConfig) -- xmonad actions runner
-    -- , ("M4-w", passPrompt fuzzyXPConfig) -- retrieve pass entries
+    , ("M4-<Space>", runOrRaisePrompt xpConfig) -- app runner
+    , ("M4-S-<Space>", xmonadPrompt fuzzyXpConfig) -- xmonad actions runner
     , ("M4-w", spawn "keepass --auto-type") -- retrieve pass entries
 
       -- Media keys
     , ("<XF86AudioPlay>", spawn "playerctl play-pause")
+    , ("<XF86AudioPlayPause>", spawn "playerctl play-pause")
     , ("<XF86AudioMute>", spawn "pamixer -t")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --allow-boost -d 5")
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --allow-boost -i 5")
@@ -133,7 +132,7 @@ myKeys conf = mkKeymap conf $
     , ("M4-m", dwmpromote) -- swap focused with master
     , ("M4-<Return>", focusUrgent) -- move focus to urgent window
       -- Grid select
-    , ("M4-g", goToSelected myGSConfig)
+    , ("M4-g", goToSelected gsConfig)
 
       -- Swapping windows
     , ("M4-S-h", windows W.swapUp) -- swap the focused window with the previous window
@@ -144,7 +143,7 @@ myKeys conf = mkKeymap conf $
     -- , ("M4-<Left>", prevWS) -- switch to previous workspace
     -- , ("M4-<Right>", nextWS) -- switch to next workspace
       -- Grid select
-    , ("M4-S-g", gridselectWorkspace myGSConfig W.view)
+    , ("M4-S-g", gridselectWorkspace gsConfig W.view)
 
       -- Switching layouts
     , ("M4-f", sendMessage NextLayout)
@@ -207,7 +206,7 @@ myKeys conf = mkKeymap conf $
     | (n, fk) <- zip ([1..12] :: [Integer]) fKeys]
     ++
     [("<F" ++ show k ++ ">", toggleOrView i)
-    | (i, k) <- zip (XMonad.workspaces conf) myWorkspaces]
+    | (i, k) <- zip (XMonad.workspaces conf) workspaceNames]
     ++
 
     --
@@ -217,7 +216,7 @@ myKeys conf = mkKeymap conf $
     -- | (n, fk) <- zip [1..12] fKeys]
     -- ++
     [("S-<F" ++ show k ++ ">", windows $ W.shift i)
-        | (i, k) <- zip (XMonad.workspaces conf) myWorkspaces]
+        | (i, k) <- zip (XMonad.workspaces conf) workspaceNames]
     ++
 
     --
@@ -227,7 +226,7 @@ myKeys conf = mkKeymap conf $
     -- | (n, fk) <- zip [1..12] fKeys]
     -- ++
     [("C-<F" ++ show k ++ ">", windows $ copy i)
-        | (i, k) <- zip (XMonad.workspaces conf) myWorkspaces]
+        | (i, k) <- zip (XMonad.workspaces conf) workspaceNames]
     -- ++
 
     -- --
@@ -238,11 +237,10 @@ myKeys conf = mkKeymap conf $
     --     | (key, sc) <- zip ["<F10>", "<F11>", "<F12>"] [0..]
     --     , (f, m) <- [(W.view, "M4-"), (W.shift, "M4-S-")]]
 
-
 ------------------------------------------------------------------------
 -- Mouse bindings
 --
-myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
+mouseConfig XConfig {XMonad.modMask = modm} = M.fromList
 
     -- mod-button1, Set the window to floating mode and move by dragging
     [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
@@ -261,56 +259,10 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
     , ((modm, button5), const nextWS) -- switch to next workspace
     ]
 
-
 ------------------------------------------------------------------------
--- Custom config options
+-- Layouts
 --
--- dzenStatus = " -fg '" ++ white ++ "' -bg '" ++ black ++ "' -fn '" ++ myFont ++ "'"
-
--- myStatusBar = "dzen2 -x '1280' -y '0' -h '20' -w '950' -ta 'l'" ++ dzenStatus
--- myConky = "conky -c ~/.xmonad/conkybarrc"
-
-myXPConfig = def
-    { font = myFont
-    , fgColor = white
-    , bgColor = black
-    , fgHLight = white
-    , bgHLight = darkred
-    , borderColor = red
-    , promptBorderWidth = 1
-    , position = Bottom
-    , height = 20
-    , historySize = 100
-    }
-
-fuzzyXPConfig = myXPConfig { searchPredicate = FZ.test }
-
-myGSConfig = def
-    { gs_cellheight = 50
-    , gs_cellwidth = 250
-    , gs_cellpadding = 10
-    , gs_font = myFont
-    }
-
-
-------------------------------------------------------------------------
--- Layouts:
-
--- You can specify and transform your layouts by modifying these values.
--- If you change layout bindings be sure to use 'mod-shift-space' after
--- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
---
--- * NOTE: XMonad.Hooks.EwmhDesktops users must remove the obsolete
--- ewmhDesktopsLayout modifier from layoutHook. It no longer exists.
--- Instead use the 'ewmh' function from that module to modify your
--- defaultConfig as a whole. (See also logHook, handleEventHook, and
--- startupHook ewmh notes.)
---
--- The available layouts.  Note that each layout is separated by |||,
--- which denotes layout choice.
---
-myLayout = avoidStruts $ layoutHints $ smartBorders
+layoutConfig = avoidStruts $ layoutHints $ smartBorders
      (rTile ||| rMirTile ||| Full)
   where
     -- default tiling algorithm partitions the screen into two panes
@@ -337,22 +289,18 @@ myLayout = avoidStruts $ layoutHints $ smartBorders
     -- Percent of screen to increment by when resizing panes
     delta = 0.03
 
-------------------------------------------------------------------------
--- Window rules:
+--------------------------------------------------------------------
+-- Window rules
+-- Use xprop to find this information
+--
+floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts", "mplayer2", "File-roller", "Gcalctool", "Exo-helper-1", "Gksu", "XClock", "Main", "wrapper-1.0", "Tiemu", "Xfce4-panel", "Evolution", "Claws-mail", "Orage", "KeePass.exe", "KeePass2", "keepassxc", "Syncthing GTK", "Plasma-desktop", "xfce4-appfinder"]
+floatByTitle    = ["Downloads", "Iceweasel Preferences", "Save As...", "Choose a file", "Open Image", "File Operation Progress", "Firefox Preferences", "Preferences", "Search Engines", "Set up sync", "Passwords and Exceptions", "Autofill Options", "Rename File", "Copying files", "Moving files", "File Properties", "Replace", "Quit GIMP", "Change Foreground Color", "Change Background Color", "chrome://pourbico - Tracker :: PourBico - Firefox Developer Edition", "Syncthing-GTK", ""]
+floatByResource  = ["pop-up", "presentationWidget"]
+ignoreByClass    = ["Xfce4-notifyd", "desktop_window"]
+ignoreByTitle    = []
+ignoreByResource = ["desktop", "desktop_window", "kdesktop"]
 
--- Execute arbitrary actions and WindowSet manipulations when managing
--- a new window. You can use this to, for example, always float a
--- particular program, or have a client always appear on a particular
--- workspace.
---
--- To find the property name associated with a program, use
--- > xprop | grep WM_CLASS
--- and click on the client you're interested in.
---
--- To match on the WM_NAME, you can use 'title' in the same way that
--- 'className' and 'resource' are used below.
---
-myManageHook = composeAll . concat $
+manageHookConfig = composeAll . concat $
     [ [ isDialog --> doFloat ]
     , [ className =? x --> doFloat | x <- floatByClass ]
     , [ title     =? x --> doFloat | x <- floatByTitle ]
@@ -362,58 +310,12 @@ myManageHook = composeAll . concat $
     , [ resource  =? x --> doIgnore | x <- ignoreByResource ]
     , [ stringProperty "WM_WINDOW_ROLE" =? x --> doIgnore | x <- ignoreByResource ]
     , [ stringProperty "WM_NAME" =? x --> doFloat | x <- floatByTitle ]
-    ] where
-    floatByClass    = ["Ekiga", "MPlayer", "Nitrogen", "Skype", "Sysinfo", "XCalc", "XFontSel", "Xmessage", "Msjnc", "Hangouts", "mplayer2", "File-roller", "Gcalctool", "Exo-helper-1", "Gksu", "XClock", "Main", "wrapper-1.0", "Tiemu", "Xfce4-panel", "Evolution", "Claws-mail", "Orage", "KeePass.exe", "KeePass2", "keepassxc", "Syncthing GTK"]
-    floatByTitle    = ["Downloads", "Iceweasel Preferences", "Save As...", "Choose a file", "Open Image", "File Operation Progress", "Firefox Preferences", "Preferences", "Search Engines", "Set up sync", "Passwords and Exceptions", "Autofill Options", "Rename File", "Copying files", "Moving files", "File Properties", "Replace", "Quit GIMP", "Change Foreground Color", "Change Background Color", "chrome://pourbico - Tracker :: PourBico - Firefox Developer Edition", "Syncthing-GTK", ""]
-    floatByResource = ["pop-up", "presentationWidget"]
-    ignoreByClass    = ["Xfce4-notifyd", "desktop_window"]
-    ignoreByTitle    = []
-    ignoreByResource = ["desktop", "desktop_window", "kdesktop"]
-
-------------------------------------------------------------------------
--- Event handling
-
--- Defines a custom handler function for X Events. The function should
--- return (All True) if the default handler is to be run afterwards. To
--- combine event hooks use mappend or mconcat from Data.Monoid.
---
--- * NOTE: EwmhDesktops users should use the 'ewmh' function from
--- XMonad.Hooks.EwmhDesktops to modify their defaultConfig as a whole.
--- It will add EWMH event handling to your custom event hooks by
--- combining them with ewmhDesktopsEventHook.
---
--- myEventHook _ = return (All True)
-myEventHook = mempty
-
-------------------------------------------------------------------------
--- Status bars and logging
-
--- Perform an arbitrary action on each internal state change or X event.
--- See the 'XMonad.Hooks.DynamicLog' extension for examples.
---
--- * NOTE: EwmhDesktops users should use the 'ewmh' function from
--- XMonad.Hooks.EwmhDesktops to modify their defaultConfig as a whole.
--- It will add EWMH logHook actions to your custom log hook by
--- combining it with ewmhDesktopsLogHook.
---
--- myLogHook = return ()
+    ]
 
 ------------------------------------------------------------------------
 -- Startup hook
-
--- Perform an arbitrary action each time xmonad starts or is restarted
--- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
--- per-workspace layout choices.
 --
--- By default, do nothing.
---
--- * NOTE: EwmhDesktops users should use the 'ewmh' function from
--- XMonad.Hooks.EwmhDesktops to modify their defaultConfig as a whole.
--- It will add initialization of EWMH support to your custom startup
--- hook by combining it with ewmhDesktopsStartup.
---
-myStartupHook = startupHook mateConfig >> setWMName "LG3D"
-
+startupHookConfig = startupHook xfceConfig >> setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- UrgencyHook via libnotify
@@ -426,28 +328,29 @@ instance UrgencyHook LibNotifyUrgencyHook where
     Just idx <- W.findTag w <$> gets windowset
     safeSpawn "notify-send" [show name, "workspace " ++ idx]
 
+------------------------------------------------------------------------
+-- Run
+--
+userConfig = xfceConfig { terminal           = "/usr/bin/termite"
+                        , focusFollowsMouse  = False
+                        -- Wether clicking a new desktop only focuses, or pass-through the click
+                        , clickJustFocuses   = False
+                        -- Width of the window border in pixels
+                        , borderWidth        = 2
+                        -- mod1Mask = left alt; mod2Mask = right alt; mod4Mask = win key
+                        , modMask            = mod4Mask
+                        , workspaces         = map show workspaceNames
+                        , normalBorderColor  = black
+                        , focusedBorderColor = red
+                        , keys               = keymapConfig
+                        , mouseBindings      = mouseConfig
+                        , layoutHook         = layoutConfig
+                        , manageHook         = manageHookConfig <+> manageDocks <+> dynamicMasterHook
+                        , handleEventHook    = mempty <+> docksEventHook
+                        , startupHook        = startupHookConfig
+                        }
+
+main :: IO ()
 main = do
   replace
-  -- myDzen <- spawnPipe myStatusBar
-  -- conky  <- spawnPipe myConky
-  -- xmonad $ withUrgencyHook NoUrgencyHook $ pagerHints $ mateConfig {
-  xmonad $ withUrgencyHook LibNotifyUrgencyHook $ pagerHints $ mateConfig {
-        terminal           = myTerminal,
-        focusFollowsMouse  = myFocusFollowsMouse,
-        clickJustFocuses   = myClickJustFocuses,
-        borderWidth        = myBorderWidth,
-        modMask            = myModMask,
-        workspaces         = map show myWorkspaces,
-        normalBorderColor  = black,
-        focusedBorderColor = red,
-
-        keys               = myKeys,
-        mouseBindings      = myMouseBindings,
-
-        layoutHook         = myLayout,
-        manageHook         = myManageHook <+> manageDocks <+> dynamicMasterHook,
-        handleEventHook    = myEventHook <+> docksEventHook,
-        -- logHook            = dynamicLogWithPP $ myDzenPP myDzen,
-        -- logHook            = dbusLog client $ defaultPP,
-        startupHook        = myStartupHook
-    }
+  xmonad $ withUrgencyHook LibNotifyUrgencyHook $ pagerHints userConfig
