@@ -47,6 +47,8 @@ import           XMonad.Util.Run
 
 import           System.Taffybar.Hooks.PagerHints (pagerHints)
 
+import           Prompt.YubiOath                  (yubiOathPrompt)
+
 ------------------------------------------------------------------------
 -- Custom config options
 --
@@ -113,6 +115,7 @@ keymapConfig conf = mkKeymap conf $
     , ("M4-<Space>", runOrRaisePrompt xpConfig) -- app runner
     , ("M4-S-<Space>", xmonadPrompt fuzzyXpConfig) -- xmonad actions runner
     , ("M4-w", spawn "keepass --auto-type") -- retrieve pass entries
+    , ("M4-y", yubiOathPrompt fuzzyXpConfig) -- Yubikey OATH auto type
 
       -- Media keys
     , ("<XF86AudioPlay>", spawn "playerctl play-pause")
