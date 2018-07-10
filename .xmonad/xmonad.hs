@@ -37,6 +37,7 @@ import           XMonad.Layout.ResizableTile
 
 import           XMonad.Prompt
 import           XMonad.Prompt.RunOrRaise
+import           XMonad.Prompt.Unicode
 import           XMonad.Prompt.XMonad
 
 import           XMonad.Util.EZConfig
@@ -116,6 +117,7 @@ keymapConfig conf = mkKeymap conf $
     , ("M4-S-<Space>", xmonadPrompt fuzzyXpConfig) -- xmonad actions runner
     , ("M4-w", spawn "keepass --auto-type") -- retrieve pass entries
     , ("M4-y", yubiOathPrompt fuzzyXpConfig) -- Yubikey OATH auto type
+    , ("M4-u", unicodePrompt fuzzyXpConfig) -- find unicode characters
 
       -- Media keys
     , ("<XF86AudioPlay>", spawn "playerctl play-pause")
