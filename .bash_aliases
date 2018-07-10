@@ -16,3 +16,6 @@ alias paca='pac -Syuv'
 alias ya='yaourt -Syuva'
 alias yay='ya --noconfirm'
 
+alias ghci='stack exec -- ghci'
+
+alias timestamp="awk '{ print strftime(\"%H:%M:%S\"), \$0; fflush(); }'"
