@@ -35,8 +35,8 @@
     helm-cider
     helm-flycheck
     tern-auto-complete
-    evil-smartparens
     evil-embrace
+    exec-path-from-shell
     projectile-direnv
     (evil-little-word :location (recipe
                                  :fetcher github
@@ -95,12 +95,13 @@ Each entry is either:
        (require 'tern-auto-complete)
        (tern-ac-setup))))
 
-(defun wamaral/init-evil-smartparens ()
-  (require 'evil-smartparens))
-
 (defun wamaral/init-evil-embrace ()
   (require 'evil-embrace)
   (evil-embrace-enable-evil-surround-integration))
+
+(defun wamaral/init-exec-path-from-shell ()
+  ;; (exec-path-from-shell-initalize)
+  )
 
 (defun wamaral/init-projectile-direnv ()
   ;; (add-hook 'projectile-mode-hook 'projectile-direnv-export-variables)
@@ -128,8 +129,6 @@ Each entry is either:
   (add-hook 'ruby-mode
             (lambda () (require 'evil-ruby-block-object))))
 
-(defun wamaral/init-wamaral ()
-  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode))
-  (add-to-list 'auto-mode-alist '("\\.aurora\\'" . python-mode)))
+(defun wamaral/init-wamaral ())
 
 ;;; packages.el ends here

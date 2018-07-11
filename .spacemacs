@@ -503,7 +503,8 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (spacemacs/load-spacemacs-env))
+  ;; (spacemacs/load-spacemacs-env)
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -514,7 +515,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Fix dead keys
   (require 'iso-transl)
 
-  ;; Persistend undo history
+  ;; Persistent undo history
   (setq undo-tree-auto-save-history t
         undo-tree-history-directory-alist `(("." . ,(concat spacemacs-cache-directory "undo"))))
   (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
@@ -540,6 +541,10 @@ before packages are loaded."
   (setq browse-url-browser-function 'browse-url-generic
         engine/browser-function 'browse-url-generic
         browse-url-generic-program "google-chrome-unstable")
+
+  ;; file formats
+  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode))
+  (add-to-list 'auto-mode-alist '("\\.aurora\\'" . python-mode))
 
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
@@ -598,7 +603,7 @@ before packages are loaded."
   ;; auto load all files under src/ after connecting
   (defun cider-auto-load-src-hook ()
     (cider-nrepl-sync-request:eval "(clojure.tools.namespace.repl/set-refresh-dirs \"src\")")
-    (cider-refresh))
+    (cider-ns-refresh))
   (add-hook 'cider-connected-hook 'cider-auto-load-src-hook)
 
   (with-eval-after-load 'clojure-mode
