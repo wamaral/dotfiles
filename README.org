@@ -1,0 +1,22 @@
+* dotfiles
+
+** XMonad dependencies
+
+- [[https://www.haskellstack.org][Stack]]
+- Mate desktop
+- mate-panel
+- mate-screensaver
+- Calibri font
+- Termite (terminal emulator)
+- keepass (auto-type passwords)
+- playerctl / pamixer (media keys)
+- flameshot (screenshot)
+- ykman / xdotool (Yubikey oath prompt)
+
+** Spacemacs dependencies
+
+- zsh
+- Fira Mono font
+- Eclipse / eclim (Java)
+- scalafmt in =/usr/local/bin= (Scala)
+- plantuml in =/opt/plantuml= (Org)
