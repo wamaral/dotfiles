@@ -51,6 +51,7 @@ This function should only modify configuration layer settings."
      clojure
      colors
      command-log
+     copy-as-format
      csv
      docker
      elfeed
