@@ -127,9 +127,12 @@ keymapConfig conf = mkKeymap conf $
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --allow-boost -i 5")
 
       -- Printscreen
-    , ("M4-<Print>", spawn "scrot screen_%Y-%m-%d.png -d 1")
-    , ("M4-S-<Print>", spawn "bash -l -c select-screenshot")
-    , ("M4-C-<Print>", spawn "imgur")
+    , ("<Print>", spawn "flameshot gui") -- selection
+    , ("S-<Print>", spawn "flameshot full") -- full screen
+    , ("C-<Print>", spawn "flameshot gui -c") -- selection + clipboard
+    , ("M4-<Print>", spawn "flameshot gui -d 5000") -- selection + delay
+    , ("M4-S-<Print>", spawn "flameshot full -d 5000") -- full screen + delay
+    , ("M4-S-<Print>", spawn "flameshot gui -c -d 5000") -- selection + clipboard + delay
 
       -- Selecting windows
     , ("M4-h", windows W.focusUp) -- move focus to the previous window
