@@ -20,8 +20,8 @@ import           XMonad.Actions.GridSelect
 -- import           XMonad.Config.Desktop
 -- import           XMonad.Config.Gnome
 -- import           XMonad.Config.Kde
--- import           XMonad.Config.Mate
-import           XMonad.Config.Xfce
+import           XMonad.Config.Mate
+-- import           XMonad.Config.Xfce
 
 import           XMonad.Hooks.DynamicHooks
 import           XMonad.Hooks.ManageDocks
@@ -198,6 +198,8 @@ keymapConfig conf = mkKeymap conf $
 
     -- Screensaver
     -- , ("M4-<Esc>", spawn "xscreensaver-command -lock")
+    , ("M4-<Esc>", spawn "mate-screensaver-command -l -a")
+    , ("M4-S-<Esc>", spawn "mate-screensaver-command -d")
 
     -- Screens
     , ("M4-a", toggleOrView $ last $ XMonad.workspaces conf)
@@ -320,7 +322,7 @@ manageHookConfig = composeAll . concat $
 ------------------------------------------------------------------------
 -- Startup hook
 --
-startupHookConfig = startupHook xfceConfig >> setWMName "LG3D"
+startupHookConfig = startupHook mateConfig >> setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- UrgencyHook via libnotify
@@ -336,7 +338,7 @@ instance UrgencyHook LibNotifyUrgencyHook where
 ------------------------------------------------------------------------
 -- Run
 --
-userConfig = xfceConfig { terminal           = "/usr/bin/termite"
+userConfig = mateConfig { terminal           = "/usr/bin/termite"
                         , focusFollowsMouse  = False
                         -- Wether clicking a new desktop only focuses, or pass-through the click
                         , clickJustFocuses   = False
