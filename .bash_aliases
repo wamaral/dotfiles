@@ -19,3 +19,5 @@ alias yay='ya --noconfirm'
 alias ghci='stack exec -- ghci'
 
 alias timestamp="awk '{ print strftime(\"%H:%M:%S\"), \$0; fflush(); }'"
+
+alias midje-notify=$'awk \'/.*/ {print; fflush();} /All checks/ {cmd=sprintf("notify-send \\"%s\\"", gensub(/[[:cntrl:]]\\[[0-9]{1,3}m/,"","g",$0)); system(cmd)} /FAILURE/ {cmd=sprintf("notify-send -u critical \\"%s\\"", gensub(/[[:cntrl:]]\\[[0-9]{1,3}m/,"","g",$0)); system(cmd)}\''
