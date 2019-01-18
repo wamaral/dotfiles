@@ -48,7 +48,9 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t)
      better-defaults
-     clojure
+     (clojure :variables
+              clojure-enable-sayid t
+              clojure-enable-clj-refactor t)
      colors
      command-log
      copy-as-format
@@ -239,8 +241,7 @@ It should only modify the values of Spacemacs settings."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((agenda . 5)
-                                (projects . 10)
+   dotspacemacs-startup-lists '((projects . 10)
                                 (recents . 15))
 
    ;; True if the home buffer should respond to resize events. (default t)
@@ -547,7 +548,7 @@ before packages are loaded."
   (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode))
   (add-to-list 'auto-mode-alist '("\\.aurora\\'" . python-mode))
 
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
   ;; (with-eval-after-load 'flycheck
   ;;   (flycheck-define-checker javascript-flow
