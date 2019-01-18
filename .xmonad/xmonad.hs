@@ -111,6 +111,7 @@ keymapConfig conf = mkKeymap conf $
     [ ("M4-c", spawn $ XMonad.terminal conf) -- launch term
     , ("M1-<F5>", kill) -- kill window
     , ("M1-<F4>", kill1) -- close or kill window
+    , ("M4-<Delete>", spawn "desktop-pause.sh -a") -- pause / resume current window
 
       -- Runners
     , ("M4-<Space>", runOrRaisePrompt xpConfig) -- app runner
