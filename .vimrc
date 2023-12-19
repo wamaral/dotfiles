@@ -140,20 +140,19 @@ if has('nvim')
 endif
 
 if has('nvim')
-  " Dark powered asynchronous completion framework for neovim
-  Plug 'Shougo/deoplete.nvim'
-  " deoplete {{{
-  let g:deoplete#enable_at_startup = 1
-  " }}}
+  " Dark powered asynchronous completion framework for neovim/Vim8
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  " Next generation completion framework after neocomplcache
-  Plug 'Shougo/neocomplete.vim'
-  " neocomplete {{{
-  let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-  "}}}
+  " Dark powered asynchronous completion framework for neovim/Vim8
+  Plug 'Shougo/deoplete.nvim'
+  " Yet Another Remote Plugin Framework for Neovim
+  Plug 'roxma/nvim-yarp'
+  " compatibility layer for neovim rpc client working on vim8
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
+" deoplete {{{
+let g:deoplete#enable_at_startup = 1
+" }}}
 
 " A command-line fuzzy finder written in Go
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }

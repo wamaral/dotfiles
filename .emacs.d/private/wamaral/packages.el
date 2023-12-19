@@ -31,13 +31,13 @@
 
 (defconst wamaral-packages
   '(4clojure
-    flycheck-clojure
-    helm-cider
+    ;; flycheck-clojure
+    ;; helm-cider
     helm-flycheck
-    tern-auto-complete
+    ;; tern-auto-complete
     evil-embrace
     exec-path-from-shell
-    projectile-direnv
+    ;; projectile-direnv
     (evil-little-word :location (recipe
                                  :fetcher github
                                  :repo "tarao/evil-plugins"
@@ -74,26 +74,26 @@ Each entry is either:
 
 (defun wamaral/init-4clojure ())
 
-(defun wamaral/init-flycheck-clojure ()
-  (eval-after-load 'flycheck '(flycheck-clojure-setup))
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-  (add-hook 'clojure-mode-hook #'flycheck-mode))
+;; (defun wamaral/init-flycheck-clojure ()
+;;   (eval-after-load 'flycheck '(flycheck-clojure-setup))
+;;   (add-hook 'after-init-hook #'global-flycheck-mode)
+;;   (add-hook 'clojure-mode-hook #'flycheck-mode))
 
 (defun wamaral/init-highlight-chars ())
 
-(defun wamaral/init-helm-cider ()
-  (require 'helm-cider)
-  (helm-cider-mode 1))
+;; (defun wamaral/init-helm-cider ()
+;;   (require 'helm-cider)
+;;   (helm-cider-mode 1))
 
 (defun wamaral/init-helm-flycheck ()
   (require 'helm-flycheck)
   (spacemacs/set-leader-keys "ee" 'helm-flycheck))
 
-(defun wamaral/init-tern-auto-complete ()
-  (eval-after-load 'tern
-    '(progn
-       (require 'tern-auto-complete)
-       (tern-ac-setup))))
+;; (defun wamaral/init-tern-auto-complete ()
+;;   (eval-after-load 'tern
+;;     '(progn
+;;        (require 'tern-auto-complete)
+;;        (tern-ac-setup))))
 
 (defun wamaral/init-evil-embrace ()
   (require 'evil-embrace)
@@ -103,11 +103,11 @@ Each entry is either:
   ;; (exec-path-from-shell-initalize)
   )
 
-(defun wamaral/init-projectile-direnv ()
-  ;; (add-hook 'projectile-mode-hook 'projectile-direnv-export-variables)
-  (require 'projectile-direnv)
-  (spacemacs/set-leader-keys ;;'projectile-mode
-    "p." 'projectile-direnv-export-variables))
+;; (defun wamaral/init-projectile-direnv ()
+;;   ;; (add-hook 'projectile-mode-hook 'projectile-direnv-export-variables)
+;;   (require 'projectile-direnv)
+;;   (spacemacs/set-leader-keys ;;'projectile-mode
+;;     "p." 'projectile-direnv-export-variables))
 
 (defun wamaral/init-evil-little-word ()
   (use-package evil-little-word
